@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>360 &amp; 美团前端社招面经及部分面试题 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ji-ben-liu-cheng-ji-yao-dian"><span class="toc-number">1.</span> <span class="toc-text">基本流程及要点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mian-shi-ti-mu"><span class="toc-number">2.</span> <span class="toc-text">面试题目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#bi-bao-yuan-li-ji-ying-yong"><span class="toc-number">2.1.</span> <span class="toc-text">闭包原理及应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jquery-yuan-ma-ru-delegate-yuan-li"><span class="toc-number">2.2.</span> <span class="toc-text">jquery 源码，如 delegate 原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jian-shu-js-drag-shi-jian-yi-ji-mo-ni-drag-shi-jian-de-fang-an"><span class="toc-number">2.3.</span> <span class="toc-text">简述 JS drag 事件以及模拟 drag 事件的方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#get-can-shu-tong-guo-zheng-ze-huo-qu-window-location-search"><span class="toc-number">2.4.</span> <span class="toc-text">get 参数通过正则获取 window.location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jian-dan-jie-shao-css-3-dong-hua-shu-xing-ji-yong-fa-ru-he-you-hua-dong-hua-xing-neng"><span class="toc-number">2.5.</span> <span class="toc-text">简单介绍 CSS3 动画属性及用法，如何优化动画性能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ke-li-hua-lian-jia-shi-xian"><span class="toc-number">2.6.</span> <span class="toc-text">柯里化连加实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#position-guan-jian-zi-zhi-you-na-ji-chong-yi-ji-xiang-ying-de-biao-xian-xing-shi"><span class="toc-number">2.7.</span> <span class="toc-text">position 关键字值有哪几种，以及相应的表现形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zhong-jian-jian-he-cha-jian-de-qu-bie"><span class="toc-number">2.8.</span> <span class="toc-text">中间件和插件的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bootstrap-grid-shi-xian-yuan-li"><span class="toc-number">2.9.</span> <span class="toc-text">Bootstrap grid 实现原理。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ji-cheng-de-fang-shi"><span class="toc-number">2.10.</span> <span class="toc-text">继承的方式。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#canvas-svg-qu-bie"><span class="toc-number">2.11.</span> <span class="toc-text">Canvas SVG 区别。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ri-qi-huan-suan-qiu-tian-shu-chai-deng"><span class="toc-number">2.12.</span> <span class="toc-text">日期换算，求天数差等</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#let-ju-ti-wei-shi-yao-hui-you-lin-shi-si-yu"><span class="toc-number">2.13.</span> <span class="toc-text">let 具体为什么会有临时死域。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jian-kong-yi-ge-dom-ti-huan-guo-cheng"><span class="toc-number">2.14.</span> <span class="toc-text">监控一个 DOM 替换过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web-socket-jian-shu-yuan-li"><span class="toc-number">2.15.</span> <span class="toc-text">WebSocket 简述原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mou-pao-kuai-pai-cha-ru-pai-xu-yuan-li-deng"><span class="toc-number">2.16.</span> <span class="toc-text">冒泡 + 快排 + 插入排序原理等</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wang-luo-xie-yi-http-https-http-2-de-ji-ben-gai-nian-deng"><span class="toc-number">2.17.</span> <span class="toc-text">网络协议 HTTP HTTPS HTTP2 的基本概念等</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zi-gua-ying-bu-ju-yi-dong-duan-zi-gua-ying-deng-wen-ti"><span class="toc-number">2.18.</span> <span class="toc-text">自适应布局，移动端自适应等问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#she-ji-mo-shi"><span class="toc-number">2.19.</span> <span class="toc-text">设计模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ni-zen-yao-kan-xxx"><span class="toc-number">2.20.</span> <span class="toc-text">你怎么看 XXX</span></a></li></ol></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">360 & 美团前端社招面经及部分面试题</h1>
+          <time datetime="2017-04-09T14:37:26.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2017 年 04 月 09 日</span>
+            <span style="margin-left: 10px;">最近更新于：2017 年 04 月 09 日</span>
+            <span style="margin-left: 10px;">本文共 2,562 字，读完约 10 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <h2 id="ji-ben-liu-cheng-ji-yao-dian">基本流程及要点</h2>
+<p>一般是至少三轮的技术面 + 一轮 HR 面，三轮技术一定程度上可能是你未来的同事 + 架构 + 上级。</p>
+<h2 id="mian-shi-ti-mu">面试题目</h2>
+<h3 id="bi-bao-yuan-li-ji-ying-yong">闭包原理及应用</h3>
+<h3 id="jquery-yuan-ma-ru-delegate-yuan-li">jquery 源码，如 delegate 原理</h3>
+<p>原理利用了JS 事件的事件冒泡机制，在 document(或事件源的父层)进行监听，冒泡到监听点后，判断事件源是否自己设定的元素</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+</pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">delegate</span>(<span class="params">parent, eventType, selector, fn</span>)</span>&#123;</span>
+<span class="line">  <span class="comment">//参数处理</span></span>
+<span class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> parent === <span class="string">'string'</span>)&#123;</span>
+<span class="line">    <span class="keyword">var</span> parent = <span class="built_in">document</span>.getElementById(parent);</span>
+<span class="line">    !parent &amp;&amp; alert(<span class="string">'parent not found'</span>);</span>
+<span class="line">  &#125;</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> selector !== <span class="string">'string'</span>)&#123;</span>
+<span class="line">      alert(<span class="string">'selector is not string'</span>);</span>
+<span class="line">  &#125;</span>
+<span class="line">        </span>
+<span class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> fn !== <span class="string">'function'</span>)&#123;</span>
+<span class="line">       alert(<span class="string">'fn is not function'</span>);</span>
+<span class="line">  &#125;</span>
+<span class="line">        </span>
+<span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">handle</span>(<span class="params">e</span>)</span>&#123;</span>
+<span class="line">    <span class="comment">// 获取 event 对象</span></span>
+<span class="line">    <span class="comment">// 标准 DOM 方法事件处理函数第一个参数是 event 对象</span></span>
+<span class="line">    <span class="comment">// IE可以使用全局变量 window.event</span></span>
+<span class="line">    <span class="keyword">var</span> evt = <span class="built_in">window</span>.event ? <span class="built_in">window</span>.event : e;</span>
+<span class="line">  </span>
+<span class="line">    <span class="comment">// 获取触发事件的原始事件源</span></span>
+<span class="line">    <span class="comment">// 标准 DOM 方法是用 target 获取当前事件源</span></span>
+<span class="line">    <span class="comment">// IE 使用 evt.srcElement 获取事件源</span></span>
+<span class="line">    <span class="keyword">var</span> target = evt.target || evt.srcElement;</span>
+<span class="line">  </span>
+<span class="line">    <span class="comment">// 获取当前正在处理的事件源</span></span>
+<span class="line">    <span class="comment">// 标准 DOM 方法是用 currentTarget 获取当前事件源</span></span>
+<span class="line">    <span class="comment">// IE 中的 this 指向当前处理的事件源</span></span>
+<span class="line">    <span class="keyword">var</span> currentTarget= e ? e.currentTarget : <span class="keyword">this</span>;</span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">if</span>(target.id === selector || target.className.indexOf(selector) != <span class="number">-1</span>)&#123;</span>
+<span class="line">      fn.call(target);</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;</span>
+<span class="line">        </span>
+<span class="line">  parent[eventType]=handle;</span>
+<span class="line">&#125;</span>
+<span class="line">    </span>
+<span class="line">delegate(<span class="string">'container'</span>, <span class="string">'onclick'</span>, <span class="string">'listener'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    alert(<span class="keyword">this</span>);    </span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<h3 id="jian-shu-js-drag-shi-jian-yi-ji-mo-ni-drag-shi-jian-de-fang-an">简述 JS drag 事件以及模拟 drag 事件的方案</h3>
+<p>一个完整的 drag and drop 流程通常包含以下几个步骤:</p>
+<ol>
+<li>
+<p>设置可拖拽目标. 设置属性 draggable=&quot;true&quot; 实现元素的可拖拽.</p>
+</li>
+<li>
+<p>监听 dragstart 设置拖拽数据</p>
+</li>
+<li>
+<p>为拖拽操作设置反馈图标 (可选)</p>
+</li>
+<li>
+<p>设置拖放效果, 如 copy, move, link</p>
+</li>
+<li>
+<p>设置拖放目标, 默认情况下浏览器阻止所有的拖放操作, 所以需要监听 dragenter 或者 dragover 取消浏览器默认行为使元素可拖放.</p>
+</li>
+<li>
+<p>监听 drop 事件执行所需操作</p>
+</li>
+</ol>
+<p>实现 drag</p>
+<ol>
+<li>
+<p>onmousedown + onmousemove → startDrag()</p>
+</li>
+<li>
+<p>onmouseup → stopDrag()</p>
+</li>
+<li>
+<p>偏移值，两次事件的鼠标位置记录：
+e.pageX || e.clientX + scrollX;
+e.pageY || e.clientY + scrollY;</p>
+</li>
+</ol>
+<h3 id="get-can-shu-tong-guo-zheng-ze-huo-qu-window-location-search">get 参数通过正则获取 window.location.search</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.location.search.match(<span class="regexp">/(([^?&amp;=]+)(=([^?&amp;=]*))*)/g</span>)</span>
+</pre></td></tr></table></figure>
+<h3 id="jian-dan-jie-shao-css-3-dong-hua-shu-xing-ji-yong-fa-ru-he-you-hua-dong-hua-xing-neng">简单介绍 CSS3 动画属性及用法，如何优化动画性能</h3>
+<ol>
+<li>
+<p>transition</p>
+</li>
+<li>
+<p>animation</p>
+</li>
+</ol>
+<p>transition 主要设置四个过渡属性：</p>
+<ul>
+<li>
+<p>transition-property // 规定设置过渡效果的 CSS 属性的名称。</p>
+</li>
+<li>
+<p>transition-duration // 规定完成过渡效果需要多少秒或毫秒。</p>
+</li>
+<li>
+<p>transition-timing-function // 规定速度效果的速度曲线。</p>
+</li>
+<li>
+<p>transition-delay  //  定义过渡效果何时开始。</p>
+</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+</pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span>&#123;</span>
+<span class="line">  <span class="attribute">width</span>:<span class="number">100px</span>;</span>
+<span class="line">  <span class="attribute">background</span>:blue;</span>
+<span class="line">  <span class="attribute">transition</span>:width <span class="number">2s</span>;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="selector-tag">div</span><span class="selector-pseudo">:hover</span>&#123;</span>
+<span class="line">  <span class="attribute">width</span>:<span class="number">300px</span>;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>注释：请始终设置 transition-duration 属性，否则时长为 0，就不会产生过渡效果。</p>
+<ol start="2">
+<li>animation 属性是一个简写属性，用于设置六个动画属性：</li>
+</ol>
+<ul>
+<li>animation-name // 规定需要绑定到选择器的 keyframe 名称。</li>
+<li>animation-duration // 规定完成动画所花费的时间，以秒或毫秒计。</li>
+<li>animation-timing-function // 规定动画的速度曲线。</li>
+<li>animation-delay // 规定在动画开始之前的延迟。</li>
+<li>animation-iteration-count // 规定动画应该播放的次数。</li>
+<li>animation-direction // 规定是否应该轮流反向播放动画。</li>
+</ul>
+<p>优化具体参考即为如下几点:</p>
+<p>由于渲染三阶段分为：Layout—&gt;Paint—&gt;Composite，可针对此三者分别进行优化。
+优化目标：15FPS 不流畅 ，30FPS+感觉流畅，60FPS舒适完美</p>
+<p>触发Layout的方式有：</p>
+<ul>
+<li>改变 width, height, margin 等和大小、位置相关的属性</li>
+<li>读取 size, position 相关得属性</li>
+</ul>
+<p>要点：</p>
+<ul>
+<li>使用 transform 代替 top, left 的动画</li>
+<li>分离读写，减少 Layout</li>
+<li>面对解耦代码，使用 rAF 推迟的方法分离读写。</li>
+</ul>
+<p>触发 Paint 的方式：</p>
+<p>当修改 border-radius, box-shadow, color 等展示相关属性时，会触发 paint
+要点：</p>
+<ul>
+<li>简化绘制的复杂度</li>
+<li>避免不必要的绘制</li>
+<li>减少绘制区域</li>
+</ul>
+<p>Composite 小结:</p>
+<p>GPU 是有限度的，不要滥用 GPU 资源生成不必要的 Layer
+留意意外生成的 Layer</p>
+<p>可结合贝塞尔曲线(cubic-bezier)，开启硬件加速。will-change 属性</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+</pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span>&#123;</span>
+<span class="line">  <span class="attribute">width</span>:<span class="number">100px</span>;</span>
+<span class="line">  <span class="attribute">height</span>:<span class="number">100px</span>;</span>
+<span class="line">  <span class="attribute">background</span>:red;</span>
+<span class="line">  <span class="attribute">position</span>:relative;</span>
+<span class="line">  <span class="attribute">animation</span>:mymove <span class="number">5s</span> infinite;</span>
+<span class="line">  <span class="attribute">-webkit-animation</span>:mymove <span class="number">5s</span> infinite; <span class="comment">/*Safari and Chrome*/</span></span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line">@<span class="keyword">keyframes</span> mymove&#123;</span>
+<span class="line">  <span class="selector-tag">from</span> &#123;<span class="attribute">left</span>:<span class="number">0px</span>;&#125;</span>
+<span class="line">  <span class="selector-tag">to</span> &#123;<span class="attribute">left</span>:<span class="number">200px</span>;&#125;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line">@-<span class="keyword">webkit</span>-<span class="keyword">keyframes</span> mymove&#123;</span>
+<span class="line">  <span class="selector-tag">from</span> &#123;<span class="attribute">left</span>:<span class="number">0px</span>;&#125;</span>
+<span class="line">  <span class="selector-tag">to</span> &#123;<span class="attribute">left</span>:<span class="number">200px</span>;&#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<h3 id="ke-li-hua-lian-jia-shi-xian">柯里化连加实现</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+</pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> sum = <span class="number">0</span>, i, len;</span>
+<span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>, len = <span class="built_in">arguments</span>.length; i &lt; len; i++) &#123;</span>
+<span class="line">    sum += <span class="built_in">arguments</span>[i];</span>
+<span class="line">  &#125;</span>
+<span class="line">  <span class="keyword">return</span> sum;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> currying = <span class="function"><span class="keyword">function</span>(<span class="params">fn</span>) </span>&#123;</span>
+<span class="line">        <span class="built_in">console</span>.log(<span class="built_in">arguments</span>)</span>
+<span class="line">    <span class="keyword">var</span> _args = [];</span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">cb</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line"></span>
+<span class="line">        <span class="keyword">if</span> (<span class="built_in">arguments</span>.length === <span class="number">0</span>) &#123;</span>
+<span class="line">            <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, _args);</span>
+<span class="line">        &#125;</span>
+<span class="line"></span>
+<span class="line">        <span class="built_in">Array</span>.prototype.push.apply(_args, <span class="built_in">arguments</span>);</span>
+<span class="line"></span>
+<span class="line">        <span class="keyword">return</span> cb;</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> curryingAdd = currying(add);</span>
+<span class="line"></span>
+<span class="line">curryingAdd(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>)(<span class="number">4</span>)(); <span class="comment">// 10</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> add321 = curryingAdd(<span class="number">3</span>)(<span class="number">2</span>, <span class="number">1</span>);</span>
+<span class="line"></span>
+<span class="line">add321(<span class="number">4</span>)(); <span class="comment">// 10</span></span>
+</pre></td></tr></table></figure>
+<h3 id="position-guan-jian-zi-zhi-you-na-ji-chong-yi-ji-xiang-ying-de-biao-xian-xing-shi">position 关键字值有哪几种，以及相应的表现形式</h3>
+<p>static / relative / absolute / fixed / sticky(新特性)</p>
+<p>粘性定位是相对定位和固定定位的混合。元素在跨越特定阈值前为相对定位，之后为固定定位。</p>
+<p>其盒位置根据正常流计算，然后相对于该元素在流中的 flow root（BFC）和 containing block（最近的块级祖先元素）定位。在所有情况下，该元素定位均不对后续元素造成影响。当元素 B 被粘性定位时，后续元素的位置仍按照 B 未定位时的位置来确定。position: sticky 对 table 元素的效果与 position: relative 相同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">#one &#123; position: sticky; top: 10px; &#125;</span>
+</pre></td></tr></table></figure>
+<h3 id="zhong-jian-jian-he-cha-jian-de-qu-bie">中间件和插件的区别</h3>
+<p>中间件是一种独立的系统软件或服务程序，分布式应用软件借助这种软件在不同的技术之间共享资源。中间件位于客户机 / 服务器的操作系统之上，管理计算机资源和网络通讯。是连接两个独立应用程序或独立系统的软件。相连接的系统即使它们具有不同的接口，但通过中间件相互之间仍能交换信息。执行中间件的一个关键途径是信息传递。通过中间件，应用程序可以工作于多平台或 OS 环境。</p>
+<p>插件是一种遵循一定规范的应用程序接口编写出来的程序。</p>
+<h3 id="bootstrap-grid-shi-xian-yuan-li">Bootstrap grid 实现原理。</h3>
+<p>浮动，宽度瓜分，媒体查询，响应式布局。</p>
+<h3 id="ji-cheng-de-fang-shi">继承的方式。</h3>
+<p>原型链继承（对象间的继承）
+类式继承（构造函数间的继承）
+ES6 Class</p>
+<h3 id="canvas-svg-qu-bie">Canvas SVG 区别。</h3>
+<p>Canvas 适用场景：</p>
+<p>Canvas 提供的功能更原始，适合像素处理，动态渲染和大数据量绘制；
+Canvas 是使用 JavaScript 程序绘图，提供画布标签和绘制 API(动态生成)；
+Canvas 是基于位图的图像，它不能够改变大小，只能缩放显示；</p>
+<p>SVG 适用场景：</p>
+<p>SVG 功能更完善，适合静态图片展示，高保真文档查看和打印的应用场景
+SVG 是使用 XML 文档描述来绘图，是一整套独立的矢量图形语言；
+SVG 更适合用来做动态交互，而且 SVG 绘图很容易编辑，只需要增加或移除相应的元素就可以了。
+SVG 是基于矢量的，所有它能够很好的处理图形大小的改变。</p>
+<p>二者是有不同用途的，作为一个开发者，你应该做的是理解应用程序的具体需求并选择正确的技术来实现它。</p>
+<h3 id="ri-qi-huan-suan-qiu-tian-shu-chai-deng">日期换算，求天数差等</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">'2014-04-23'</span>;</span>
+<span class="line"><span class="keyword">var</span> date1 = <span class="keyword">new</span> <span class="built_in">Date</span>(a);</span>
+<span class="line"><span class="keyword">var</span> b = <span class="string">'2014-04-24'</span>;</span>
+<span class="line"><span class="keyword">var</span> date2 = <span class="keyword">new</span> <span class="built_in">Date</span>(b);</span>
+<span class="line"><span class="keyword">var</span> days = <span class="built_in">Math</span>.floor((date2 - date1) / <span class="number">1000</span> / <span class="number">60</span> / <span class="number">60</span> / <span class="number">24</span>)</span>
+</pre></td></tr></table></figure>
+<h3 id="let-ju-ti-wei-shi-yao-hui-you-lin-shi-si-yu">let 具体为什么会有临时死域。</h3>
+<p>详见<a href="http://www.qcyoung.com/2016/08/03/%E3%80%90%E8%AF%91%E3%80%91JavaScript%20%E5%8F%98%E9%87%8F%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%20let%20%E4%B8%8D%E5%AD%98%E5%9C%A8%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87/" target="_blank" rel="external">JavaScript 变量的生命周期：为什么 let 不存在变量提升
+</a></p>
+<h3 id="jian-kong-yi-ge-dom-ti-huan-guo-cheng">监控一个 DOM 替换过程</h3>
+<p>原生方法监听 DOM 结构改变事件
+<a href="">https://developer.mozilla.org/en-US/docs/XUL/Events#Mutation_DOM_events</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'DOMNodeInserted'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;alert(<span class="number">1</span>)&#125;,<span class="literal">false</span>);</span>
+<span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'DOMAttrModified'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;alert(<span class="number">1</span>)&#125;,<span class="literal">false</span>);</span>
+<span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'DOMNodeRemoved'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;alert(<span class="number">1</span>)&#125;,<span class="literal">false</span>);</span>
+</pre></td></tr></table></figure>
+<p>变动事件包括以下不同事件类型：</p>
+<ul>
+<li>
+<p>DOMSubtreeModified: 在 DOM 结构中发生任何变化时触发</p>
+</li>
+<li>
+<p>DOMNodeInserted: 在一个节点作为子节点被插入到另一个节点中时触发</p>
+</li>
+<li>
+<p>DOMNodeRemoved: 在节点从其父节点中被移除时触发</p>
+</li>
+<li>
+<p>DOMNodeRemovedFromDocument: 在一个节点被直接从文档中移除或通过子树间接从文档中移除之前触发</p>
+</li>
+<li>
+<p>DOMNodeInsertedIntoDocument: 在一个节点被直接插入文档或通过子树间接插入文档之后触发</p>
+</li>
+<li>
+<p>DOMAttrModified: 在属性被修改之后触发</p>
+</li>
+<li>
+<p>DOMCharacterDataModified: 在文本节点的值发生变化时触发</p>
+</li>
+</ul>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver" target="_blank" rel="external">构造函数 MutationObserver</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// Firefox和Chrome早期版本中带有前缀</span></span>
+<span class="line"><span class="keyword">var</span> MutationObserver = <span class="built_in">window</span>.MutationObserver || <span class="built_in">window</span>.WebKitMutationObserver || <span class="built_in">window</span>.MozMutationObserver</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// 选择目标节点</span></span>
+<span class="line"><span class="keyword">var</span> target = <span class="built_in">document</span>.querySelector(<span class="string">'#some-id'</span>);</span>
+<span class="line"> </span>
+<span class="line"><span class="comment">// 创建观察者对象</span></span>
+<span class="line"><span class="keyword">var</span> observer = <span class="keyword">new</span> MutationObserver(<span class="function"><span class="keyword">function</span>(<span class="params">mutations</span>) </span>&#123;</span>
+<span class="line">  mutations.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">mutation</span>) </span>&#123;</span>
+<span class="line">    <span class="built_in">console</span>.log(mutation.type);</span>
+<span class="line">  &#125;);    </span>
+<span class="line">&#125;);</span>
+<span class="line"> </span>
+<span class="line"><span class="comment">// 配置观察选项:</span></span>
+<span class="line"><span class="keyword">var</span> config = &#123; <span class="attr">attributes</span>: <span class="literal">true</span>, <span class="attr">childList</span>: <span class="literal">true</span>, <span class="attr">characterData</span>: <span class="literal">true</span> &#125;</span>
+<span class="line"> </span>
+<span class="line"><span class="comment">// 传入目标节点和观察选项</span></span>
+<span class="line">observer.observe(target, config);</span>
+<span class="line"> </span>
+<span class="line"><span class="comment">// 随后,你还可以停止观察</span></span>
+<span class="line">observer.disconnect();</span>
+</pre></td></tr></table></figure>
+<h3 id="web-socket-jian-shu-yuan-li">WebSocket 简述原理</h3>
+<p>WebSocket 协议基于 TCP，解决过去为了实现即时通讯而采用的轮询方案，解决了大量交换 HTTP header，信息交换效率低的问题。在浏览器和服务器之间建立双向连接。</p>
+<h3 id="mou-pao-kuai-pai-cha-ru-pai-xu-yuan-li-deng">冒泡 + 快排 + 插入排序原理等</h3>
+<p>详见：<a href="http://www.qcyoung.com/2016/12/18/JavaScript%20%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%B1%87%E6%80%BB/" target="_blank" rel="external">JavaScript 排序算法汇总</a></p>
+<h3 id="wang-luo-xie-yi-http-https-http-2-de-ji-ben-gai-nian-deng">网络协议 HTTP HTTPS HTTP2 的基本概念等</h3>
+<h3 id="zi-gua-ying-bu-ju-yi-dong-duan-zi-gua-ying-deng-wen-ti">自适应布局，移动端自适应等问题</h3>
+<h3 id="she-ji-mo-shi">设计模式</h3>
+<p>这方面被问到的比较多的：观察者模式，工厂模式，职责链模式等等</p>
+<p>主要是经常涉及应用于 js 开发组件。比如如何去设计一个前端UI组件，应该公开出哪些方法，应该提供哪些接口，应该提供哪些事件。哪部分逻辑流程应该开放出去让用户自行编写，如何实现组件与组件之间的通信，如何实现高内聚低耦合，如何实现组件的高复用等等。</p>
+<h3 id="ni-zen-yao-kan-xxx">你怎么看 XXX</h3>
+<p>结合框架原理，社区环境，技术选型（技术、业务、人）等</p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/360 &amp; 美团前端社招面经及部分面试题.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/职业生涯/">职业生涯</a>
+                
+              
+                <a class="post-tags" href="/tags/前端知识/">前端知识</a>
+                
+              
+                <a class="post-tags" href="/tags/题目/">题目</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=360 &amp; 美团前端社招面经及部分面试题 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2017/04/09/360 &amp; 美团前端社招面经及部分面试题/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2017/04/09/360 &amp; 美团前端社招面经及部分面试题/index.html&amp;title=360 &amp; 美团前端社招面经及部分面试题 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2017/04/09/360 &amp; 美团前端社招面经及部分面试题/index.html&amp;text=360 &amp; 美团前端社招面经及部分面试题;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=360 &amp; 美团前端社招面经及部分面试题 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2017/04/09/360 &amp; 美团前端社招面经及部分面试题/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2017/08/11/【译】对一行混淆 JS 代码的逆向分析过程/">
+      ← 【译】对一行混淆 JS 代码的逆向分析过程
+    </a>
+  
+  
+    <a class="pull-right" href="/2017/02/06/Babel 基础及代码转换简单探究/">
+      Babel 基础及代码转换简单探究 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2017/04/09/360 &amp; 美团前端社招面经及部分面试题/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

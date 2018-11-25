@@ -1,0 +1,2129 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>Babel 基础及代码转换简单探究 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ji-chu-zhi-shi"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#chou-xiang-yu-fa-shu-ast"><span class="toc-number">1.1.</span> <span class="toc-text">抽象语法树(AST)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#babel-de-chu-li-bu-zou"><span class="toc-number">1.2.</span> <span class="toc-text">Babel 的处理步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#jie-xi"><span class="toc-number">1.2.1.</span> <span class="toc-text">解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#zhuan-huan"><span class="toc-number">1.2.2.</span> <span class="toc-text">转换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sheng-cheng"><span class="toc-number">1.2.3.</span> <span class="toc-text">生成</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bian-li"><span class="toc-number">1.3.</span> <span class="toc-text">遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#visitor"><span class="toc-number">1.3.1.</span> <span class="toc-text">visitor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#path"><span class="toc-number">1.3.2.</span> <span class="toc-text">path</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dui-ying-dai-ma"><span class="toc-number">1.4.</span> <span class="toc-text">对应代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#babel-core-he-xin-bao"><span class="toc-number">1.4.1.</span> <span class="toc-text">babel-core 核心包</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zhuan-huan-jie-guo"><span class="toc-number">2.</span> <span class="toc-text">转换结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#babel-preset-2015"><span class="toc-number">2.1.</span> <span class="toc-text">babel-preset-2015</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#var-const-and-let"><span class="toc-number">2.2.</span> <span class="toc-text">var, const and let</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#var-const-let-js"><span class="toc-number">2.2.1.</span> <span class="toc-text">var_const_let.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#let-js"><span class="toc-number">2.2.2.</span> <span class="toc-text">let.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#let-for-js"><span class="toc-number">2.2.3.</span> <span class="toc-text">let_for.js</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jie-gou-fu-zhi"><span class="toc-number">2.3.</span> <span class="toc-text">解构赋值</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#destructuring-js"><span class="toc-number">2.3.1.</span> <span class="toc-text">destructuring.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#destructuring-object-js"><span class="toc-number">2.3.2.</span> <span class="toc-text">destructuring_object.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#destructuring-function-js"><span class="toc-number">2.3.3.</span> <span class="toc-text">destructuring_function.js</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#han-shu-de-kuo-zhan"><span class="toc-number">2.4.</span> <span class="toc-text">函数的扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dui-xiang-de-kuo-zhan"><span class="toc-number">2.5.</span> <span class="toc-text">对象的扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zi-fu-chuan-mo-ban"><span class="toc-number">2.6.</span> <span class="toc-text">字符串模板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mo-kuai-hua-yu-lei"><span class="toc-number">2.7.</span> <span class="toc-text">模块化与类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#lei-class"><span class="toc-number">2.7.1.</span> <span class="toc-text">类 Class</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mo-kuai-hua"><span class="toc-number">2.7.2.</span> <span class="toc-text">模块化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#can-kao-zi-liao"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">Babel 基础及代码转换简单探究</h1>
+          <time datetime="2017-02-06T03:52:03.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2017 年 02 月 06 日</span>
+            <span style="margin-left: 10px;">最近更新于：2017 年 02 月 06 日</span>
+            <span style="margin-left: 10px;">本文共 5,818 字，读完约 28 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <p>本文基于 <code>babel-preset-es2015 : 6.18.0</code> ，<code>babel-core : 6.21.0</code>版本进行。</p>
+<h2 id="ji-chu-zhi-shi">基础知识</h2>
+<p><a href="https://babeljs.io/" target="_blank" rel="external">Babel</a> 是 JavaScript 编译器，更确切地说是源码到源码的编译器，通常也叫做“转换编译器(transpiler)”，它的工作流可以用下面一张图来表示，代码首先经由 babylon 解析成抽象语法树（AST），后经一些遍历和分析转换（主要过程），最后根据转换后的 AST 生成新的常规代码。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://img.alicdn.com/tps/TB1nP2ONpXXXXb_XpXXXXXXXXXX-1958-812.png"></p>
+<h3 id="chou-xiang-yu-fa-shu-ast">抽象语法树(AST)</h3>
+<p>在这其中，理解 AST 十分重要，为了让计算机能够更好地理解，所以需要将代码转换为 AST 。我们可以来看看下面这段代码被解析成 AST 后对应的结构图：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+</pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">abs</span>(<span class="params">number</span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">if</span> (number &gt;= <span class="number">0</span>) &#123;  <span class="comment">// test</span></span>
+<span class="line">    <span class="keyword">return</span> number;  <span class="comment">// consequent</span></span>
+<span class="line">  &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">    <span class="keyword">return</span> -number; <span class="comment">// alternate</span></span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://img.alicdn.com/tps/TB1NnDQNpXXXXXmXFXXXXXXXXXX-1015-756.png"></p>
+<p>在 <a href="https://github.com/babel/babylon/blob/master/ast/spec.md" target="_blank" rel="external">Babylon 的 AST 规范文档中</a>对每个节点类型都做了详细的说明，你可以对照各个节点类型在这查找到所需要的信息。在这个例子中，我们主要关注函数声明里的内容， <code>IfStatement</code> 对应代码中的 <code>if...else</code> 区块的内容，我们先对条件（test）进行判断，这里是个简单的二元表达式，我们的分支也会从这个条件继续进行下去，consequent 代表条件值为 true 的分支，alternate 代表条件值为 false 的分支，最后两条分支各自在 ReturnStatement 节点进行返回。</p>
+<p>了解 AST 各个节点的类型是理解 Babel 、编写插件的关键，AST 通常情况下都是比较复杂的，上述一段简单的函数定义也生成了比较大的 AST，对于一些复杂的程序，我们可以借助 <a href="http://astexplorer.net/" target="_blank" rel="external">astexplorer</a> 来帮我们分析 AST 的结构。 <a href="http://astexplorer.net/#/Z1exs6BWMq/36" target="_blank" rel="external">这里</a>是上述代码的一个示例链接。</p>
+<h3 id="babel-de-chu-li-bu-zou">Babel 的处理步骤</h3>
+<p>Babel 的三个主要处理步骤分别是： <code>解析（parse）</code>，<code>转换（transform）</code>，<code>生成（generate）</code>。</p>
+<h4 id="jie-xi">解析</h4>
+<p>解析步骤接收代码并输出 AST。 这个步骤分为两个阶段：<a href="https://zh.wikipedia.org/wiki/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90" target="_blank" rel="external">词法分析（Lexical Analysis）</a>(把字符串形式的代码转换为 令牌（tokens） 流) 和 <a href="https://zh.wikipedia.org/wiki/%E8%AA%9E%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8" target="_blank" rel="external">语法分析（Syntactic Analysis）</a>(令牌流转换成 AST 的形式)。</p>
+<h4 id="zhuan-huan">转换</h4>
+<p><a href="https://en.wikipedia.org/wiki/Program_transformation" target="_blank" rel="external">程序转换(Program transformation)</a>步骤接收 AST 并对其进行遍历，在此过程中对节点进行添加、更新及移除等操作。 这是 Babel 或是其他编译器中最复杂的过程 同时也是插件将要介入工作的部分。</p>
+<h4 id="sheng-cheng">生成</h4>
+<p><a href="https://en.wikipedia.org/wiki/Code_generation_(compiler)" target="_blank" rel="external">代码生成(Code generation)</a>步骤把最终（经过一系列转换之后）的 AST 转换成字符串形式的代码，同时还会创建源码映射（source maps）。.</p>
+<p>代码生成其实很简单：深度优先遍历(DFS) 整个 AST，然后构建可以表示转换后代码的字符串。</p>
+<h3 id="bian-li">遍历</h3>
+<p>想要转换 AST 你需要进行递归的树形遍历。在进行节点遍历前还需要先了解 visitor 和 path 的概念，前者相当于从众多节点类型中选择开发者所需要的节点，后者相当于对节点之间的关系的访问。</p>
+<h4 id="visitor">visitor</h4>
+<p>Babel 使用 <code>babel-traverse</code> 进行树状的遍历，基本的树的遍历分为 DFS 和 BFS。AST 树的遍历使用 DFS，这里 Babel 提供了一个 visitor 对象来供我们获取 AST 里的具体节点，比如在我只想访问 if...else 生成的节点，我们可以在 visitor 里指定获取它所对应的节点：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> visitor = &#123;</span>
+<span class="line">  IfStatement() &#123;</span>
+<span class="line">    <span class="built_in">console</span>.log(<span class="string">'get if'</span>);</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>之所以使用这样的术语是因为有一个<a href="https://zh.wikipedia.org/wiki/%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F" target="_blank" rel="external">访问者模式（visitor）</a>的概念。对于每个结点，有向下遍历进入结点（enter)和向上退出结点(exit)两个时刻（对应递归调用的入栈、出栈），我们可以在此时来访问结点。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> visitor = &#123;</span>
+<span class="line">  <span class="attr">IfStatement</span>: &#123;</span>
+<span class="line">    enter() &#123;&#125;,</span>
+<span class="line">    exit() &#123;&#125;</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<h4 id="path">path</h4>
+<p>visitor 模式中我们对节点的访问实际上是对节点路径的访问，在这个模式中我们一般把path 当作参数传入节点选择器中。path 表示两个节点之间的连接，通过这个对象我们可以访问到节点、父节点以及进行一系列跟节点操作相关的方法（类似 DOM 的操作）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> babel = <span class="built_in">require</span>(<span class="string">'babel-core'</span>);</span>
+<span class="line"><span class="keyword">var</span> t = <span class="built_in">require</span>(<span class="string">'babel-types'</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">const</span> code = <span class="string">`d = a + b + c`</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">const</span> visitor = &#123;</span>
+<span class="line">  Identifier(path) &#123;</span>
+<span class="line">    <span class="built_in">console</span>.log(path.node.name); <span class="comment">// d a b c</span></span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">const</span> result = babel.transform(code, &#123;</span>
+<span class="line">  <span class="attr">plugins</span>: [&#123;</span>
+<span class="line">    <span class="attr">visitor</span>: visitor</span>
+<span class="line">  &#125;]</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p>以上面的例子，我们有一个 <code>FunctionDeclaration</code> 类型如下。它有几个属性：<code>id</code>，<code>params</code>，和 <code>body</code>，每一个都有一些内嵌节点。我们依次遍历每个节点即可。Babel 的转换步骤就是循环这样的遍历过程。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+<span class="line">44</span>
+<span class="line">45</span>
+<span class="line">46</span>
+<span class="line">47</span>
+<span class="line">48</span>
+<span class="line">49</span>
+<span class="line">50</span>
+<span class="line">51</span>
+<span class="line">52</span>
+<span class="line">53</span>
+<span class="line">54</span>
+</pre></td><td class="code"><pre><span class="line">&#123;</span>
+<span class="line">  <span class="attr">type</span>: <span class="string">"FunctionDeclaration"</span>,</span>
+<span class="line">  <span class="attr">id</span>: &#123;</span>
+<span class="line">    <span class="attr">type</span>: <span class="string">"Identifier"</span>,</span>
+<span class="line">    <span class="attr">name</span>: <span class="string">"abs"</span></span>
+<span class="line">  &#125;,</span>
+<span class="line">  <span class="attr">params</span>: [&#123;</span>
+<span class="line">    <span class="attr">type</span>: <span class="string">"Identifier"</span>,</span>
+<span class="line">    <span class="attr">name</span>: <span class="string">"number"</span></span>
+<span class="line">  &#125;],</span>
+<span class="line">  <span class="attr">body</span>: &#123;</span>
+<span class="line">    <span class="attr">type</span>: <span class="string">"BlockStatement"</span>,</span>
+<span class="line">    <span class="attr">body</span>: [&#123;</span>
+<span class="line">      <span class="attr">type</span>: <span class="string">"IfStatement"</span>,</span>
+<span class="line">      <span class="attr">test</span>: &#123;</span>
+<span class="line">        <span class="attr">type</span>: <span class="string">"BinaryExpression"</span>,</span>
+<span class="line">        <span class="attr">left</span>: &#123;</span>
+<span class="line">          <span class="attr">type</span>: <span class="string">"Identifier"</span>,</span>
+<span class="line">          <span class="attr">name</span>: <span class="string">"number"</span></span>
+<span class="line">        &#125;,</span>
+<span class="line">        <span class="attr">operator</span>: <span class="string">"&gt;="</span>,</span>
+<span class="line">        <span class="attr">right</span>: &#123;</span>
+<span class="line">          <span class="attr">type</span>: <span class="string">"Literal"</span>,</span>
+<span class="line">          <span class="attr">value</span>: <span class="string">"0"</span></span>
+<span class="line">        &#125;</span>
+<span class="line">      &#125;,</span>
+<span class="line">      <span class="attr">consequent</span>:&#123;</span>
+<span class="line">        <span class="attr">type</span>: <span class="string">"BlockStatement"</span>,</span>
+<span class="line">        <span class="attr">body</span>: [&#123;</span>
+<span class="line">          <span class="attr">type</span>: <span class="string">"ReturnStatement"</span>,</span>
+<span class="line">          <span class="attr">argument</span>: &#123;</span>
+<span class="line">            <span class="attr">type</span>: <span class="string">"Identifier"</span>,</span>
+<span class="line">            <span class="attr">name</span>: <span class="string">"number"</span></span>
+<span class="line">          &#125;</span>
+<span class="line">        &#125;]</span>
+<span class="line">      &#125;,</span>
+<span class="line">      <span class="attr">alternate</span>: &#123;</span>
+<span class="line">        <span class="attr">type</span>: <span class="string">"BlockStatement"</span>,</span>
+<span class="line">        <span class="attr">body</span>: [&#123;</span>
+<span class="line">          <span class="attr">type</span>: <span class="string">"ReturnStatement"</span>,</span>
+<span class="line">          <span class="attr">argument</span>: &#123;</span>
+<span class="line">            <span class="attr">type</span>: <span class="string">"UnaryExpression"</span>,</span>
+<span class="line">            <span class="attr">opertaor</span>: <span class="string">"-"</span>,</span>
+<span class="line">            <span class="attr">argument</span>: &#123;</span>
+<span class="line">              <span class="attr">type</span>: <span class="string">"Identifier"</span>,</span>
+<span class="line">              <span class="attr">name</span>: <span class="string">"number"</span></span>
+<span class="line">            &#125;,</span>
+<span class="line">            <span class="attr">name</span>: <span class="string">"number"</span></span>
+<span class="line">          &#125;</span>
+<span class="line">        &#125;]</span>
+<span class="line">      &#125;</span>
+<span class="line">    &#125;]</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<h3 id="dui-ying-dai-ma">对应代码</h3>
+<p>我们统称的 babel 源码实质上对应于 npm 上的多个包，具体可以参考对应的说明文件，
+主要包括 <a href="https://www.npmjs.com/package/babel-core" target="_blank" rel="external">核心代码(babel-core)</a>、工具包（<a href="https://www.npmjs.com/package/babel-cli" target="_blank" rel="external">babel-cli</a> 等）、Preset（<a href="https://www.npmjs.com/package/babel-preset-es2015" target="_blank" rel="external">babel-preset-es2015</a> 等），另外还有一系列 helper 包。</p>
+<h4 id="babel-core-he-xin-bao">babel-core 核心包</h4>
+<p>babel 中最核心的是 babel-core 这个包，它向外暴露出 <code>babel.transform</code> 接口，供类似 <code>babel.transform(code, options);</code> 的方式调用，而核心代码位于 <code>transformation/pipeline.js</code> 文件中，所有信息都会挂在到 <code>transformation/file</code> 所暴露出来的数据结构 <code>File</code> 上。</p>
+<p><code>File</code> 维护的是一个文件的所有信息，包括 babel 处理所用的插件等信息。babel 的繁荣与其强大的插件管理机制是密不可分的，而插件主要由 <code>pluginPasses</code> 和 <code>pluginVisitors</code> 来维护。</p>
+<p>为了保证在遍历路径的时候能够快速访问对应的插件处理方法，babel 对 <code>pluginVisitors</code> 做了一定的预处理，将所有同类型 Identifier 的处理流程合并到了一起。具体用代码的角度来看，可以简化成这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PluginA = &#123;</span>
+<span class="line">  Identifier() &#123;&#125;,</span>
+<span class="line">  FunctionDeclaration() &#123;&#125;</span>
+<span class="line">&#125;</span>
+<span class="line"><span class="keyword">const</span> PluginB = &#123;</span>
+<span class="line">  BinaryExpression() &#123;&#125;,</span>
+<span class="line">  FunctionDeclaration() &#123;&#125;</span>
+<span class="line">&#125;</span>
+<span class="line"><span class="comment">// 进行处理后得到(源码可见 babel-traverse/lib/visitors.js 中的 function merge())</span></span>
+<span class="line"><span class="keyword">let</span> rootVisitor = &#123;</span>
+<span class="line">  <span class="attr">Identifier</span>: [PluginA.Identifier],</span>
+<span class="line">  <span class="attr">BinaryExpression</span>: [PluginB.Identifier],</span>
+<span class="line">  <span class="attr">FunctionDeclaration</span>: [PluginA.FunctionDeclaration, PluginB.FunctionDeclaration]</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>再看一下后续的内部转码流程，其最外层 pipeline 中的代码很简短：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line">file.wrap(code, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line">  file.addCode(code);</span>
+<span class="line">  file.parseCode(code); <span class="comment">// 去除顶部的 #!/usr/bin/env node 信息，之后使用 babylon 解析出 ast，使用 babel-traverse 进行遍历</span></span>
+<span class="line">  <span class="keyword">return</span> file.transform();</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p>其过程分解用语言描述的话，对应上文步骤如下：</p>
+<ol>
+<li>使用 babylon 解析器对输入的源代码字符串进行解析并生成初始 AST（<code>File.prototype.parse</code>）</li>
+<li><code>set AST</code> 过程：利用 <code>babel-traverse</code> 对 AST 进行遍历，并解析出整个树的 path，通过挂载的 <code>metadataVisitor</code> 读取对应的元信息。</li>
+<li><code>transform</code> 过程：遍历 AST 树并应用各 transformers(plugin) 生成转换后的 AST 树</li>
+<li>利用 babel-generator 将 AST 树生成为转码后的代码字符串。</li>
+</ol>
+<blockquote>
+<p>注：以上面的代码片断为例，为了详细了解到整个编译过程，可以使用 <code>DEBUG=babel node main.js</code> 运行代码，这样就可以看到整个过程中的输出日志了。</p>
+</blockquote>
+<h2 id="zhuan-huan-jie-guo">转换结果</h2>
+<p>由于 Babel 默认只转换新的 JavaScript 语法，而不转换新的 API，比如 Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise 等全局对象，以及一些定义在全局对象上的方法（比如 <code>Object.assign</code>）都不会转码。
+Babel 默认不转码的 API 非常多，具体可以查看<a href="https://github.com/babel/babel/blob/master/packages/babel-plugin-transform-runtime/src/definitions.js" target="_blank" rel="external">详细清单</a></p>
+<p>这里参考 进行补充</p>
+<h3 id="babel-preset-2015">babel-preset-2015</h3>
+<p>目前版本下插件列表如下：</p>
+<ul>
+<li><code>babel-plugin-check-es2015-constants</code> =&gt; 验证 es2015 常量</li>
+<li><code>babel-plugin-transform-es2015-arrow-functions</code> =&gt; 箭头函数</li>
+<li><code>babel-plugin-transform-es2015-block-scoped-functions</code> =&gt; 函数块级作用域</li>
+<li><code>babel-plugin-transform-es2015-block-scoping</code> =&gt; let 和 const 块级作用域</li>
+<li><code>babel-plugin-transform-es2015-classes</code> =&gt; class类</li>
+<li><code>babel-plugin-transform-es2015-computed-properties</code> =&gt; 动态计算属性，如 <code>var x = 1;var obj = {[x]: 3};</code></li>
+<li><code>babel-plugin-transform-es2015-destructuring</code> =&gt; 解构赋值</li>
+<li><code>babel-plugin-transform-es2015-duplicate-keys</code> =&gt; 对象中重复的 key 转换成计算属性</li>
+<li><code>babel-plugin-transform-es2015-for-of</code> =&gt; 对象 <code>for ... of</code> 遍历</li>
+<li><code>babel-plugin-transform-es2015-function-name</code> =&gt; 函数 name 属性</li>
+<li><code>babel-plugin-transform-es2015-literals</code> =&gt; unicode 字符串和数字字面值</li>
+<li><code>babel-plugin-transform-es2015-modules-amd</code> =&gt; amd 模块转换</li>
+<li><code>babel-plugin-transform-es2015-modules-commonjs</code> =&gt; commonjs 模块转换</li>
+<li><code>babel-plugin-transform-es2015-modules-systemjs</code> =&gt; systemjs 模块转换</li>
+<li><code>babel-plugin-transform-es2015-modules-umd</code> =&gt; umd 模块转换</li>
+<li><code>babel-plugin-transform-es2015-object-super</code> =&gt; super 方法调用 prototype</li>
+<li><code>babel-plugin-transform-es2015-parameters</code> =&gt; 函数参数默认值及扩展运算符</li>
+<li><code>babel-plugin-transform-es2015-shorthand-properties</code> =&gt; 对象属性的快捷定义，如obj = { x, y }</li>
+<li><code>babel-plugin-transform-es2015-spread</code> =&gt; 对象扩展运算符属性，如 <code>...foobar</code></li>
+<li><code>babel-plugin-transform-es2015-sticky-regex</code> =&gt; 粘连修饰符 y.</li>
+<li><code>babel-plugin-transform-es2015-template-literals</code> =&gt; es2015 模板</li>
+<li><code>babel-plugin-transform-es2015-typeof-symbol</code> =&gt; symbol 特性</li>
+<li><code>babel-plugin-transform-es2015-unicode-regex</code> =&gt; unicode 正则</li>
+<li><code>babel-plugin-transform-regenerator</code> =&gt; generator特性</li>
+</ul>
+<h3 id="var-const-and-let">var, const and let</h3>
+<h4 id="var-const-let-js">var_const_let.js</h4>
+<p>首先基础的，转换前：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span>
+<span class="line"><span class="keyword">let</span> b = <span class="number">2</span>;</span>
+<span class="line"><span class="keyword">const</span> c = <span class="number">3</span>;</span>
+</pre></td></tr></table></figure>
+<p>转换后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span>
+<span class="line"><span class="keyword">var</span> b = <span class="number">2</span>;</span>
+<span class="line"><span class="keyword">var</span> c = <span class="number">3</span>;</span>
+</pre></td></tr></table></figure>
+<h4 id="let-js">let.js</h4>
+<p>let的块级作用域怎么体现呢？转换前：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a1 = <span class="number">1</span>;</span>
+<span class="line"><span class="keyword">let</span> a2 = <span class="number">6</span>;</span>
+<span class="line">&#123;</span>
+<span class="line">    <span class="keyword">let</span> a1 = <span class="number">2</span>;</span>
+<span class="line">    <span class="keyword">let</span> a2 = <span class="number">5</span>;</span>
+<span class="line">    &#123;</span>
+<span class="line">        <span class="keyword">let</span> a1 = <span class="number">4</span>;</span>
+<span class="line">        <span class="keyword">let</span> a2 = <span class="number">5</span>;</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;</span>
+<span class="line">a1 = <span class="number">3</span>;</span>
+</pre></td></tr></table></figure>
+<p>转换后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a1 = <span class="number">1</span>;</span>
+<span class="line"><span class="keyword">var</span> a2 = <span class="number">6</span>;</span>
+<span class="line">&#123;</span>
+<span class="line">    <span class="keyword">var</span> _a = <span class="number">2</span>;</span>
+<span class="line">    <span class="keyword">var</span> _a2 = <span class="number">5</span>;</span>
+<span class="line">    &#123;</span>
+<span class="line">        <span class="keyword">var</span> _a3 = <span class="number">4</span>;</span>
+<span class="line">        <span class="keyword">var</span> _a4 = <span class="number">5</span>;</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;</span>
+<span class="line">a1 = <span class="number">3</span>;</span>
+</pre></td></tr></table></figure>
+<p>可见这样的例子实质就是改变一下变量名，使之与外层不同。</p>
+<h4 id="let-for-js">let_for.js</h4>
+<p>那么看一下经典的 let for 场景，这里大家都知道如果 let 换成 var ，那么输出将会是 10，那么这样 babel 怎么处理呢？转换前：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [];</span>
+<span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span>
+<span class="line">  a[i] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line">    <span class="built_in">console</span>.log(i);</span>
+<span class="line">  &#125;;</span>
+<span class="line">&#125;</span>
+<span class="line">a[<span class="number">6</span>](); <span class="comment">// 6</span></span>
+</pre></td></tr></table></figure>
+<p>转换后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [];</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> _loop = <span class="function"><span class="keyword">function</span> <span class="title">_loop</span>(<span class="params">i</span>) </span>&#123;</span>
+<span class="line">  a[i] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line">    <span class="built_in">console</span>.log(i);</span>
+<span class="line">  &#125;;</span>
+<span class="line">&#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span>
+<span class="line">  _loop(i);</span>
+<span class="line">&#125;</span>
+<span class="line">a[<span class="number">6</span>](); <span class="comment">// 6</span></span>
+</pre></td></tr></table></figure>
+<p>可见这里用了闭包做了处理。经典的 for 循环闭包处理方式。</p>
+<h3 id="jie-gou-fu-zhi">解构赋值</h3>
+<h4 id="destructuring-js">destructuring.js</h4>
+<p>对于普通的解构赋值，转换前：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [foo, [[bar], baz]] = [<span class="number">1</span>, [[<span class="number">2</span>], <span class="number">3</span>]];</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">let</span> [ , , third] = [<span class="string">"foo"</span>, <span class="string">"bar"</span>, <span class="string">"baz"</span>];</span>
+<span class="line"><span class="comment">// third = "baz"</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">let</span> [x, , y] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span>
+<span class="line"><span class="comment">// x = 1 y = 3</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">let</span> [head, ...tail] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span>
+<span class="line"><span class="comment">// head = 1 tail = [2, 3, 4]</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">let</span> [i, j, ...k] = [<span class="string">'a'</span>];</span>
+<span class="line"><span class="comment">// i = "a" j = undefined k = []</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">let</span> [m, n] = [<span class="number">1</span>];</span>
+<span class="line"><span class="comment">// n = undefined</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">let</span> [a, [b], d] = [<span class="number">1</span>, [<span class="number">2</span>, <span class="number">3</span>], <span class="number">4</span>];</span>
+<span class="line"><span class="comment">// a = 1 b = 2 d = 4</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">const</span> [a, b, c, d, e] = <span class="string">'hello'</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">let</span> &#123;<span class="attr">length</span> : len&#125; = <span class="string">'hello'</span>;</span>
+</pre></td></tr></table></figure>
+<p>转换后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _slicedToArray = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="function"><span class="keyword">function</span> <span class="title">sliceIterator</span>(<span class="params">arr, i</span>) </span>&#123; <span class="keyword">var</span> _arr = []; <span class="keyword">var</span> _n = <span class="literal">true</span>; <span class="keyword">var</span> _d = <span class="literal">false</span>; <span class="keyword">var</span> _e = <span class="literal">undefined</span>; <span class="keyword">try</span> &#123; <span class="keyword">for</span> (<span class="keyword">var</span> _i = arr[<span class="built_in">Symbol</span>.iterator](), _s; !(_n = (_s = _i.next()).done); _n = <span class="literal">true</span>) &#123; _arr.push(_s.value); <span class="keyword">if</span> (i &amp;&amp; _arr.length === i) <span class="keyword">break</span>; &#125; &#125; <span class="keyword">catch</span> (err) &#123; _d = <span class="literal">true</span>; _e = err; &#125; <span class="keyword">finally</span> &#123; <span class="keyword">try</span> &#123; <span class="keyword">if</span> (!_n &amp;&amp; _i[<span class="string">"return"</span>]) _i[<span class="string">"return"</span>](); &#125; <span class="keyword">finally</span> &#123; <span class="keyword">if</span> (_d) <span class="keyword">throw</span> _e; &#125; &#125; <span class="keyword">return</span> _arr; &#125; <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">arr, i</span>) </span>&#123; <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(arr)) &#123; <span class="keyword">return</span> arr; &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">Symbol</span>.iterator <span class="keyword">in</span> <span class="built_in">Object</span>(arr)) &#123; <span class="keyword">return</span> sliceIterator(arr, i); &#125; <span class="keyword">else</span> &#123; <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">"Invalid attempt to destructure non-iterable instance"</span>); &#125; &#125;; &#125;();</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> foo = <span class="number">1</span>,</span>
+<span class="line">    bar = <span class="number">2</span>,</span>
+<span class="line">    baz = <span class="number">3</span>;</span>
+<span class="line">    </span>
+<span class="line"><span class="keyword">var</span> _ref = [<span class="string">"foo"</span>, <span class="string">"bar"</span>, <span class="string">"baz"</span>],</span>
+<span class="line">    third = _ref[<span class="number">2</span>];</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> _ref2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span>
+<span class="line">    x = _ref2[<span class="number">0</span>],</span>
+<span class="line">    y = _ref2[<span class="number">2</span>];</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> head = <span class="number">1</span>,</span>
+<span class="line">    tail = [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> _ref3 = [<span class="string">'a'</span>],</span>
+<span class="line">    i = _ref3[<span class="number">0</span>],</span>
+<span class="line">    j = _ref3[<span class="number">1</span>],</span>
+<span class="line">    k = _ref3.slice(<span class="number">2</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> _ref4 = [<span class="number">1</span>],</span>
+<span class="line">    m = _ref4[<span class="number">0</span>],</span>
+<span class="line">    n = _ref4[<span class="number">1</span>];</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a = <span class="number">1</span>,</span>
+<span class="line">    _ref5 = [<span class="number">2</span>, <span class="number">3</span>],</span>
+<span class="line">    b = _ref5[<span class="number">0</span>],</span>
+<span class="line">    d = <span class="number">4</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> _hello = <span class="string">'hello'</span>,</span>
+<span class="line">    _hello2 = _slicedToArray(_hello, <span class="number">5</span>),</span>
+<span class="line">    x1 = _hello2[<span class="number">0</span>],</span>
+<span class="line">    x2 = _hello2[<span class="number">1</span>],</span>
+<span class="line">    x3 = _hello2[<span class="number">2</span>],</span>
+<span class="line">    x4 = _hello2[<span class="number">3</span>],</span>
+<span class="line">    x5 = _hello2[<span class="number">4</span>];</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> _hello3 = <span class="string">'hello'</span>,</span>
+<span class="line">    len = _hello3.length;</span>
+</pre></td></tr></table></figure>
+<p>可以看到，这里 babel 就是很正常的采用一一赋值的方式进行的，对于匿名数组等情况，babel 会帮你先定义一个变量存放这个数组，然后再对需要赋值的变量进行赋值。</p>
+<h4 id="destructuring-object-js">destructuring_object.js</h4>
+<p>还有一种对象深层次的解构赋值，转换前：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span>
+<span class="line">  <span class="attr">p</span>: [</span>
+<span class="line">    <span class="string">'Hello'</span>,</span>
+<span class="line">    &#123; <span class="attr">y</span>: <span class="string">'World'</span> &#125;</span>
+<span class="line">  ]</span>
+<span class="line">&#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> &#123; <span class="attr">p</span>: [x, &#123; y &#125;] &#125; = obj;</span>
+<span class="line"><span class="comment">// x = "Hello" y = "World"</span></span>
+</pre></td></tr></table></figure>
+<p>转换后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _slicedToArray = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">sliceIterator</span>(<span class="params">arr, i</span>) </span>&#123;</span>
+<span class="line">        <span class="keyword">var</span> _arr = [];</span>
+<span class="line">        <span class="keyword">var</span> _n = <span class="literal">true</span>;</span>
+<span class="line">        <span class="keyword">var</span> _d = <span class="literal">false</span>;</span>
+<span class="line">        <span class="keyword">var</span> _e = <span class="literal">undefined</span>;</span>
+<span class="line">        <span class="keyword">try</span> &#123;</span>
+<span class="line">           <span class="comment">// 用 Symbol.iterator 造了一个可遍历对象，然后进去遍历。</span></span>
+<span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> _i = arr[<span class="built_in">Symbol</span>.iterator](), _s; !(_n = (_s = _i.next()).done); _n = <span class="literal">true</span>) &#123;</span>
+<span class="line">                _arr.push(_s.value);</span>
+<span class="line">                <span class="keyword">if</span> (i &amp;&amp; _arr.length === i) <span class="keyword">break</span>;</span>
+<span class="line">            &#125;</span>
+<span class="line">        &#125; <span class="keyword">catch</span> (err) &#123;</span>
+<span class="line">            _d = <span class="literal">true</span>;</span>
+<span class="line">            _e = err;</span>
+<span class="line">        &#125; <span class="keyword">finally</span> &#123;</span>
+<span class="line">            <span class="keyword">try</span> &#123;</span>
+<span class="line">                <span class="keyword">if</span> (!_n &amp;&amp; _i[<span class="string">"return"</span>]) _i[<span class="string">"return"</span>]();</span>
+<span class="line">            &#125; <span class="keyword">finally</span> &#123;</span>
+<span class="line">                <span class="keyword">if</span> (_d) <span class="keyword">throw</span> _e;</span>
+<span class="line">            &#125;</span>
+<span class="line">        &#125;</span>
+<span class="line">        <span class="keyword">return</span> _arr;</span>
+<span class="line">    &#125;</span>
+<span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">arr, i</span>) </span>&#123;</span>
+<span class="line">        <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(arr)) &#123;</span>
+<span class="line">            <span class="keyword">return</span> arr;</span>
+<span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">Symbol</span>.iterator <span class="keyword">in</span> <span class="built_in">Object</span>(arr)) &#123;</span>
+<span class="line">            <span class="keyword">return</span> sliceIterator(arr, i);</span>
+<span class="line">        &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">"Invalid attempt to destructure non-iterable instance"</span>);</span>
+<span class="line">        &#125;</span>
+<span class="line">    &#125;;</span>
+<span class="line">&#125;)();</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> obj = &#123;</span>
+<span class="line">  <span class="attr">p</span>: [<span class="string">'Hello'</span>, &#123; <span class="attr">y</span>: <span class="string">'World'</span> &#125;]</span>
+<span class="line">&#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> _obj$p = _slicedToArray(obj.p, <span class="number">2</span>),</span>
+<span class="line">    x = _obj$p[<span class="number">0</span>],</span>
+<span class="line">    y = _obj$p[<span class="number">1</span>].y;</span>
+<span class="line"><span class="comment">// x = "Hello" y = "World"</span></span>
+</pre></td></tr></table></figure>
+<p>这里和上一个示例中对字符串进行赋值解构时 babel 都在代码顶部生产了一个公共的代码 <code>_slicedToArray</code>。它的作用主要是对对象里的属性转换成数组形式，并依靠 i 变量来取出我们真正需要的值，方便解构赋值的进行。</p>
+<h4 id="destructuring-function-js">destructuring_function.js</h4>
+<p>转换前：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+</pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">move</span>(<span class="params">&#123;x, y&#125; = &#123; x: <span class="number">0</span>, y: <span class="number">0</span> &#125;</span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">return</span> [x, y];</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line">move(&#123;<span class="attr">x</span>: <span class="number">3</span>, <span class="attr">y</span>: <span class="number">8</span>&#125;); <span class="comment">// [3, 8]</span></span>
+<span class="line">move(&#123;<span class="attr">x</span>: <span class="number">3</span>&#125;); <span class="comment">// [3, undefined]</span></span>
+<span class="line">move(&#123;&#125;); <span class="comment">// [undefined, undefined]</span></span>
+<span class="line">move(); <span class="comment">// [0, 0]</span></span>
+</pre></td></tr></table></figure>
+<p>转换后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+</pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">move</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> _ref = <span class="built_in">arguments</span>.length &gt; <span class="number">0</span> &amp;&amp; <span class="built_in">arguments</span>[<span class="number">0</span>] !== <span class="literal">undefined</span> ? <span class="built_in">arguments</span>[<span class="number">0</span>] : &#123; <span class="attr">x</span>: <span class="number">0</span>, <span class="attr">y</span>: <span class="number">0</span> &#125;,</span>
+<span class="line">      x = _ref.x,</span>
+<span class="line">      y = _ref.y;</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">return</span> [x, y];</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line">move(&#123; <span class="attr">x</span>: <span class="number">3</span>, <span class="attr">y</span>: <span class="number">8</span> &#125;); <span class="comment">// [3, 8]</span></span>
+<span class="line">move(&#123; <span class="attr">x</span>: <span class="number">3</span> &#125;); <span class="comment">// [3, undefined]</span></span>
+<span class="line">move(&#123;&#125;); <span class="comment">// [undefined, undefined]</span></span>
+<span class="line">move(); <span class="comment">// [0, 0]</span></span>
+</pre></td></tr></table></figure>
+<h3 id="han-shu-de-kuo-zhan">函数的扩展</h3>
+<p>转换前：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// default parameter values</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">x, y = <span class="string">'World'</span></span>) </span>&#123;</span>
+<span class="line">  <span class="built_in">console</span>.log(x, y);</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line">log(<span class="string">'Hello'</span>) <span class="comment">// Hello World</span></span>
+<span class="line">log(<span class="string">'Hello'</span>, <span class="string">'China'</span>) <span class="comment">// Hello China</span></span>
+<span class="line">log(<span class="string">'Hello'</span>, <span class="string">''</span>) <span class="comment">// Hello</span></span>
+<span class="line"></span>
+<span class="line"><span class="comment">// rest parameter</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">push</span>(<span class="params">array, ...items</span>) </span>&#123;</span>
+<span class="line">  items.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item</span>) </span>&#123;</span>
+<span class="line">    array.push(item);</span>
+<span class="line">    <span class="built_in">console</span>.log(item);</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a = [];</span>
+<span class="line">push(a, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// arrow function</span></span>
+<span class="line"><span class="keyword">var</span> obj = &#123;</span>
+<span class="line">    <span class="attr">prop</span>: <span class="number">1</span>,</span>
+<span class="line">    <span class="attr">func</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">        <span class="keyword">var</span> _this = <span class="keyword">this</span>;</span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">var</span> innerFunc = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span>
+<span class="line">            <span class="keyword">this</span>.prop = <span class="number">1</span>;</span>
+<span class="line">        &#125;;</span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">var</span> innerFunc1 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">            <span class="keyword">this</span>.prop = <span class="number">1</span>;</span>
+<span class="line">        &#125;;</span>
+<span class="line">    &#125;,</span>
+<span class="line"> </span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>转换后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+<span class="line">44</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// default parameter values</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">x</span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> y = <span class="built_in">arguments</span>.length &gt; <span class="number">1</span> &amp;&amp; <span class="built_in">arguments</span>[<span class="number">1</span>] !== <span class="literal">undefined</span> ? <span class="built_in">arguments</span>[<span class="number">1</span>] : <span class="string">'World'</span>;</span>
+<span class="line"></span>
+<span class="line">    <span class="built_in">console</span>.log(x, y);</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line">log(<span class="string">'Hello'</span>); <span class="comment">// Hello World</span></span>
+<span class="line">log(<span class="string">'Hello'</span>, <span class="string">'China'</span>); <span class="comment">// Hello China</span></span>
+<span class="line">log(<span class="string">'Hello'</span>, <span class="string">''</span>); <span class="comment">// Hello</span></span>
+<span class="line"></span>
+<span class="line"><span class="comment">// rest parameter</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">push</span>(<span class="params">array</span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> _len = <span class="built_in">arguments</span>.length, items = <span class="built_in">Array</span>(_len &gt; <span class="number">1</span> ? _len - <span class="number">1</span> : <span class="number">0</span>), _key = <span class="number">1</span>; _key &lt; _len; _key++) &#123;</span>
+<span class="line">        items[_key - <span class="number">1</span>] = <span class="built_in">arguments</span>[_key];</span>
+<span class="line">    &#125;</span>
+<span class="line"></span>
+<span class="line">    items.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span>
+<span class="line">        array.push(item);</span>
+<span class="line">        <span class="built_in">console</span>.log(item);</span>
+<span class="line">    &#125;);</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a = [];</span>
+<span class="line">push(a, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// arrow function</span></span>
+<span class="line"><span class="keyword">var</span> obj = &#123;</span>
+<span class="line">    <span class="attr">prop</span>: <span class="number">1</span>,</span>
+<span class="line">    <span class="attr">func</span>: <span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">        <span class="keyword">var</span> _this2 = <span class="keyword">this</span>;</span>
+<span class="line"></span>
+<span class="line">        <span class="keyword">var</span> _this = <span class="keyword">this</span>;</span>
+<span class="line"></span>
+<span class="line">        <span class="keyword">var</span> innerFunc = <span class="function"><span class="keyword">function</span> <span class="title">innerFunc</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">            _this2.prop = <span class="number">1</span>;</span>
+<span class="line">        &#125;;</span>
+<span class="line"></span>
+<span class="line">        <span class="keyword">var</span> innerFunc1 = <span class="function"><span class="keyword">function</span> <span class="title">innerFunc1</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">            <span class="keyword">this</span>.prop = <span class="number">1</span>;</span>
+<span class="line">        &#125;;</span>
+<span class="line">    &#125;</span>
+<span class="line"></span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>这里通过默认参数的转换方式并结合上例中解构赋值函数的例子就看的很明白了，主要使用 arguments 来做处理。</p>
+<p>而 rest 参数则同样依靠 arguments 来遍历处理既定参数之后的所有参数。</p>
+<p>而箭头函数主要是省了写 function 的代码，同时能够直接用使外层的 this 而不用担心 context 切换的问题。以前我们一般都要在外层多写一个 _this/self 直向 this。babel 的转换方法跟大家平时所了解的基本一致。</p>
+<h3 id="dui-xiang-de-kuo-zhan">对象的扩展</h3>
+<p>转换前：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> prop2 = <span class="string">"PROP2"</span>;</span>
+<span class="line"><span class="keyword">var</span> obj = &#123;</span>
+<span class="line">    [<span class="string">'prop'</span>]: <span class="number">1</span>,</span>
+<span class="line">    [<span class="string">'func'</span>]: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">        <span class="built_in">console</span>.log(<span class="string">'func'</span>);</span>
+<span class="line">    &#125;,</span>
+<span class="line">        [prop2]: <span class="number">3</span></span>
+<span class="line">&#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> obj = &#123;</span>
+<span class="line">    toString() &#123;</span>
+<span class="line">     <span class="comment">// Super calls</span></span>
+<span class="line">     <span class="keyword">return</span> <span class="string">"d "</span> + <span class="keyword">super</span>.toString();</span>
+<span class="line">    &#125;,</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>转换后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+<span class="line">44</span>
+<span class="line">45</span>
+<span class="line">46</span>
+<span class="line">47</span>
+<span class="line">48</span>
+<span class="line">49</span>
+<span class="line">50</span>
+<span class="line">51</span>
+<span class="line">52</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _get = <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params">object, property, receiver</span>) </span>&#123;</span>
+<span class="line">    <span class="comment">// 如果 prototype 为空，则往 Function 的 prototype 上寻找</span></span>
+<span class="line">    <span class="keyword">if</span> (object === <span class="literal">null</span>) object = <span class="built_in">Function</span>.prototype;</span>
+<span class="line">    <span class="keyword">var</span> desc = <span class="built_in">Object</span>.getOwnPropertyDescriptor(object, property);</span>
+<span class="line">    <span class="keyword">if</span> (desc === <span class="literal">undefined</span>) &#123;</span>
+<span class="line">        <span class="keyword">var</span> parent = <span class="built_in">Object</span>.getPrototypeOf(object);</span>
+<span class="line">        <span class="comment">// 如果在本层 prototype 找不到，再往更深层的 prototype 上找</span></span>
+<span class="line">        <span class="keyword">if</span> (parent === <span class="literal">null</span>) &#123;</span>
+<span class="line">            <span class="keyword">return</span> <span class="literal">undefined</span>;</span>
+<span class="line">        &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">            <span class="keyword">return</span> get(parent, property, receiver);</span>
+<span class="line">        &#125;</span>
+<span class="line">    <span class="comment">// 如果是属性，则直接返回</span></span>
+<span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"value"</span> <span class="keyword">in</span> desc) &#123;</span>
+<span class="line">        <span class="keyword">return</span> desc.value;</span>
+<span class="line">    <span class="comment">// 如果是方法，则用 call 来调用，receiver 是调用的对象 </span></span>
+<span class="line">    &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">        <span class="keyword">var</span> getter = desc.get;<span class="comment">// getOwnPropertyDescriptor 返回的 getter 方法</span></span>
+<span class="line">        <span class="keyword">if</span> (getter === <span class="literal">undefined</span>) &#123;</span>
+<span class="line">            <span class="keyword">return</span> <span class="literal">undefined</span>;</span>
+<span class="line">        &#125;</span>
+<span class="line">        <span class="keyword">return</span> getter.call(receiver);</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> _obj, _obj2;</span>
+<span class="line"></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_defineProperty</span>(<span class="params">obj, key, value</span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">if</span> (key <span class="keyword">in</span> obj) &#123;</span>
+<span class="line">        <span class="built_in">Object</span>.defineProperty(obj, key, &#123;</span>
+<span class="line">            <span class="attr">value</span>: value,</span>
+<span class="line">            <span class="attr">enumerable</span>: <span class="literal">true</span>,</span>
+<span class="line">            <span class="attr">configurable</span>: <span class="literal">true</span>,</span>
+<span class="line">            <span class="attr">writable</span>: <span class="literal">true</span></span>
+<span class="line">        &#125;);</span>
+<span class="line">    &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">        obj[key] = value;</span>
+<span class="line">    &#125;</span>
+<span class="line">    <span class="keyword">return</span> obj;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> prop2 = <span class="string">"PROP2"</span>;</span>
+<span class="line"><span class="keyword">var</span> obj = (_obj = &#123;&#125;, _defineProperty(_obj, <span class="string">'prop'</span>, <span class="number">1</span>), _defineProperty(_obj, <span class="string">'func'</span>, <span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">    <span class="built_in">console</span>.log(<span class="string">'func'</span>);</span>
+<span class="line">&#125;), _defineProperty(_obj, prop2, <span class="number">3</span>), _obj);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> obj = _obj2 = &#123;</span>
+<span class="line">    <span class="attr">toString</span>: <span class="function"><span class="keyword">function</span> <span class="title">toString</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">        <span class="comment">// Super calls</span></span>
+<span class="line">        <span class="keyword">return</span> <span class="string">"d "</span> + _get(_obj2.__proto__ || <span class="built_in">Object</span>.getPrototypeOf(_obj2), <span class="string">'toString'</span>, <span class="keyword">this</span>).call(<span class="keyword">this</span>);</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>对于对象中用中括号解释属性的功能，babel 新增了一个 <code>_defineProperty</code> 函数，给新建的 <code>_obj = {}</code>进行属性定义。除此之外使用小括号包住一系列从左到右的运算使整个定义更简洁。</p>
+<p>对于对象字面量中使用 <code>super</code> 去调用 prototype，babel 通过 <code>_get</code> 方法来在 prototype 链上寻找方法/属性。</p>
+<h3 id="zi-fu-chuan-mo-ban">字符串模板</h3>
+<p>转换前：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">5</span>;</span>
+<span class="line"><span class="keyword">var</span> b = <span class="number">10</span>;</span>
+<span class="line"> </span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tag</span>(<span class="params">strings, ...values</span>) </span>&#123;</span>
+<span class="line">  <span class="built_in">console</span>.log(strings[<span class="number">0</span>]); <span class="comment">// "Hello "</span></span>
+<span class="line">  <span class="built_in">console</span>.log(strings[<span class="number">1</span>]); <span class="comment">// " world "</span></span>
+<span class="line">  <span class="built_in">console</span>.log(values[<span class="number">0</span>]);  <span class="comment">// 15</span></span>
+<span class="line">  <span class="built_in">console</span>.log(values[<span class="number">1</span>]);  <span class="comment">// 50</span></span>
+<span class="line">&#125;</span>
+<span class="line"> </span>
+<span class="line">tag<span class="string">`Hello <span class="subst">$&#123; a + b &#125;</span> world <span class="subst">$&#123; a * b &#125;</span>`</span>;</span>
+</pre></td></tr></table></figure>
+<p>转换后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _templateObject = _taggedTemplateLiteral([<span class="string">"Hello "</span>, <span class="string">" world "</span>, <span class="string">""</span>], [<span class="string">"Hello "</span>, <span class="string">" world "</span>, <span class="string">""</span>]);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// _templateObject = ["Hello ", " world ", "" , raw: Array[3]]</span></span>
+<span class="line"></span>
+<span class="line"><span class="comment">// 给传入的 object 定义了 strings 和 raw 两个不可变的属性。</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_taggedTemplateLiteral</span>(<span class="params">strings, raw</span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">return</span> <span class="built_in">Object</span>.freeze(<span class="built_in">Object</span>.defineProperties(strings, &#123;</span>
+<span class="line">    <span class="attr">raw</span>: &#123;</span>
+<span class="line">      <span class="attr">value</span>: <span class="built_in">Object</span>.freeze(raw)</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;));</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a = <span class="number">5</span>;</span>
+<span class="line"><span class="keyword">var</span> b = <span class="number">10</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tag</span>(<span class="params">strings</span>) </span>&#123;</span>
+<span class="line">  <span class="comment">// strings = ["Hello ", " world ", "", raw: Array[3]]    arguments = [Array[3], 15, 50]</span></span>
+<span class="line">  <span class="built_in">console</span>.log(strings[<span class="number">0</span>]); <span class="comment">// "Hello "</span></span>
+<span class="line">  <span class="built_in">console</span>.log(strings[<span class="number">1</span>]); <span class="comment">// " world "</span></span>
+<span class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>.length &lt;= <span class="number">1</span> ? <span class="literal">undefined</span> : <span class="built_in">arguments</span>[<span class="number">1</span>]); <span class="comment">// 15</span></span>
+<span class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>.length &lt;= <span class="number">2</span> ? <span class="literal">undefined</span> : <span class="built_in">arguments</span>[<span class="number">2</span>]); <span class="comment">// 50</span></span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line">tag(_templateObject, a + b, a * b);</span>
+<span class="line"></span>
+<span class="line">es6 的这种新特性给模板处理赋予更强大的功能，一改以往对模板进行各种 replace 的处理办法，用一个统一的 handler 去处理。babel 的转换主要是添加了 <span class="number">2</span> 个属性，通过捕获传参和 <span class="built_in">arguments</span> 变量来获取具体的值。</span>
+</pre></td></tr></table></figure>
+<h3 id="mo-kuai-hua-yu-lei">模块化与类</h3>
+<h4 id="lei-class">类 Class</h4>
+<p>js 实现 oo 一直是非常热门的话题。从最原始时代的手动维护构造函数来调用父类构造函数,到后来封装好函数进行 extend 继承，再到 babel 出现之后可以像其它面向对象的语言一样直接写 class。es2015 的类方案仍然算是过渡方案，它所支持的特性仍然没有涵盖类的所有特性。目前主要支持的有：</p>
+<ul>
+<li>constructor</li>
+<li>static 方法</li>
+<li>get 方法</li>
+<li>set 方法</li>
+<li>类继承</li>
+<li>super 调用父类方法。</li>
+</ul>
+<p>转换前：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+</pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span>
+<span class="line">  <span class="keyword">constructor</span>(name, type) &#123;</span>
+<span class="line">    <span class="keyword">this</span>.name = name;</span>
+<span class="line">    <span class="keyword">this</span>.type = type;</span>
+<span class="line">  &#125;</span>
+<span class="line">  walk() &#123;</span>
+<span class="line">    <span class="built_in">console</span>.log(<span class="string">'walk'</span>);</span>
+<span class="line">  &#125;</span>
+<span class="line">  run() &#123;</span>
+<span class="line">    <span class="built_in">console</span>.log(<span class="string">'run'</span>)</span>
+<span class="line">  &#125;</span>
+<span class="line">  <span class="keyword">static</span> getType() &#123;</span>
+<span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.type;</span>
+<span class="line">  &#125;</span>
+<span class="line">  get getName() &#123;</span>
+<span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name;</span>
+<span class="line">  &#125;</span>
+<span class="line">  set setName(name) &#123;</span>
+<span class="line">    <span class="keyword">this</span>.name = name;</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span>
+<span class="line">  <span class="keyword">constructor</span>(name, type) &#123;</span>
+<span class="line">    <span class="keyword">super</span>(name, type);</span>
+<span class="line">  &#125;</span>
+<span class="line">  get getName() &#123;</span>
+<span class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.getName();</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>转换后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+<span class="line">44</span>
+<span class="line">45</span>
+<span class="line">46</span>
+<span class="line">47</span>
+<span class="line">48</span>
+<span class="line">49</span>
+<span class="line">50</span>
+<span class="line">51</span>
+<span class="line">52</span>
+<span class="line">53</span>
+<span class="line">54</span>
+<span class="line">55</span>
+<span class="line">56</span>
+<span class="line">57</span>
+<span class="line">58</span>
+<span class="line">59</span>
+<span class="line">60</span>
+<span class="line">61</span>
+<span class="line">62</span>
+<span class="line">63</span>
+<span class="line">64</span>
+<span class="line">65</span>
+<span class="line">66</span>
+<span class="line">67</span>
+<span class="line">68</span>
+<span class="line">69</span>
+<span class="line">70</span>
+<span class="line">71</span>
+<span class="line">72</span>
+<span class="line">73</span>
+<span class="line">74</span>
+<span class="line">75</span>
+<span class="line">76</span>
+<span class="line">77</span>
+<span class="line">78</span>
+<span class="line">79</span>
+<span class="line">80</span>
+<span class="line">81</span>
+<span class="line">82</span>
+<span class="line">83</span>
+<span class="line">84</span>
+<span class="line">85</span>
+<span class="line">86</span>
+<span class="line">87</span>
+<span class="line">88</span>
+<span class="line">89</span>
+<span class="line">90</span>
+<span class="line">91</span>
+<span class="line">92</span>
+<span class="line">93</span>
+<span class="line">94</span>
+<span class="line">95</span>
+<span class="line">96</span>
+<span class="line">97</span>
+<span class="line">98</span>
+<span class="line">99</span>
+<span class="line">100</span>
+<span class="line">101</span>
+<span class="line">102</span>
+<span class="line">103</span>
+<span class="line">104</span>
+<span class="line">105</span>
+<span class="line">106</span>
+<span class="line">107</span>
+<span class="line">108</span>
+<span class="line">109</span>
+<span class="line">110</span>
+<span class="line">111</span>
+<span class="line">112</span>
+<span class="line">113</span>
+<span class="line">114</span>
+<span class="line">115</span>
+<span class="line">116</span>
+<span class="line">117</span>
+<span class="line">118</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// 与上同</span></span>
+<span class="line"><span class="keyword">var</span> _get = <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params">object, property, receiver</span>) </span>&#123; <span class="keyword">if</span> (object === <span class="literal">null</span>) object = <span class="built_in">Function</span>.prototype; <span class="keyword">var</span> desc = <span class="built_in">Object</span>.getOwnPropertyDescriptor(object, property); <span class="keyword">if</span> (desc === <span class="literal">undefined</span>) &#123; <span class="keyword">var</span> parent = <span class="built_in">Object</span>.getPrototypeOf(object); <span class="keyword">if</span> (parent === <span class="literal">null</span>) &#123; <span class="keyword">return</span> <span class="literal">undefined</span>; &#125; <span class="keyword">else</span> &#123; <span class="keyword">return</span> get(parent, property, receiver); &#125; &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"value"</span> <span class="keyword">in</span> desc) &#123; <span class="keyword">return</span> desc.value; &#125; <span class="keyword">else</span> &#123; <span class="keyword">var</span> getter = desc.get; <span class="keyword">if</span> (getter === <span class="literal">undefined</span>) &#123; <span class="keyword">return</span> <span class="literal">undefined</span>; &#125; <span class="keyword">return</span> getter.call(receiver); &#125; &#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// _creatClass 用于创建类及其对应的方法</span></span>
+<span class="line"><span class="keyword">var</span> _createClass = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">defineProperties</span>(<span class="params">target, props</span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; props.length; i++) &#123;</span>
+<span class="line">      <span class="keyword">var</span> descriptor = props[i];</span>
+<span class="line">      <span class="comment">// es6 规范要求类方法为 non-enumerable</span></span>
+<span class="line">      descriptor.enumerable = descriptor.enumerable || <span class="literal">false</span>;</span>
+<span class="line">      descriptor.configurable = <span class="literal">true</span>;</span>
+<span class="line">      <span class="comment">// 对于 setter 和 getter 方法，writable 为 false</span></span>
+<span class="line">      <span class="keyword">if</span> (<span class="string">"value"</span> <span class="keyword">in</span> descriptor) descriptor.writable = <span class="literal">true</span>;</span>
+<span class="line">      <span class="built_in">Object</span>.defineProperty(target, descriptor.key, descriptor);</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;</span>
+<span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">Constructor, protoProps, staticProps</span>) </span>&#123;</span>
+<span class="line">    <span class="comment">// 非静态方法定义在原型链上</span></span>
+<span class="line">    <span class="keyword">if</span> (protoProps) defineProperties(Constructor.prototype, protoProps);</span>
+<span class="line">    <span class="comment">// 静态方法直接定义在 constructor 函数上</span></span>
+<span class="line">    <span class="keyword">if</span> (staticProps) defineProperties(Constructor, staticProps);</span>
+<span class="line">    <span class="keyword">return</span> Constructor;</span>
+<span class="line">  &#125;;</span>
+<span class="line">&#125;();</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// 子类实现 constructor</span></span>
+<span class="line"><span class="comment">// babel 会强制子类在 constructor 中使用 super，否则编译会报错</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_possibleConstructorReturn</span>(<span class="params">self, call</span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">if</span> (!self) &#123;</span>
+<span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">ReferenceError</span>(<span class="string">"this hasn't been initialised - super() hasn't been called"</span>);</span>
+<span class="line">  &#125;</span>
+<span class="line">  <span class="comment">// 若call是函数/对象则返回</span></span>
+<span class="line">  <span class="keyword">return</span> call &amp;&amp; (<span class="keyword">typeof</span> call === <span class="string">"object"</span> || <span class="keyword">typeof</span> call === <span class="string">"function"</span>) ? call : self;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// 子类继承父类</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_inherits</span>(<span class="params">subClass, superClass</span>) </span>&#123;</span>
+<span class="line">  <span class="comment">// 父类一定要是 function 类型</span></span>
+<span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> superClass !== <span class="string">"function"</span> &amp;&amp; superClass !== <span class="literal">null</span>) &#123;</span>
+<span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">"Super expression must either be null or a function, not "</span> + <span class="keyword">typeof</span> superClass);</span>
+<span class="line">  &#125;</span>
+<span class="line">  <span class="comment">// 使原型链 subClass.prototype.__proto__ 指向父类 superClass，同时保证 constructor 是 subClass 自己</span></span>
+<span class="line">  subClass.prototype = <span class="built_in">Object</span>.create(superClass &amp;&amp; superClass.prototype, &#123;</span>
+<span class="line">    <span class="attr">constructor</span>: &#123;</span>
+<span class="line">      <span class="attr">value</span>: subClass,</span>
+<span class="line">      <span class="attr">enumerable</span>: <span class="literal">false</span>,</span>
+<span class="line">      <span class="attr">writable</span>: <span class="literal">true</span>,</span>
+<span class="line">      <span class="attr">configurable</span>: <span class="literal">true</span></span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;);</span>
+<span class="line">  <span class="comment">// 保证 subClass.__proto__ 指向父类 superClass</span></span>
+<span class="line">  <span class="keyword">if</span> (superClass) <span class="built_in">Object</span>.setPrototypeOf ? <span class="built_in">Object</span>.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// 检测 constructor 正确与否</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_classCallCheck</span>(<span class="params">instance, Constructor</span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">if</span> (!(instance <span class="keyword">instanceof</span> Constructor)) &#123;</span>
+<span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">"Cannot call a class as a function"</span>);</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> Animal = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params">name, type</span>) </span>&#123;</span>
+<span class="line">    <span class="comment">// 此处是 constructor 的实现</span></span>
+<span class="line">    _classCallCheck(<span class="keyword">this</span>, Animal);</span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">this</span>.name = name;</span>
+<span class="line">    <span class="keyword">this</span>.type = type;</span>
+<span class="line">  &#125;</span>
+<span class="line"></span>
+<span class="line">  _createClass(Animal, [&#123;</span>
+<span class="line">    <span class="attr">key</span>: <span class="string">'walk'</span>,</span>
+<span class="line">    <span class="attr">value</span>: <span class="function"><span class="keyword">function</span> <span class="title">walk</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">      <span class="built_in">console</span>.log(<span class="string">'walk'</span>);</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;, &#123;</span>
+<span class="line">    <span class="attr">key</span>: <span class="string">'run'</span>,</span>
+<span class="line">    <span class="attr">value</span>: <span class="function"><span class="keyword">function</span> <span class="title">run</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">      <span class="built_in">console</span>.log(<span class="string">'run'</span>);</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;, &#123;</span>
+<span class="line">    <span class="attr">key</span>: <span class="string">'getName'</span>,</span>
+<span class="line">    <span class="attr">get</span>: <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.name;</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;, &#123;</span>
+<span class="line">    <span class="attr">key</span>: <span class="string">'setName'</span>,</span>
+<span class="line">    <span class="attr">set</span>: <span class="function"><span class="keyword">function</span> <span class="title">set</span>(<span class="params">name</span>) </span>&#123;</span>
+<span class="line">      <span class="keyword">this</span>.name = name;</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;], [&#123;</span>
+<span class="line">    <span class="attr">key</span>: <span class="string">'getType'</span>,</span>
+<span class="line">    <span class="attr">value</span>: <span class="function"><span class="keyword">function</span> <span class="title">getType</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.type;</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;]);</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">return</span> Animal;</span>
+<span class="line">&#125;();</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> Dog = <span class="function"><span class="keyword">function</span> (<span class="params">_Animal</span>) </span>&#123;</span>
+<span class="line">  _inherits(Dog, _Animal);</span>
+<span class="line"></span>
+<span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Dog</span>(<span class="params">name, type</span>) </span>&#123;</span>
+<span class="line">    _classCallCheck(<span class="keyword">this</span>, Dog);</span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">return</span> _possibleConstructorReturn(<span class="keyword">this</span>, (Dog.__proto__ || <span class="built_in">Object</span>.getPrototypeOf(Dog)).call(<span class="keyword">this</span>, name, type));</span>
+<span class="line">  &#125;</span>
+<span class="line"></span>
+<span class="line">  _createClass(Dog, [&#123;</span>
+<span class="line">    <span class="attr">key</span>: <span class="string">'getName'</span>,</span>
+<span class="line">    <span class="attr">get</span>: <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">      <span class="keyword">return</span> _get(Dog.prototype.__proto__ || <span class="built_in">Object</span>.getPrototypeOf(Dog.prototype), <span class="string">'getName'</span>, <span class="keyword">this</span>).call(<span class="keyword">this</span>);</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;]);</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">return</span> Dog;</span>
+<span class="line">&#125;(Animal);</span>
+</pre></td></tr></table></figure>
+<h4 id="mo-kuai-hua">模块化</h4>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// module.js</span></span>
+<span class="line"><span class="keyword">import</span> &#123; Animal <span class="keyword">as</span> Ani, catwalk &#125; <span class="keyword">from</span> <span class="string">"./t1"</span>;</span>
+<span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> All <span class="keyword">from</span> <span class="string">"./t2"</span>;</span>
+<span class="line"> </span>
+<span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span> <span class="keyword">extends</span> <span class="title">Ani</span> </span>&#123;</span>
+<span class="line">  <span class="keyword">constructor</span>() &#123;</span>
+<span class="line">    <span class="keyword">super</span>();</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+<span class="line"> </span>
+<span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Ani</span> </span>&#123;</span>
+<span class="line">  <span class="keyword">constructor</span>() &#123;</span>
+<span class="line">    <span class="keyword">super</span>();</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// t1.js</span></span>
+<span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span>
+<span class="line">  <span class="keyword">constructor</span>() &#123;</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+<span class="line"> </span>
+<span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">catwal</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">  <span class="built_in">console</span>.log(<span class="string">'cat walk'</span>);</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// t2.js</span></span>
+<span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span>
+<span class="line">  <span class="keyword">constructor</span>() &#123;</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+<span class="line"> </span>
+<span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">Plane</span> </span>&#123;</span>
+<span class="line">  <span class="keyword">constructor</span>() &#123;</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>转换后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+<span class="line">44</span>
+<span class="line">45</span>
+<span class="line">46</span>
+<span class="line">47</span>
+<span class="line">48</span>
+<span class="line">49</span>
+<span class="line">50</span>
+<span class="line">51</span>
+<span class="line">52</span>
+<span class="line">53</span>
+<span class="line">54</span>
+<span class="line">55</span>
+<span class="line">56</span>
+<span class="line">57</span>
+<span class="line">58</span>
+<span class="line">59</span>
+<span class="line">60</span>
+<span class="line">61</span>
+<span class="line">62</span>
+<span class="line">63</span>
+<span class="line">64</span>
+<span class="line">65</span>
+<span class="line">66</span>
+<span class="line">67</span>
+<span class="line">68</span>
+<span class="line">69</span>
+<span class="line">70</span>
+<span class="line">71</span>
+<span class="line">72</span>
+<span class="line">73</span>
+<span class="line">74</span>
+<span class="line">75</span>
+<span class="line">76</span>
+<span class="line">77</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// t1.js 模块</span></span>
+<span class="line"></span>
+<span class="line"><span class="built_in">Object</span>.defineProperty(exports, <span class="string">"__esModule"</span>, &#123;</span>
+<span class="line">  <span class="attr">value</span>: <span class="literal">true</span></span>
+<span class="line">&#125;);</span>
+<span class="line">exports.catwal = catwal;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> Animal = exports.Animal = <span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">  _classCallCheck(<span class="keyword">this</span>, Animal);</span>
+<span class="line">&#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">catwal</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">  <span class="built_in">console</span>.log(<span class="string">'cat walk'</span>);</span>
+<span class="line">&#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// t2.js 模块</span></span>
+<span class="line"></span>
+<span class="line"><span class="built_in">Object</span>.defineProperty(exports, <span class="string">"__esModule"</span>, &#123;</span>
+<span class="line">  <span class="attr">value</span>: <span class="literal">true</span></span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> Person = exports.Person = <span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">  _classCallCheck(<span class="keyword">this</span>, Person);</span>
+<span class="line">&#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> Plane = exports.Plane = <span class="function"><span class="keyword">function</span> <span class="title">Plane</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">  _classCallCheck(<span class="keyword">this</span>, Plane);</span>
+<span class="line">&#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// module.js</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> _t = <span class="built_in">require</span>(<span class="string">"./t1"</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> _t2 = <span class="built_in">require</span>(<span class="string">"./t2"</span>); <span class="comment">// 返回的都是exports上返回的对象属性</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> All = _interopRequireWildcard(_t2);</span>
+<span class="line"></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_interopRequireWildcard</span>(<span class="params">obj</span>) </span>&#123;</span>
+<span class="line">  <span class="comment">// 发现是babel编译的， 直接返回</span></span>
+<span class="line">  <span class="keyword">if</span> (obj &amp;&amp; obj.__esModule) &#123;</span>
+<span class="line">    <span class="keyword">return</span> obj;</span>
+<span class="line">  <span class="comment">// 非 babel 编译， 猜测可能是第三方模块，为了不报错，让 default 指向它自己</span></span>
+<span class="line">  &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">    <span class="keyword">var</span> newObj = &#123;&#125;;</span>
+<span class="line">    <span class="keyword">if</span> (obj != <span class="literal">null</span>) &#123;</span>
+<span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj) &#123;</span>
+<span class="line">        <span class="keyword">if</span> (<span class="built_in">Object</span>.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];</span>
+<span class="line">      &#125;</span>
+<span class="line">    &#125;</span>
+<span class="line">    newObj.default = obj;</span>
+<span class="line">    <span class="keyword">return</span> newObj;</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> Cat = <span class="function"><span class="keyword">function</span> (<span class="params">_Ani</span>) </span>&#123;</span>
+<span class="line">  _inherits(Cat, _Ani);</span>
+<span class="line"></span>
+<span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Cat</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">    _classCallCheck(<span class="keyword">this</span>, Cat);</span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">return</span> _possibleConstructorReturn(<span class="keyword">this</span>, (Cat.__proto__ || <span class="built_in">Object</span>.getPrototypeOf(Cat)).call(<span class="keyword">this</span>));</span>
+<span class="line">  &#125;</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">return</span> Cat;</span>
+<span class="line">&#125;(_t.Animal);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> Dog = <span class="function"><span class="keyword">function</span> (<span class="params">_Ani2</span>) </span>&#123;</span>
+<span class="line">  _inherits(Dog, _Ani2);</span>
+<span class="line"></span>
+<span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Dog</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">    _classCallCheck(<span class="keyword">this</span>, Dog);</span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">return</span> _possibleConstructorReturn(<span class="keyword">this</span>, (Dog.__proto__ || <span class="built_in">Object</span>.getPrototypeOf(Dog)).call(<span class="keyword">this</span>));</span>
+<span class="line">  &#125;</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">return</span> Dog;</span>
+<span class="line">&#125;(_t.Animal);</span>
+</pre></td></tr></table></figure>
+<p>es6 的模块加载是属于多对象多加载，而 commonjs 则属于单对象单加载。babel 需要做一些手脚才能将 es6 的模块写法写成 commonjs 的写法。主要是通过定义 <code>__esModule</code> 这个属性来判断这个模块是否经过 babel 的编译。然后通过 <code>_interopRequireWildcard</code> 对各个模块的引用进行相应的处理。</p>
+<h2 id="can-kao-zi-liao">参考资料</h2>
+<p><a href="http://taobaofed.org/blog/2016/09/29/babel-plugins/" target="_blank" rel="external">理解 Babel 插件</a></p>
+<p><a href="https://github.com/lcxfs1991/blog/issues/9" target="_blank" rel="external">babel到底将代码转换成什么鸟样？</a></p>
+<p><a href="https://github.com/thejameskyle/babel-handbook/blob/master/translations/zh-Hans/plugin-handbook.md" target="_blank" rel="external">Babel 插件手册</a></p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/Babel 基础及代码转换简单探究.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/Babel/">Babel</a>
+                
+              
+                <a class="post-tags" href="/tags/ES6/">ES6</a>
+                
+              
+                <a class="post-tags" href="/tags/JavaScript/">JavaScript</a>
+                
+              
+                <a class="post-tags" href="/tags/编译/">编译</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=Babel 基础及代码转换简单探究 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2017/02/06/Babel 基础及代码转换简单探究/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2017/02/06/Babel 基础及代码转换简单探究/index.html&amp;title=Babel 基础及代码转换简单探究 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2017/02/06/Babel 基础及代码转换简单探究/index.html&amp;text=Babel 基础及代码转换简单探究;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=Babel 基础及代码转换简单探究 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2017/02/06/Babel 基础及代码转换简单探究/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2017/04/09/360 & 美团前端社招面经及部分面试题/">
+      ← 360 & 美团前端社招面经及部分面试题
+    </a>
+  
+  
+    <a class="pull-right" href="/2017/01/02/我的 2016 总结暨 2017 新年祈愿/">
+      我的 2016 总结暨 2017 新年祈愿 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2017/02/06/Babel 基础及代码转换简单探究/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

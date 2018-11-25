@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>【译】UI 的黑暗面！暗色背景的优势 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#dui-yu-an-se-de-shi-jue-gan-zhi"><span class="toc-number">1.</span> <span class="toc-text">对于暗色的视觉感知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ke-du-xing-fang-mian"><span class="toc-number">2.</span> <span class="toc-text">可读性方面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dui-bi-du-fang-mian"><span class="toc-number">3.</span> <span class="toc-text">对比度方面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qing-gan-gan-zhi-fang-mian"><span class="toc-number">4.</span> <span class="toc-text">情感感知方面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shen-se-bei-jing-de-you-shi"><span class="toc-number">5.</span> <span class="toc-text">深色背景的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kao-lu-yao-dian"><span class="toc-number">6.</span> <span class="toc-text">考虑要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tui-jian-yue-du"><span class="toc-number">7.</span> <span class="toc-text">推荐阅读</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">【译】UI 的黑暗面！暗色背景的优势</h1>
+          <time datetime="2016-07-06T04:45:39.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2016 年 07 月 06 日</span>
+            <span style="margin-left: 10px;">最近更新于：2016 年 10 月 14 日</span>
+            <span style="margin-left: 10px;">本文共 2,846 字，读完约 10 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <blockquote>
+<p>原文链接 : <a href="https://medium.com/@tubikstudio/dark-side-of-ui-benefits-of-dark-background-12f560bf7165#.k0d00u47a" target="_blank" rel="external">Dark Side of UI. Benefits of Dark Background</a><br>
+原文作者 : <a href="https://medium.com/@tubikstudio" target="_blank" rel="external">Tubik Studio</a><br>
+译文出自 : <a href="https://github.com/xitu/gold-miner" target="_blank" rel="external">掘金翻译计划</a><br>
+译者 : <a href="http://qcyoung.com">yangzj1992</a><br>
+校对者: <a href="https://github.com/wild-flame" target="_blank" rel="external">David Lin</a>, <a href="https://github.com/Ruixi" target="_blank" rel="external">Ruixi</a><br>
+首发于: <a href="http://gold.xitu.io/entry/577c9385a633bd005be7fe7a/detail" target="_blank" rel="external">掘金</a></p>
+</blockquote>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="http://ac-Myg6wSTV.clouddn.com/18dcdce02f167c38bd04.jpeg"></p>
+<p>在用户界面的背景中是否选择使用暗色调依然是一个具有高度争议的问题。毋庸置疑，这个问题是很实际的：选择一个合适的背景在所有的产品功效上都起着至关重要的作用，因为它可能会是改善或是反而毁掉设计方案中布局和功能的关键因素。在今天，我们的文章将致力于讨论在 UI 设计中使用暗色背景的好处和缺陷，所以让我们前往 UI 的黑暗面吧。</p>
+<p>在我们<a href="http://tubikstudio.com/light-and-darkness-in-ui-design-matter-of-choice/" target="_blank" rel="external">之前的文章</a>中我们已经分析了一些可以影响选择通常的配色方案和基本的背景颜色的因素，也提到了一些在这个过程中要考虑的重点。这一次我们将更多的关注暗色设计的网站和移动应用的优缺点。我们在 <a href="http://tubikstudio.com/" target="_blank" rel="external">Tubik Studio</a> 中创建并测试了不同的用户界面，这些实际的工作经验证实了暗色背景会是强大而有吸引力的、能提供积极用户体验的解决方案。所以，理所当然的，让我们来开始讨论应该在何时何地怎样让它最大程度的发挥效果吧。</p>
+<h3 id="dui-yu-an-se-de-shi-jue-gan-zhi">对于暗色的视觉感知</h3>
+<p>很久之前，在 2009 年曾有过一个公开的投票调查结果，<a href="http://www.problogger.net/archives/2009/05/19/light-or-dark-blog-backgrounds-poll-results/" target="_blank" rel="external">ProBlogger</a> 基于此已经公布了一些有趣的观点。读者被问及他们更喜欢哪种颜色的博客背景。几乎一半的读者回答更喜欢亮色背景 - 这对于传统的文本驱动型博客来说是十分合理的，在可读性方面如此可以胜过其他方案。然而，有 10% 的受访者回答他们更喜欢暗色背景，并且有超过三分之一的人提到选择的依据应该取决于博客的性质和内容。设计师在寻找设计方案时是不能忽略占有如此大比例的用户的。此外，在具有更少的文本型驱动内容的数字产品情况时，如网站或应用程序中，持上述观点的人数比例应该还会增加。这个例子很好的说明了用户研究和调查应该是设计过程中的重要组成部分。了解用户想要什么或是至少了解他们所能够接受的是什么，这能够将传统视觉的限度推向一个极致。</p>
+<p>Richard H. Hall 和 Patrick Hanna 对于这个问题提供的<a href="http://lite.mst.edu/media/research/ctel/documents/LITE-2003-04.pdf" target="_blank" rel="external">科学研究</a>中强调了视觉感知的背景颜色和效果的关键点。在分析了不同研究者之前对网络页面效果和可读性方面的实际试验后。作者们总结了：「<em>他们发现正向对比（即白底黑字）会有更好的效果，并与之前提到的研究结合，说明颜色组合之间的对比度越大效果越好。</em>」因此在合适的设计和测试下，在其他方面深色背景也可以像浅色背景一样具有好的效果，尤其是在对比性以及布局元素的易读性上。在用户测试角度上这项研究基于不同颜色组合和效果下包含了很多有趣及有用的信息。所以在此强烈推荐给设计师们。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="http://ac-Myg6wSTV.clouddn.com/f5f8b33e3c4fb542fef3.jpg"></p>
+<figcaption><a href="http://tubikstudio.com/works-ribbet/" target="_blank" rel="external">Ribbet 的用户界面来自 Tubik Studio</a></figcaption>
+<h3 id="ke-du-xing-fang-mian">可读性方面</h3>
+<p>用户体验设计的著名大师之一 Jacob Nielsen 曾提到过：「<em>在使用高对比度颜色的文本和背景时。最优的易读性方案是要求使用黑色文字和白色背景（所谓的正向文本）。而白色文字和黑色背景（反向文本）几乎也是一样好的。尽管这在对比度上与正向文本是一样的，但倒配色方案会让人们略微有些迷惑并会稍微降低他们的阅读速度。易读性相当受配色方案的影响，像文本比纯黑稍亮的颜色，尤其是背景色比纯白稍暗的配色，易读性会变得很差。</em>」</p>
+<p>的确，可读性是产品效果表现上的重要指标并且它不仅只针对文本。它超越了文本的限制并且意味着所有有意义的象征，包括字母，数字，象形符号和图片都应该被留意到并轻易的在界面中识别出。因此，设计师在选择深色的背景时应该准备更额外深入的选择并测试不同设备上的字体、图标和图像。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="http://ac-Myg6wSTV.clouddn.com/30476ea6fc9c5178170f.png"></p>
+<figcaption><a href="https://dribbble.com/shots/2632600-SwiftyBeaver-Landing-Page" target="_blank" rel="external">SwiftyBeaver 的着陆页</a>，来自 <a href="https://dribbble.com/LudmilaShevchenko" target="_blank" rel="external">Ludmila Shevchenko</a></figcaption>
+<p>最好的网页和应用程序的设计实践，例如 <a href="http://www.awwwards.com/websites/black/" target="_blank" rel="external">Awwwards 上最好的黑色网站</a>合集上的例子，这里展现了大量使用深色背景作为基础配色的优秀设计方案，这些方案都没有以牺牲可读性为代价。为了避免低可读性这个问题，在设计过程中重要的是要记住：</p>
+<ul>
+<li>深色背景会吸收一部分其他元素的光线，所以应该在元素之间留有足够的空间或&quot;气&quot;;</li>
+<li>行的长度可以让文本区块对用户更具可读性并易于理解;</li>
+<li>行间距的空间设计，以及文本行的长度问题都会对可读性具有很大的影响，在深色背景下尤甚，所以段落的大小，字距和行间距都需要仔细考虑。</li>
+<li>深色并不总是意味着黑色，所以在每一个特定情况的设计中，去花费一些时间测试不同种类的深色背景和颜色所呈现的内容是十分合理的，在试验中尽情的尝试吧;</li>
+<li>阴影，渐变和光晕都会影响可读性;</li>
+<li>无衬线字体通常比较清晰，而衬线字体看起来更加优雅，在实践中应用这个因素可以增强内容的可读性。</li>
+</ul>
+<h3 id="dui-bi-du-fang-mian">对比度方面</h3>
+<p><a href="http://webdesign.about.com/od/color/l/bl_contrast_table.htm" target="_blank" rel="external">webdesign.about.com</a> 用表格展现了一个有趣的视觉感知方面需要考虑的展现效果。该表展示了不同的颜色组合之间的对比和效果水平并提供了一个有趣的事实：表中的黑色部分是唯一一个可以为几乎所有颜色提供良好对比度效果的颜色。因此在设计界面的每一个特定情况下去仔细试验，这一因素可以作为尝试使用深色背景的理由之一。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="http://ac-Myg6wSTV.clouddn.com/962624f37bb9c9a8b839.jpg"></p>
+<p>在可读性方面，对比度能是使内容更容易识别和清晰的因素之一。</p>
+<p>关于对比度和可读性的这种提示信息在之前的一个<a href="http://www.writer2001.com/colwebcontrast.htm" target="_blank" rel="external">早期的调查</a>中有说过：「<em>在深色背景下，确保你没有包含相当明亮的字体：使用柔和的白色到浅灰色字体，或使用单调的色彩来最小程度的减少巨大的反差和眩光；这个原则在做幻灯片时也同样适用：用至少 5% 的灰度来减少眩光的亮白。有趣的是，这样仍然在「阅览」时会被认为是白色的。同样的，将字体加粗，可以让字体有足够的大小让人不觉得文字被深色背景所「吞噬」</em>」这个试验以及其他试验能够提供不同类型的调色法，而这些调色法能够为网页和应用页面提供高效、自然的内容。</p>
+<p>还有一件事就是深色背景在某种程度上通常显得更沉重以及能更深入的呈现图形的内容如图片，相片，插图，海报和广告。良好的构图并遵守视觉层级原则可以显著的增强这种布局元素的视觉感知。这个因素在当界面基于更多图形材料而非文本时会使深色背景更高效并且具有吸引力。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="http://ac-Myg6wSTV.clouddn.com/ffb8689a5486125bdc5b.png"></p>
+<figcaption><a href="https://dribbble.com/shots/2062865-Analytics-App" target="_blank" rel="external">一款分析应用</a>来自 <a href="https://dribbble.com/LudmilaShevchenko" target="_blank" rel="external">Ludmila Shevchenko</a></figcaption>
+<h3 id="qing-gan-gan-zhi-fang-mian">情感感知方面</h3>
+<p>色彩心理学也是在选择背景颜色时需要考虑到的，这不仅只是包含在所展现的有效范围中，还包含内容自身所承担的信息载体。黑暗的颜色通常与优雅和神秘感有关。此外，黑色往往与优雅，礼节，声望和权利有关。这或许是为什么许多强大的品牌都会使用黑白色调的主题，用深色来主导、用亮色来展示承载的信息，使用这样的方案来构建视觉展现效果。界面设计在这方面可以为其他设计解决方案和一般的产品展示提供额外的支持。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="http://ac-Myg6wSTV.clouddn.com/dd0719f001ef35d5600e.gif"></p>
+<figcaption><a href="https://dribbble.com/shots/2620649-Tubik-Studio-Museu" target="_blank" rel="external">Tubik Studio | 博物馆</a> 来自 <a href="https://dribbble.com/ErnestAsanov" target="_blank" rel="external">Ernest Asanov</a></figcaption>
+<h3 id="shen-se-bei-jing-de-you-shi">深色背景的优势</h3>
+<p>根据上述各点，我们可以总结得到在用户界面应用深色背景可以提供以下实际好处，包括：</p>
+<ul>
+<li>格调及优雅</li>
+<li>神秘感</li>
+<li>奢华显赫的外观</li>
+<li>可以广范围的运用对比</li>
+<li>支持视觉层次的展示</li>
+<li>反映内容的深度</li>
+<li>视觉吸引力。</li>
+</ul>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="http://ac-Myg6wSTV.clouddn.com/7947c9ab8ad7a9dd9128.png"></p>
+<figcaption><a href="https://dribbble.com/shots/2749617-Tubik-Studio-Vinny-s-Bakery" target="_blank" rel="external">Tubik Studio | Vinny 的面包店</a> 来自 <a href="https://dribbble.com/ErnestAsanov" target="_blank" rel="external">Ernest Asanov</a></figcaption>
+<h3 id="kao-lu-yao-dian">考虑要点</h3>
+<p>在另一方面，深色背景需要彻底的关注和分析最微小的细节，如果它们没有以合适的方式呈现，那么这些细节则可能会在布局中变得模糊。因此我们应该考虑：</p>
+<ul>
+<li><strong>用户研究</strong> 实际调查，理论研究和试验数据是针对目标用户十分重要的数据资源，他们的需求是选择有效和有吸引力的设计方案的基础。</li>
+<li><strong>竞争研究</strong> 对关系密切的竞争对手进行市场研究，可以理解已经被市场上其他对手使用的设计方案，并且这一因素会影响到原始设计的选择从而使产品更加明显。</li>
+<li><strong>用户测试</strong> 深色背景在可读性和易读性方面是十分脆弱的，所以应当在各种类型的设备和分辨率下严格的去测试。</li>
+<li><strong>环境因素</strong> 去分析典型条件下将被用于目标用户的产品，可以为选择或反对深色背景提供其他的理由。</li>
+<li><strong>大量的内容</strong> 元素和块的数量需要在屏幕或网页上达到能影响周围背景的决策：深色的背景如果在元素间留下了太少的空间会为视觉造成极大的困难。</li>
+<li><strong>内容的性质</strong> 相比于大量的文本区块，深色背景可以为基于图形元素的界面提供更好的展示效果。</li>
+</ul>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="http://ac-Myg6wSTV.clouddn.com/695e0a55cb834721ce2b.gif"></p>
+<figcaption><a href="https://dribbble.com/shots/2736160-GIF-Animation-for-Recipes-and-Cooking" target="_blank" rel="external">关于食谱和烹饪的 GIF 动画</a> 来自 <a href="https://dribbble.com/SergeyValiukh" target="_blank" rel="external">Sergey Valiukh</a></figcaption>
+<h3 id="tui-jian-yue-du">推荐阅读</h3>
+<ul>
+<li><a href="http://lite.mst.edu/media/research/ctel/documents/LITE-2003-04.pdf" target="_blank" rel="external"><strong>The Impact of Web Page Text-Background Color Combinations on Readability, Retention, Aesthetics, and Behavioral Intention</strong></a></li>
+<li><a href="https://books.google.com.ua/books?id=rvt4a_AmKFQC&amp;pg=PA11&amp;lpg=PA11&amp;dq=visual+perception+readability&amp;source=bl&amp;ots=6_rkYdGkj9&amp;sig=_UYthMOEgDSLJEFftDA895epms8&amp;hl=ru&amp;sa=X&amp;ved=0ahUKEwjiwPjRmsPMAhVOKywKHf1FCSM4FBDoAQgtMAM#v=onepage&amp;q=visual%20perception%20readability&amp;f=false" target="_blank" rel="external"><strong>Visual Perception: An Introduction</strong></a></li>
+<li><a href="https://books.google.com.ua/books?id=9RktoatXGQ0C&amp;pg=PA350&amp;lpg=PA350&amp;dq=visual+perception+readability&amp;source=bl&amp;ots=NTLfJ_Akj6&amp;sig=bpw4URR8U-QwWZwOndhoYs-wJWE&amp;hl=ru&amp;sa=X&amp;ved=0ahUKEwjiwPjRmsPMAhVOKywKHf1FCSM4FBDoAQgZMAA#v=onepage&amp;q=visual%20perception%20readability&amp;f=false" target="_blank" rel="external"><strong>Art and Visual Perception: A Psychology of the Creative Eye</strong></a></li>
+<li><a href="http://www.writer2001.com/colwebcontrast.htm" target="_blank" rel="external"><strong>Colour Choices on Web Pages: Contrast vs Readability</strong></a></li>
+<li><a href="http://www.webdesignerdepot.com/2009/08/the-dos-and-donts-of-dark-web-design/" target="_blank" rel="external"><strong>The Dos and Don’ts of Dark Web Design</strong></a></li>
+</ul>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/【译】UI 的黑暗面！暗色背景的优势.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/UI/">UI</a>
+                
+              
+                <a class="post-tags" href="/tags/UX/">UX</a>
+                
+              
+                <a class="post-tags" href="/tags/网页设计/">网页设计</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=【译】UI 的黑暗面！暗色背景的优势 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2016/07/06/【译】UI 的黑暗面！暗色背景的优势/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2016/07/06/【译】UI 的黑暗面！暗色背景的优势/index.html&amp;title=【译】UI 的黑暗面！暗色背景的优势 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2016/07/06/【译】UI 的黑暗面！暗色背景的优势/index.html&amp;text=【译】UI 的黑暗面！暗色背景的优势;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=【译】UI 的黑暗面！暗色背景的优势 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2016/07/06/【译】UI 的黑暗面！暗色背景的优势/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2016/07/18/某只程序猿的扇贝英语打卡500天有感/">
+      ← 某只程序猿的扇贝英语打卡 500 天有感
+    </a>
+  
+  
+    <a class="pull-right" href="/2016/07/04/【译】JSON Web Tokens (JWT) 与 Sessions/">
+      【译】JSON Web Tokens (JWT) 与 Sessions →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2016/07/06/【译】UI 的黑暗面！暗色背景的优势/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

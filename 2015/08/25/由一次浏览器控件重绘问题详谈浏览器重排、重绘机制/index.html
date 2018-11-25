@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>由一次浏览器控件重绘问题概述浏览器重排、重绘、渲染机制 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#wen-ti-miao-shu"><span class="toc-number">1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xiang-guan-zhi-shi"><span class="toc-number">2.</span> <span class="toc-text">相关知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#liu-lan-qi-shi-ru-he-wan-cheng-wang-ye-xuan-ran"><span class="toc-number">2.1.</span> <span class="toc-text">浏览器是如何完成网页渲染？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zhong-hui"><span class="toc-number">2.2.</span> <span class="toc-text">重绘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zhong-pai"><span class="toc-number">2.3.</span> <span class="toc-text">重排</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#liu-lan-qi-ru-he-you-hua-xuan-ran"><span class="toc-number">2.4.</span> <span class="toc-text">浏览器如何优化渲染？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#you-guan-xing-neng-you-hua-de-shi-ji-jian-yi"><span class="toc-number">2.5.</span> <span class="toc-text">有关性能优化的实际建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wen-ti-zong-jie"><span class="toc-number">3.</span> <span class="toc-text">问题总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#zui-xiao-hua-zhong-pai-he-zhong-hui-fang-fa"><span class="toc-number">3.1.</span> <span class="toc-text">最小化重排和重绘方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#liu-lan-qi-xuan-ran-ji-zhi-de-ling-yi-ge-li-zi"><span class="toc-number">3.2.</span> <span class="toc-text">浏览器渲染机制的另一个例子</span></a></li></ol></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">由一次浏览器控件重绘问题概述浏览器重排、重绘、渲染机制</h1>
+          <time datetime="2015-08-25T05:44:41.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2015 年 08 月 25 日</span>
+            <span style="margin-left: 10px;">最近更新于：2018 年 11 月 25 日</span>
+            <span style="margin-left: 10px;">本文共 3,159 字，读完约 12 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <h2 id="wen-ti-miao-shu">问题描述</h2>
+<p>今天遇到了传说中的页面重排 BUG，导致页面本来应该显示出来的内容在页面上显示不出来，具体效果及代码大概如下。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="bug 效果" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E7%94%B1%E4%B8%80%E6%AC%A1%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8E%A7%E4%BB%B6%E9%87%8D%E7%BB%98%E9%97%AE%E9%A2%98%E8%AF%A6%E8%B0%88%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%8D%E6%8E%92%E3%80%81%E9%87%8D%E7%BB%98%E6%9C%BA%E5%88%B6/%E9%97%AE%E9%A2%98%E5%8A%A8%E7%94%BB.gif"></p>
+<p>从图中可以看到浏览器 <code>Elements</code> 面板中已经包含了本该显示的元素，但是页面中却没有显示，只是保留了元素占用的空间。而只要再点击一次触发一次页面重排，或是修改 <code>background-color</code> 属性，触发一次页面重绘，就可以恢复正常。</p>
+<p>在正常的重绘过程中，浏览器会执行重绘如下图，而在上述问题中，则没有此重绘操作。
+<img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="重绘 BUG" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E7%94%B1%E4%B8%80%E6%AC%A1%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8E%A7%E4%BB%B6%E9%87%8D%E7%BB%98%E9%97%AE%E9%A2%98%E8%AF%A6%E8%B0%88%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%8D%E6%8E%92%E3%80%81%E9%87%8D%E7%BB%98%E6%9C%BA%E5%88%B6/%E9%87%8D%E7%BB%98%E6%93%8D%E4%BD%9C.png"></p>
+<p>这里的实现代码大致如下：</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="bug代码" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E7%94%B1%E4%B8%80%E6%AC%A1%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8E%A7%E4%BB%B6%E9%87%8D%E7%BB%98%E9%97%AE%E9%A2%98%E8%AF%A6%E8%B0%88%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%8D%E6%8E%92%E3%80%81%E9%87%8D%E7%BB%98%E6%9C%BA%E5%88%B6/%E5%88%87%E6%8D%A2%E7%AB%96%E5%AF%BC%E8%88%AA%E4%BB%A3%E7%A0%81.png"></p>
+<p>可见这里 append 的方式由于浏览器重排并未渲染页面造成了不显示的 BUG。通过重排机制，我们添加了类似这样的触发重排的代码。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="触发重排机制代码" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E7%94%B1%E4%B8%80%E6%AC%A1%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8E%A7%E4%BB%B6%E9%87%8D%E7%BB%98%E9%97%AE%E9%A2%98%E8%AF%A6%E8%B0%88%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%8D%E6%8E%92%E3%80%81%E9%87%8D%E7%BB%98%E6%9C%BA%E5%88%B6/%E8%A7%A6%E5%8F%91%E9%87%8D%E6%8E%92%E6%9C%BA%E5%88%B6.png"></p>
+<p>问题得到修复
+<img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="正常效果" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E7%94%B1%E4%B8%80%E6%AC%A1%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8E%A7%E4%BB%B6%E9%87%8D%E7%BB%98%E9%97%AE%E9%A2%98%E8%AF%A6%E8%B0%88%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%8D%E6%8E%92%E3%80%81%E9%87%8D%E7%BB%98%E6%9C%BA%E5%88%B6/%E6%AD%A3%E5%B8%B8%E6%95%88%E6%9E%9C.gif"></p>
+<h2 id="xiang-guan-zhi-shi">相关知识</h2>
+<p>Web 开发者 Alexander Skutin 写过一篇文章，讲述的比较详细，这里主要引用自其文章及其译文:
+<a href="http://frontendbabel.info/articles/webpage-rendering-101/" target="_blank" rel="external">原文地址</a>
+<a href="http://segmentfault.com/a/1190000002907021" target="_blank" rel="external">[译]有关网页渲染，每个前端开发者都该知道的那点事</a></p>
+<h3 id="liu-lan-qi-shi-ru-he-wan-cheng-wang-ye-xuan-ran">浏览器是如何完成网页渲染？</h3>
+<p>首先，我们回顾一下网页渲染时，浏览器的动作：</p>
+<ol>
+<li>
+<p>根据来自服务器端的 HTML 代码形成文档对象模型（DOM）</p>
+</li>
+<li>
+<p>加载并解析样式，形成 CSS 对象模型。</p>
+</li>
+<li>
+<p>在文档对象模型和 CSS 对象模型之上，创建一棵由一组待生成渲染的对象组成的渲染树（在 Webkit 中这些对象被称为渲染器或渲染对象，而在 Gecko 中称之为 <code>frame</code>）渲染树反映了文档对象模型的结构，但是不包含诸如 <code>&lt;head&gt;</code> 标签或含有 <code>display:none</code> 属性的不可见元素。在渲染树中，每一段文本字符串都表现为独立的渲染器。每一个渲染对象都包含与之对应的 DOM 对象，或者文本块，还加上计算过的样式。换言之，渲染树是一个文档对象模型的直观展示。</p>
+</li>
+<li>
+<p>对渲染树上的每个元素，计算它的坐标，称之为布局。浏览器采用一种流方法，布局一个元素只需通过一次，但是表格元素需要通过多次。</p>
+</li>
+<li>
+<p>最后，渲染树上的元素最终展示在浏览器里，这一过程称为 <code>painting</code>。</p>
+</li>
+</ol>
+<p>当用户与网页交互，或者脚本程序改动修改网页时，前文提到的一些操作将会重复执行，因为网页的内在结构已经发生了改变。</p>
+<h3 id="zhong-hui">重绘</h3>
+<p>当改变那些不会影响元素在网页中的位置的元素样式时，譬如 <code>background-color</code>，<code>border-color</code>，<code>visibility</code>，浏览器只会用新的样式将元素重绘一次（这就是重绘，或者说重新构造样式）。</p>
+<h3 id="zhong-pai">重排</h3>
+<p>当改变影响到文本内容或结构，或者元素位置时，重排或者说重新布局就会发生。这些改变通常由以下事件触发：</p>
+<ul>
+<li>DOM 操作（元素添加，删除，修改，或者元素顺序的改变）;</li>
+<li>内容变化，包括表单域内的文本改变;</li>
+<li>CSS 属性的计算或改变;</li>
+<li>添加或删除样式表;</li>
+<li>更改“类”的属性;</li>
+<li>浏览器窗口的操作（缩放，滚动）;</li>
+<li>伪类激活（:hover 悬停）;</li>
+</ul>
+<h3 id="liu-lan-qi-ru-he-you-hua-xuan-ran">浏览器如何优化渲染？</h3>
+<p>浏览器尽可能将重绘/重构 限制在被改变元素的区域内。比如，对于位置固定或绝对的元素，其大小改变只影响元素本身及其子元素，然而，静态定位元素的大小改变会触发后续所有元素的重流。</p>
+<p>另一种优化技巧是，在运行几段 JavaScript 代码时，浏览器会缓存这些改变，在代码运行完毕后再将这些改变经一次通过加以应用。举个例子，下面这段代码只会触发一个重构和重绘：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> $body = $(<span class="string">'body'</span>);</span>
+<span class="line">$body.css(<span class="string">'padding'</span>, <span class="string">'1px'</span>); <span class="comment">// reflow, repaint</span></span>
+<span class="line">$body.css(<span class="string">'color'</span>, <span class="string">'red'</span>); <span class="comment">// repaint</span></span>
+<span class="line">$body.css(<span class="string">'margin'</span>, <span class="string">'2px'</span>); <span class="comment">// reflow, repaint</span></span>
+<span class="line"><span class="comment">// only 1 reflow and repaint will actually happen</span></span>
+</pre></td></tr></table></figure>
+<p>然而，如前所述，改变元素的属性会触发强制性的重排。如果我们在上面的代码块中加入一行代码，用来访问元素的属性，就会发生这种现象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> $body = $(<span class="string">'body'</span>);</span>
+<span class="line">$body.css(<span class="string">'padding'</span>, <span class="string">'1px'</span>);</span>
+<span class="line">$body.css(<span class="string">'padding'</span>); <span class="comment">// reading a property, a forced   reflow</span></span>
+<span class="line">$body.css(<span class="string">'color'</span>, <span class="string">'red'</span>);</span>
+<span class="line">$body.css(<span class="string">'margin'</span>, <span class="string">'2px'</span>);</span>
+</pre></td></tr></table></figure>
+<p>其结果就是，重排发生了两次。因此，你应该把访问元素属性的操作都组织在一起，从而优化网页性能。</p>
+<p>有时，你必须触发一个强制性重排。比如，我们必须将同样的属性（比如左边距）两次赋值给同一个元素。起初，它应该设置为 100px，且不带动效。接着，它必须通过过渡 (<code>transition</code>) 动效改变为 50px。在这儿我们来更详细地介绍它。</p>
+<p>首先，我们创建一个带过渡效果的 CSS 类：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+</pre></td><td class="code"><pre><span class="line"><span class="selector-class">.has-transition</span> &#123;</span>
+<span class="line"><span class="attribute">-webkit-transition</span>: margin-left <span class="number">1s</span> ease-out;</span>
+<span class="line">    <span class="attribute">-moz-transition</span>: margin-left <span class="number">1s</span> ease-out;</span>
+<span class="line">      <span class="attribute">-o-transition</span>: margin-left <span class="number">1s</span> ease-out;</span>
+<span class="line">         <span class="attribute">transition</span>: margin-left <span class="number">1s</span> ease-out;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>然后继续执行：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// our element that has a "has-transition" class by default</span></span>
+<span class="line"><span class="keyword">var</span> $targetElem = $(<span class="string">'#targetElemId'</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// remove the transition class</span></span>
+<span class="line">$targetElem.removeClass(<span class="string">'has-transition'</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// change the property expecting the transition to be off, as the class is not there</span></span>
+<span class="line"><span class="comment">// anymore</span></span>
+<span class="line">$targetElem.css(<span class="string">'margin-left'</span>, <span class="number">100</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// put the transition class back</span></span>
+<span class="line">$targetElem.addClass(<span class="string">'has-transition'</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// change the property</span></span>
+<span class="line">$targetElem.css(<span class="string">'margin-left'</span>, <span class="number">50</span>);</span>
+</pre></td></tr></table></figure>
+<p>然而，这个执行无法奏效。所有改变都被缓存，只在代码块末尾加以执行。我们需要的是强制性的重排，我们可以通过以下更改加以实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// remove the transition class</span></span>
+<span class="line">$(<span class="keyword">this</span>).removeClass(<span class="string">'has-transition'</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// change the property</span></span>
+<span class="line">$(<span class="keyword">this</span>).css(<span class="string">'margin-left'</span>, <span class="number">100</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// trigger a forced reflow, so that changes in a class/property get applied immediately</span></span>
+<span class="line">$(<span class="keyword">this</span>)[<span class="number">0</span>].offsetHeight; <span class="comment">// an example, other properties would work, too</span></span>
+<span class="line"></span>
+<span class="line"><span class="comment">// put the transition class back</span></span>
+<span class="line">$(<span class="keyword">this</span>).addClass(<span class="string">'has-transition'</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// change the property</span></span>
+<span class="line">$(<span class="keyword">this</span>).css(<span class="string">'margin-left'</span>, <span class="number">50</span>);</span>
+</pre></td></tr></table></figure>
+<p>现在代码如预期那样执行了。</p>
+<h3 id="you-guan-xing-neng-you-hua-de-shi-ji-jian-yi">有关性能优化的实际建议</h3>
+<p>总结现有的资料，提出以下建议：</p>
+<ul>
+<li>
+<p>创建有效的 HTML 和 CSS 文件，不要忘记指明文档的编码方式。样式应该包含在
+<code>&lt;head&gt;</code>标签内，脚本代码则应该加在 <code>&lt;body&gt;</code> 标签末端。</p>
+</li>
+<li>
+<p>尽量简化和优化 CSS 选择器（这种优化方式几乎被使用 CSS 预处理器的开发者统一忽视了）将嵌套程度保持在最低水平。以下是 CSS 选择器的性能排名（从最快者开始）</p>
+<ol>
+<li>识别器: #id</li>
+<li>类: .class</li>
+<li>标签：div</li>
+<li>相邻兄弟选择器：a + i</li>
+<li>父类选择器：ul&gt; li</li>
+<li>通用选择器：*</li>
+<li>属性选择：input[type=&quot;text&quot;]</li>
+<li>伪类和伪元素：a:hover</li>
+</ol>
+</li>
+</ul>
+<p>你应该记住，浏览器在处理选择器时依照从右到左的原则，因此最右端的选择器应该是最快的：#id 或则 .class：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">div * &#123;...&#125; // bad</span>
+<span class="line">.list li &#123;...&#125; // bad</span>
+<span class="line">.list-item &#123;...&#125; // good</span>
+<span class="line">#list .list-item &#123;...&#125; // good</span>
+</pre></td></tr></table></figure>
+<ol>
+<li>在你的脚本代码中，尽可能减少 DOM 操作。缓存所有东西，包括元素属性以及对象（如果它们被重用的话）。当进行复杂的操作时，使用“孤立”元素会更好，之后可以将其加到 DOM 中（所谓“孤立”元素是与 DOM 脱离，仅保存在内存中的元素）。</li>
+<li>如果你使用 jQuery 来选择元素，请遵从 jQuery 选择器最佳实践方案。</li>
+<li>为了改变元素的样式，修改“类”的属性是奏效的方法之一。执行这一改变时，处在 DOM 渲染树的位置越深越好（这还有助于将逻辑与表象脱离）。</li>
+<li>尽量只给位置绝对或者固定的元素添加动画效果。</li>
+<li>在使用滚动时禁用复杂的悬停动效（比如，在<code>&lt;body&gt;</code>中添加一个额外的不悬停类）。</li>
+</ol>
+<p>想了解更多的细节问题，大家也可以看看这两篇文章：</p>
+<ol>
+<li><a href="http://taligarsiel.com/Projects/howbrowserswork1.htm" target="_blank" rel="external">How browsers work？</a></li>
+<li><a href="http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/" target="_blank" rel="external">Rendering: repaint, reflow/relayout, restyle</a></li>
+</ol>
+<h2 id="wen-ti-zong-jie">问题总结</h2>
+<p>在探究重绘重排问题时，发现了以下的一些相似问题和内容，在这里也做一些分享</p>
+<p>下面是利用 Firefox 对维基百科页面渲染的可视化视频。供大家熟悉参考</p>
+<p><embed src="http://player.youku.com/player.php/sid/XMzI5MDg0OTA0/v.swf" allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash"></p>
+<h3 id="zui-xiao-hua-zhong-pai-he-zhong-hui-fang-fa">最小化重排和重绘方法</h3>
+<p>重排和重绘在实际开发中不可避免，我们只能尽量减少重排和重绘的次数，降低浏览器渲染网页的开销，以此带来的性能提升在移动平台上效果显著。结合上述内容，总结如下：</p>
+<ol>
+<li>不要一条一条的修改 CSS 属性，最好是整体替换 CSS 类或重写 DOM 的 <code>cssText</code> 属性。</li>
+<li>将多次 DOM 修改合并成一次。可以使用 <code>documentFragment</code> 对象缓存更改，或是复制你需要修改的 node 节点，修改完成后再替换掉原来的。也可以隐藏元素后再对其进行操作，最后把它显示出来。</li>
+<li>考虑要修改的元素的层级以及改动它引起的重排面积，选择其中开销最小的方式。</li>
+<li>不要频繁获取元素的位置属性，如果需要经常使用就用变量把它缓存下来。</li>
+<li>为需要有动画效果的元素设置 <code>position:absolute</code>。同时动画越平滑开销越大，需要在速度和平滑度上取得平滑。</li>
+<li>保持 DOM 树正确/简洁，减少不必要的 CSS 规则和复杂的选择器（尤其是后代选择器）。
+为页面中的图片显式的声明宽度和高度。</li>
+<li>不要使用 table 布局。尽量不要动态更新 table 元素。</li>
+<li>jQuery 中如果为 <code>append()</code> 方法传入多个元素组成的数组时，jQuery 可能会用到 <code>documentFragment</code>，但是使用 <code>$.each()</code> 方法就不会用到 <code>documentFragment</code>。</li>
+</ol>
+<p>例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">//修改CSS类名而不是逐条修改属性</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeStyle</span>(<span class="params">element,className</span>) </span>&#123;  </span>
+<span class="line">	element.className = className;  </span>
+<span class="line">&#125; </span>
+<span class="line"><span class="comment">//借助DocumentFragment</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CreateFragments</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">	<span class="keyword">var</span> fragment = <span class="built_in">document</span>.createDocumentFragment()；</span>
+<span class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>;i &lt; <span class="number">10000</span>;i++)&#123;</span>
+<span class="line">		<span class="keyword">var</span> tmpNode = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</span>
+<span class="line">		tmpNode.innerHTML = <span class="string">"test"</span> + i;</span>
+<span class="line">		fragment.appendChild(tmpNode);</span>
+<span class="line">	&#125;</span>
+<span class="line">	<span class="built_in">document</span>.body.appendChild(fragment);</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<h3 id="liu-lan-qi-xuan-ran-ji-zhi-de-ling-yi-ge-li-zi">浏览器渲染机制的另一个例子</h3>
+<p>在之后也看到一个例子也很好的演示了浏览器渲染的机制</p>
+<p>核心代码如下：
+	问题核心代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; testTimes; i++) &#123;</span>
+<span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; allFunc.length; j++) &#123;</span>
+<span class="line">        <span class="keyword">var</span> currentResult=$(<span class="string">'.result'</span>).eq(j);</span>
+<span class="line">        <span class="keyword">var</span> gapTime=test(times,allFunc[j]);</span>
+<span class="line">        <span class="keyword">var</span> testTime=currentResult.find(<span class="string">'span'</span>).length+<span class="number">1</span>;</span>
+<span class="line">        <span class="keyword">if</span>(!resultMatrix[testTime<span class="number">-1</span>])&#123;</span>
+<span class="line">            resultMatrix[testTime<span class="number">-1</span>]=[];</span>
+<span class="line">        &#125;</span>
+<span class="line">        <span class="built_in">console</span>.log(<span class="string">'1'</span>);</span>
+<span class="line">        <span class="keyword">var</span> result=<span class="string">"&lt;span&gt;第"</span>+testTime+<span class="string">'次实验结果：耗时'</span>+gapTime+<span class="string">'ms&lt;/span&gt;'</span>;</span>
+<span class="line">        currentResult.append(result);<span class="comment">//append不是一条一条加，而是全部结果出来后才加上去</span></span>
+<span class="line">        <span class="comment">/* 这是后来改成原生appendChild的代码，但是依旧不起作用</span>
+<span class="line">        var result=document.createElement('span');</span>
+<span class="line">        result.innerHTML='第'+testTime+'次实验结果：耗时'+gapTime+'ms';</span>
+<span class="line">        currentResult.get(0).appendChild(result);</span>
+<span class="line">        */</span></span>
+<span class="line">        resultMatrix[testTime<span class="number">-1</span>][j]=gapTime;</span>
+<span class="line">    &#125;;</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/full/epMrvJ/" target="_blank" rel="external">点击查看 DEMO</a></p>
+<p>这里 Chrome 有个很有趣的现象就是开发者工具的 <code>Elements</code> 面板里显示 span 已经加上去了，但是页面中没有任何反应。而 IE 和 FF 中则没有这种情况。
+<img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="问题演示" class="hx_lazyimg" data-src="http://ww3.sinaimg.cn/large/8b59c960gw1euqmz5sjnfg20qr0dh77l.gif"></p>
+<p>这里正是因为:浏览器里 DOM 树的管理和渲染页面是分开的，浏览器会有一个用来控制渲染的渲染树的数据结构，除了隐藏的节点，DOM 树上所有节点都在渲染树上有一个对应节点，浏览器会将渲染树上的节点按照他的逻辑渲染到视口中，就形成了用户所见的页面。</p>
+<p>然而，渲染是一种性能消耗不小的事情，所以大部分浏览器都有他们自己对渲染的优化，其中就包括了批量渲染（代表浏览器: Chrome），就是对于 DOM 树的修改并不是立刻产生渲染逻辑，而是一定时间间隔内将所有的 DOM 操作对应的所需要改变的渲染逻辑批量完成渲染。所以就看到了 span 已经加上去了，但是页面上没有任何反应。</p>
+<p>想让浏览器立刻执行渲染逻辑，就需要访问诸如 offsetWidth 等一系列需要即时获得的信息，这列操作会使浏览器刷新渲染树并执行相应的渲染操作，因为 offset 里面存储的总是最新的。</p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/由一次浏览器控件重绘问题详谈浏览器重排、重绘机制.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/前端知识/">前端知识</a>
+                
+              
+                <a class="post-tags" href="/tags/浏览器/">浏览器</a>
+                
+              
+                <a class="post-tags" href="/tags/页面/">页面</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=由一次浏览器控件重绘问题概述浏览器重排、重绘、渲染机制 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2015/08/25/由一次浏览器控件重绘问题详谈浏览器重排、重绘机制/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2015/08/25/由一次浏览器控件重绘问题详谈浏览器重排、重绘机制/index.html&amp;title=由一次浏览器控件重绘问题概述浏览器重排、重绘、渲染机制 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2015/08/25/由一次浏览器控件重绘问题详谈浏览器重排、重绘机制/index.html&amp;text=由一次浏览器控件重绘问题概述浏览器重排、重绘、渲染机制;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=由一次浏览器控件重绘问题概述浏览器重排、重绘、渲染机制 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2015/08/25/由一次浏览器控件重绘问题详谈浏览器重排、重绘机制/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2015/09/01/type-number非法值的一些探究及拓展/">
+      ← 关于表单input type="number"非法值时的一些探究及拓展
+    </a>
+  
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2015/08/25/由一次浏览器控件重绘问题详谈浏览器重排、重绘机制/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>使用 npm scripts 构建项目 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#bei-jing"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-yu-grunt-zen-yao-liao"><span class="toc-number">2.</span> <span class="toc-text">Gulp 与 Grunt 怎么了？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#wen-ti-1-dui-cha-jian-zuo-zhe-de-yi-lai"><span class="toc-number">2.1.</span> <span class="toc-text">问题 1：对插件作者的依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wen-ti-2-ling-ren-ju-sang-de-diao-shi"><span class="toc-number">2.2.</span> <span class="toc-text">问题 2：令人沮丧的调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wen-ti-3-tuo-jie-de-wen-dang"><span class="toc-number">2.3.</span> <span class="toc-text">问题 3：脱节的文档</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zai-gou-jian-shi-wo-men-wei-he-hui-hu-lue-diao-npm"><span class="toc-number">3.</span> <span class="toc-text">在构建时我们为何会忽略掉 npm？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#wu-jie-1-shi-yong-npm-scripts-xu-yao-qiang-da-de-ming-ling-xing-ji-qiao"><span class="toc-number">3.1.</span> <span class="toc-text">误解 1：使用 npm scripts 需要强大的命令行技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wu-jie-2-npm-scripts-bu-gou-qiang-da"><span class="toc-number">3.2.</span> <span class="toc-text">误解 2：npm scripts 不够强大</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wu-jie-3-gulp-de-liu-dui-yu-kuai-su-gou-jian-lai-shuo-shi-bu-ke-huo-que-de"><span class="toc-number">3.3.</span> <span class="toc-text">误解 3：Gulp 的流对于快速构建来说是不可或缺的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wu-jie-4-npm-scripts-wu-fa-shi-xian-kua-ping-tai-yun-xing"><span class="toc-number">3.4.</span> <span class="toc-text">误解 4：npm scripts 无法实现跨平台运行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fang-shi-1-shi-yong-kua-ping-tai-de-ming-ling"><span class="toc-number">3.4.1.</span> <span class="toc-text">方式 1：使用跨平台的命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fang-shi-2-shi-yong-node-bao"><span class="toc-number">3.4.2.</span> <span class="toc-text">方式 2：使用 node 包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fang-shi-3-shi-yong-a-href-https-www-npmjs-com-package-shelljs-shell-js-a"><span class="toc-number">3.4.3.</span> <span class="toc-text">方式 3：使用 ShellJS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tong-dian"><span class="toc-number">4.</span> <span class="toc-text">痛点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#wo-men-xu-yao-zheng-ming-chou-xiang-shi-you-yi-yi-de"><span class="toc-number">4.1.</span> <span class="toc-text">我们需要证明抽象是有意义的</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#npm-ti-huan-fang-an-can-kao"><span class="toc-number">5.</span> <span class="toc-text">npm 替换方案参考</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xie-npm-scripts"><span class="toc-number">5.1.</span> <span class="toc-text">写 npm scripts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bian-yi-scss-wei-css"><span class="toc-number">5.2.</span> <span class="toc-text">编译 scss 为 css</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shi-yong-post-css-zi-dong-gei-css-jia-qian-zhui"><span class="toc-number">5.3.</span> <span class="toc-text">使用 PostCSS 自动给 CSS 加前缀</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#java-script-dai-ma-jian-cha"><span class="toc-number">5.4.</span> <span class="toc-text">JavaScript 代码检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hun-yao-ya-suo-java-script-wen-jian"><span class="toc-number">5.5.</span> <span class="toc-text">混淆压缩 JavaScript 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ya-suo-tu-pian"><span class="toc-number">5.6.</span> <span class="toc-text">压缩图片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#svg-jing-ling-sprites"><span class="toc-number">5.7.</span> <span class="toc-text">SVG 精灵（Sprites）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tong-guo-browser-sync-ti-gong-fu-wu-zi-dong-jian-ce-bing-zhu-ru-bian-geng"><span class="toc-number">5.8.</span> <span class="toc-text">通过 BrowserSync 提供服务、自动监测并注入变更</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fen-zu-ren-wu"><span class="toc-number">5.9.</span> <span class="toc-text">分组任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#he-bing-css-ren-wu"><span class="toc-number">5.10.</span> <span class="toc-text">合并 CSS 任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#he-bing-java-script-ren-wu"><span class="toc-number">5.11.</span> <span class="toc-text">合并 JavaScript 任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bian-geng-jian-kong"><span class="toc-number">5.12.</span> <span class="toc-text">变更监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qi-ta-shi-yong-ren-wu"><span class="toc-number">5.13.</span> <span class="toc-text">其他实用任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#da-bao"><span class="toc-number">5.14.</span> <span class="toc-text">打包</span></a></li></ol></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">使用 npm scripts 构建项目</h1>
+          <time datetime="2016-02-28T03:49:21.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2016 年 02 月 28 日</span>
+            <span style="margin-left: 10px;">最近更新于：2016 年 10 月 24 日</span>
+            <span style="margin-left: 10px;">本文共 8,015 字，读完约 30 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <h2 id="bei-jing">背景</h2>
+<p>最近看到了几篇文章，讲述了运用 npm 来代替 Gulp,Grunt 进行构建的工作，文中一些说法和场景让我感同身受、深表赞同，故在此整理一下相关内容与方法。
+原帖地址：
+<a href="http://www.infoq.com/cn/news/2016/02/gulp-grunt-npm-scripts-part1" target="_blank" rel="external">我为何放弃Gulp与Grunt，转投npm scripts</a>
+<a href="https://css-tricks.com/why-npm-scripts/" target="_blank" rel="external">Why npm Scripts?</a>
+<a href="http://www.cnblogs.com/zldream1106/p/why-npm-scripts.html" target="_blank" rel="external">Why npm Scripts?【译】</a></p>
+<p>众所周知，Gulp 与 Grunt 是很多项目所使用的构建工具，他们拥有非常丰富的插件。不过，我却认为 Gulp 与 Grunt 是完全不必要的抽象，npm scripts 更加强大，并且更易于使用。</p>
+<p>我本人是 Gulp 的粉丝。不过在上一个项目中，gulpfile 竟然有 100 多行，而且还使用了不少 Gulp 插件。我尝试通过 Gulp 集成 Webpack、Browsersync、热加载、Mocha 等工具，为什么要这么做呢？这是因为有些插件的文档实在是太不充分了；还有些插件只公开了我所需的部分 API。其中有个插件存在一个奇怪的 Bug，它只能看到文件的部分内容。另一个插件则在输出到命令行时丢失了颜色。</p>
+<p>当然了，这些问题都是可以解决的；不过，这势必会消耗我们相当的时间成本，最近，我注意到有很多开源项目只是使用了 npm scripts。因此，我决定重新审视一下自己的做法。我真的需要 Gulp 么？答案是并不需要。现在，相对于 Gulp 来说，我更倾向于使用 npm scripts，下面就来谈谈原因。</p>
+<h2 id="gulp-yu-grunt-zen-yao-liao">Gulp 与 Grunt 怎么了？</h2>
+<p>随着时间的流逝，我们会逐渐发现诸如 Gulp 与 Grunt 等任务运行器都存在以下 3 个核心问题：</p>
+<ul>
+<li>对插件作者的依赖</li>
+<li>令人沮丧的调试</li>
+<li>脱节的文档
+下面就来详细分析上述 3 个问题。</li>
+</ul>
+<h3 id="wen-ti-1-dui-cha-jian-zuo-zhe-de-yi-lai">问题 1：对插件作者的依赖</h3>
+<p>在使用比较新或是不那么流行的技术时，可能根本就没有插件。当有插件可用时，插件可能已经过时了。比如说，Babel 6 前一阵发布了。其 API 变化非常大，这样很多 Gulp 插件都无法兼容于最新的版本。在使用 Gulp 时，我就感到深深的受伤，因为我所需要的 Gulp 插件还没有更新。在使用 Gulp 或是 Grunt 时，你不得不等待插件维护者提供更新，或是自己修复。这会阻碍你使用最新版现代化工具的机会。与之相反，在使用 npm scripts 时，我会直接使用工具，不必再添加一个额外的抽象层。这意味着当新版本的 Mocha、Istanbul、Babel、Webpack、Browserify 等发布时，我可以立刻就使用上新的版本。对于选择来说，没有什么能够打败 npm：</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="npm 插件对比" class="hx_lazyimg" data-src="http://cdn2.infoqstatic.com/statics_s2_20160217-0123u3/resource/news/2016/02/gulp-grunt-npm-scripts-part1/zh/resources/31.png"></p>
+<p>从上图可以看到，Gulp 有将近 2,100 个插件；Grunt 有将近 5,400 个；而 npm 则提供了 227,000 多个包，同时还以每天 400 多个的速度在持续增加。</p>
+<p>在使用npm scripts时，你无需再搜索Grunt或是Gulp插件；只需从227,000多个npm包中选择就行了。公平地说，如果所需要的 Grunt 或是 Gulp 插件不存在，你当然可以直接使用 npm packages。不过，这样就无法再针对这个特定的任务使用 Gulp 或是 Grunt 了。</p>
+<h3 id="wen-ti-2-ling-ren-ju-sang-de-diao-shi">问题 2：令人沮丧的调试</h3>
+<p>如果集成失败了，那么在 Grunt 和 Gulp 中调试是一件令人沮丧的事情。因为你面对的是一个额外的抽象层，对于任何 Bug 来说都有可能存在更多潜在的原因：</p>
+<ul>
+<li>基础工具出问题了么？</li>
+<li>Grunt/Gulp 插件出问题了么？</li>
+<li>配置出问题了么？</li>
+<li>使用的版本是不是不兼容？
+使用 npm scripts 可以消除上面的第 2 点，我发现第 3 点也很少会出现，因为我通常都是直接调用工具的命令行接口。最后，第 4 点也很少出现，因为我通过直接使用 npm 而不是任务运行器的抽象减少了项目中包的数量。</li>
+</ul>
+<h3 id="wen-ti-3-tuo-jie-de-wen-dang">问题 3：脱节的文档</h3>
+<p>一般来说，我所需要的核心工具的文档质量总是要比与之相关的 Grunt 和 Gulp 插件的好。比如说，如果使用了 gulp-eslint ，那么我就要在 <a href="https://github.com/adametry/gulp-eslint" target="_blank" rel="external">gulp-eslint</a> 文档与 ESLint 网站之间来回切换；不得不在插件与插件所抽象的工具之间来回切换上下文。Gulp 与 Grunt 的问题在于：光理解所用的工具是远远不够的。Gulp 与 Grunt 要求你还得理解插件的抽象。</p>
+<p>大多数构建相关的工具都提供了清晰、强大，且具有高质量文档的命令行接口。<a href="http://eslint.org/docs/user-guide/command-line-interface" target="_blank" rel="external">ESLint 的 CLI 文档</a>就是个很好的例子。我发现在 npm scripts 中阅读并实现一个简短的命令行调用会更加轻松，阻碍更少，也更易于调试（因为并没有抽象层存在）。既然已经知道了痛点，接下来的问题就在于，为何我们觉得自己还需要诸如 Gulp 与 Grunt 之类的任务运行器呢？</p>
+<p>我相信个中原因应该是因人而异的。毫无疑问，Gulp 与 Grunt 等任务运行器已经出现很长一段时间了，而且围绕着这些任务运行器的插件生态圈也呈现出欣欣向荣的繁荣景象。依赖于这些插件，很多日常工作都可以实现自动化，并且运行良好。这样，人们就会认为只有通过这些任务运行器才能实现任务的构建、文件的打包、工作流的良好运行等等。另外一个原因就是人们对于 npm scripts 的认识还远远不够；对于 npm scripts 所能完成的事情与任务也流于表面。这也进一步造成了很多人并没有发现 npm scripts 可以实现很多日常开发时的构建任务的结果。相信随着开发者对于 npm scripts 认识的进一步深入，大家会逐步发现原来使用 npm scripts 也可以完成 Gulp 与 Grunt 等任务运行器所能完成的任务，而且配置更加简单，也更加直接，因为它会直接使用目标工具而不必再使用对目标工具的包装器了。</p>
+<p>接下来我们谈谈 npm scripts 的强大功能以及人们为何会忽略 npm scripts。</p>
+<h2 id="zai-gou-jian-shi-wo-men-wei-he-hui-hu-lue-diao-npm">在构建时我们为何会忽略掉 npm？</h2>
+<p>我认为有如下 4 点原因造成 Gulp 与 Grunt 等任务运行器变得如此流行：</p>
+<ul>
+<li>人们认为 npm scripts 需要强大的命令行技巧</li>
+<li>人们认为 npm scripts 不够强大</li>
+<li>人们认为 Gulp 的流对于快速构建来说是不可或缺的</li>
+<li>人们认为 npm scripts 无法实现跨平台运行
+下面我们将按顺序依次解释一下这些误解。</li>
+</ul>
+<h3 id="wu-jie-1-shi-yong-npm-scripts-xu-yao-qiang-da-de-ming-ling-xing-ji-qiao">误解 1：使用 npm scripts 需要强大的命令行技巧</h3>
+<p>体验 npm scripts 的强大功能其实并不需要对操作系统的命令行了解太多。当然了，<a href="http://www.tutorialspoint.com/unix/unix-useful-commands.htm" target="_blank" rel="external">grep、sed、awk 与管道</a>等是值得你去学习的，令你众生受用的技能；不过，为了使用 npm scripts，你不必非得成为 Unix 或是 Windows 命令行专家才行。你可以通过 npm 中 1000 多个拥有良好文档的脚本来完成工作。</p>
+<p>比如说，你可能不知道在 Unix 中，命令 <code>rm -rf</code> 会强制删除一个目录，这没问题。你可以使用 <a href="https://www.npmjs.com/package/rimraf" target="_blank" rel="external">rimraf</a> 完成同样的事情（它也是跨平台的）。大多数 npm 包都提供了一些接口，这些接口假设你对所用操作系统的命令行了解不多。只需在 npm 中搜索想要使用的包即可，边做边学就行了。过去，我常常会搜索 Gulp 插件，不过现在则是搜索 npm 包了。<a href="https://libraries.io/" target="_blank" rel="external">libraries.io</a>是个非常棒的资源。</p>
+<h3 id="wu-jie-2-npm-scripts-bu-gou-qiang-da">误解 2：npm scripts 不够强大</h3>
+<p>npm scripts 本身其实是非常强大的。它提供了基于约定的 <a href="https://docs.npmjs.com/misc/scripts#description" target="_blank" rel="external">pre 与 post 钩子</a>：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+</pre></td><td class="code"><pre><span class="line">&#123;</span>
+<span class="line">	name: "npm-scripts-example",</span>
+<span class="line">	version: "1.0.0",</span>
+<span class="line">	description: "npm scripts example",</span>
+<span class="line">	scripts: &#123;</span>
+<span class="line">		prebuild: "echo I run before the build script",</span>
+<span class="line">		build: "cross-env NODE_ENV=production webpack",</span>
+<span class="line">		postbuild: "echo I run after the build script"</span>
+<span class="line">	&#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>你所要做的就是遵循约定。上述脚本会根据其前缀按照顺序运行。prebuild 脚本会在 build 脚本之前运行，因为他们的名字相同，但 prebuild 脚本有 <code>pre</code> 前缀。postbuild 脚本会在 build 脚本之后运行，因为它有 <code>post</code> 前缀。因此，如果创建了名为 prebuild、build 与 postbuild 的脚本，那么在我输入 <code>npm run build</code> 时，他们就会自动按照这个顺序运行。</p>
+<p>此外，还可以通过在一个脚本中调用另一个脚本来对大的问题进行分解：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+</pre></td><td class="code"><pre><span class="line">&#123;</span>
+<span class="line">  <span class="attr">"name"</span>: <span class="string">"npm-scripts-example"</span>,</span>
+<span class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</span>
+<span class="line">  <span class="attr">"description"</span>: <span class="string">"npm scripts example"</span>,</span>
+<span class="line">  <span class="attr">"scripts"</span>: &#123;</span>
+<span class="line">    <span class="attr">"clean"</span>: <span class="string">"rimraf ./dist &amp;&amp; mkdir dist"</span>,</span>
+<span class="line">    <span class="attr">"prebuild"</span>: <span class="string">"npm run clean"</span>,</span>
+<span class="line">    <span class="attr">"build"</span>: <span class="string">"cross-env NODE_ENV=production webpack"</span></span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>在上述示例中，prebuild 任务调用了 clean 任务。这样就可以将脚本分解为更小、命名良好、单职责，单行的脚本。</p>
+<p>可以通过 &amp;&amp; 在一行连续调用多个脚本。上述示例中，clean 步骤中的脚本会一个接着一个运行。如果你需要在 Gulp 中按照顺序一个接着一个地运行任务列表中的任务，那么这种简洁性肯定会吸引到你。</p>
+<p>如果一个命令很复杂，那还可以调用一个单独的文件：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+</pre></td><td class="code"><pre><span class="line">&#123;</span>
+<span class="line">  <span class="attr">"name"</span>: <span class="string">"npm-scripts-example"</span>,</span>
+<span class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</span>
+<span class="line">  <span class="attr">"description"</span>: <span class="string">"npm scripts example"</span>,</span>
+<span class="line">  <span class="attr">"scripts"</span>: &#123;</span>
+<span class="line">    <span class="attr">"build"</span>: <span class="string">"node build.js"</span></span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>我在上述的 build 任务中调用了一个单独的脚本。该脚本会被 Node 所运行，这样就可以使用我所需的任何 npm 包了，同时还可以利用上 JavaScript 的能力。我还能列出很多，不过感兴趣的读者可以参考这份<a href="https://docs.npmjs.com/misc/scripts" target="_blank" rel="external">核心特性文档</a>。</p>
+<h3 id="wu-jie-3-gulp-de-liu-dui-yu-kuai-su-gou-jian-lai-shuo-shi-bu-ke-huo-que-de">误解 3：Gulp 的流对于快速构建来说是不可或缺的</h3>
+<p>Gulp 出来后，人们之所以很快就被它吸引过去并放弃 Grunt 的原因在于 Gulp 的内存流要比 Grunt 基于文件的方式快很多。不过，要想享受到流的强大功能，实际上并不需要 Gulp。事实上，流早就已经被内建到 Unix 与 Windows 命令行中了。管道(|)运算符会将一个命令的输出以流的方式作为另一个命令的输入。重定向（&gt;）运算符则会将输出重定向到文件。比如说在 Unix 中，我可以 <code>grep</code> 一个文件的内容，并将输出重定向到一个新的文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">grep ‘Cory House’ bigFile.txt &gt; linesThatHaveMyName.txt</span>
+</pre></td></tr></table></figure>
+<p>上述过程是流式的，并不会被写入到中间文件中（想知道如何以跨平台的方式实现上面的命令么？请继续往下读）。</p>
+<p>在 Unix 中，还可以通过 “&amp;” 运算符同时运行两个命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm run script1.js &amp; npm run script2.js</span>
+</pre></td></tr></table></figure>
+<p>上述两个脚本会同时运行。要想以跨平台的方式同时运行脚本，请使用 <a href="https://www.npmjs.com/package/npm-run-all" target="_blank" rel="external">npm-run-all</a>。这就造成了下面这个误解。</p>
+<h3 id="wu-jie-4-npm-scripts-wu-fa-shi-xian-kua-ping-tai-yun-xing">误解 4：npm scripts 无法实现跨平台运行</h3>
+<p>很多项目都会绑定到特定的操作系统上，因此跨平台是一件并不那么重要的事情。不过，如果需要以跨平台的方式运行，那么 npm scripts 依然可以工作得很好。无数的开源项目就是佐证。下面来介绍一下实现方式。</p>
+<p>操作系统的命令行会运行你的 <code>npm scripts</code>。因此，在 Linux 与 OS X 上，<code>npm scripts</code> 会在 Unix 命令行中运行。在 Windows 上，<code>npm scripts</code> 则运行在 Windows 命令行中。这样，如果希望构建脚本能够运行在所有平台上，你需要适配 Unix 与 Windows。下面介绍 3 种实现方式：</p>
+<h4 id="fang-shi-1-shi-yong-kua-ping-tai-de-ming-ling">方式 1：使用跨平台的命令</h4>
+<p>有很多跨平台的命令可供我们使用。下面列举一些：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">&amp;&amp; 链式任务（一个任务接着一个任务运行）</span>
+<span class="line">&lt; 将文件内容输入到一个命令</span>
+<span class="line">&gt;  将命令输出重定向到文件</span>
+<span class="line">| 将一个命令的输出重定向到另一个命令</span>
+</pre></td></tr></table></figure>
+<h4 id="fang-shi-2-shi-yong-node-bao">方式 2：使用 node 包</h4>
+<p>可以使用 node 包来代替 shell 命令。比如说，使用 <a href="https://www.npmjs.com/package/rimraf" target="_blank" rel="external">rimraf</a>来代替“rm -rf`”。使用 <a href="https://www.npmjs.com/package/cross-env" target="_blank" rel="external">cross-env</a> 以跨平台的方式设置环境变量。搜索 Google、npm 或是 <a href="https://libraries.io/" target="_blank" rel="external">libraries.io</a>，寻找你所需要的，几乎都会有相应的 node 包以跨平台的方式实现你的目标。如果命令行调用过长，你可以在单独的脚本中调用 Node 包，就像下面这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">node scriptName.js</span>
+</pre></td></tr></table></figure>
+<p>上述脚本就是普通的 JavaScript，由 Node 运行。既然是在命令行调用了脚本，那么你就不会受限于 .js 文件。你可以运行操作系统所能执行的任何脚本，比如说 Bash、Python、Ruby 或是 Powershell 等等。</p>
+<h4 id="fang-shi-3-shi-yong-a-href-https-www-npmjs-com-package-shelljs-shell-js-a">方式 3：使用 <a href="https://www.npmjs.com/package/shelljs" target="_blank" rel="external">ShellJS</a></h4>
+<p>ShellJS 是个通过 Node 来运行 Unix 命令的 npm 包。这样就可以通过它在所有平台上运行 Unix 命令了，也包括 Windows。</p>
+<p>本文主要介绍了人们对于 npm scripts 存在的误解，以及 npm scripts 自身所提供的强大功能。借助于操作系统提供的各种基础设施、npm scripts 以及各种命令，我们完全可以通过 npm scripts 以更加轻量级的方式实现 Gulp 与 Grunt 等任务运行器所提供的功能。</p>
+<p>接下来将会介绍 npm scripts 中存在的一些痛点以及解决之道。</p>
+<h2 id="tong-dian">痛点</h2>
+<p>显然，使用 npm scripts 也存在着一些问题：JSON 规范并不支持注释，因此无法在 package.json 中添加注释。不过有一些办法可以突破这个限制：</p>
+<ul>
+<li>编写小巧、命名良好、单一目的的脚本</li>
+<li>分离文档与脚本（比如说放在 README.md 中）</li>
+<li>调用单独的 .js 文件</li>
+</ul>
+<p>我更偏爱第一种解决方案。如果将每个脚本都进行分解，使其保持单一职责，那么注释就变得不那么重要了。脚本的名字应该能完全描述其意图，就像任何短小、命名良好的函数一样。就像我在 “Clean Code: Writing Code for Humans” 中所说的那样，短小、单一职责的函数几乎是不需要注释的。如果觉得有必要添加注释，那么我会使用第 3 种方案，即将脚本移到单独的文件中。这样就可以利用 JavaScript 组合的强大力量了。</p>
+<p>Package.json 也不支持变量。这看起来貌似是个大问题，但实际上并非如此，原因有二。首先，很多时候我们所需的变量都涉及到环境，这可以通过命令行进行设置。其次，如果出于其他原因而需要变量，那么你可以调用单独的 .js 文件。</p>
+<p>最后，还存在一种风险，那就是使用长长的、复杂的命令行参数，这些参数令人难以理解。代码审查与重构是确保 npm 脚本保持小巧、命名良好、单一职责，且每个人都能容易理解的好方式。如果脚本复杂到需要注释，那么你应该将单个脚本重构为多个命名良好的脚本，或是将其抽取为单独的文件。</p>
+<h3 id="wo-men-xu-yao-zheng-ming-chou-xiang-shi-you-yi-yi-de">我们需要证明抽象是有意义的</h3>
+<p>Gulp 与 Grunt 是对我所使用的工具的抽象。抽象是很有用的，不过抽象是有代价的。它让我们过分依赖于插件维护者与文档，同时随着插件数量的不断攀升，他们也不断引入复杂性。此外不少开发者与此观点不谋而合，比如说下面这些：</p>
+<ul>
+<li><a href="http://substack.net/task_automation_with_npm_run" target="_blank" rel="external">Task automation with npm run</a>—James Holliday</li>
+<li><a href="https://www.youtube.com/watch?v=0RYETb9YVrk" target="_blank" rel="external">Advanced front-end automation with npm scripts</a>—Kate Hudson</li>
+<li><a href="http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/" target="_blank" rel="external">How to use npm as a build tool</a>—Kieth Cirkel</li>
+<li><a href="http://app.pluralsight.com/courses/npm-build-tool-introduction" target="_blank" rel="external">Introduction to npm as a Build Tool</a>—Marcus Hammarberg</li>
+<li><a href="http://gon.to/2015/02/26/gulp-is-awesome-but-do-we-really-need-it/" target="_blank" rel="external">Gulp is awesome, but do we really need it?</a>—Gonto</li>
+<li><a href="http://code.tutsplus.com/courses/npm-scripts-for-build-tooling" target="_blank" rel="external">NPM Scripts for Build Tooling</a>—Andrew Burgess</li>
+</ul>
+<h2 id="npm-ti-huan-fang-an-can-kao">npm 替换方案参考</h2>
+<p>近来直接使用 node package 提供的命令行界面的情绪愈发高涨，反之，人们对通过运行任务从而屏蔽抽象功能的热情逐渐降温。在一定程度是，你无论如何都要使用 npm，而同时 npm 也提供了脚本功能，为什么不用呢？</p>
+<p>Grunt, Gulp, Broccoli, Brunch 和类似的工具都需要将自己的任务配置的适合他们的范型和结构，这些工具每一个都需要学习他们不同的语法、奇怪的用法和特有的方法。这增加了编码复杂度、构建复杂度，使得你关注修复工具问题更甚于写代码。</p>
+<p>由于这些构建工具依赖于包装了核心命令行工具的插件，并基于这个核心工具做了进一步的抽象，这使得出错的情况变得更加复杂。</p>
+<p>但是，作者在此建议:</p>
+<p><strong>如果你对当前的构建系统很满意，并且它能够很好的完成你的需求的话，就请继续使用吧！不要因为 npm scripts 越来越流行就盲目的使用它，应该把精力集中在写代码而不是学习更多的工具。如果你开始觉得自己正在和使用的工具战斗，那么这个时候我建议你考虑使用一下 npm scripts。</strong></p>
+<p>如果你现在做好决定想要调研或使用 npm scripts，那么请继续阅读本文！本文将会提供大量的案例任务，同时基于这些任务我也创建了 npm-build-boilerplate 以方便你学习。那么下面让我们开始吧！</p>
+<h3 id="xie-npm-scripts">写 npm scripts</h3>
+<p>我们会花费大量的时间在 <code>package.json</code> 文件上。这个文件描述了我们需要的所有的依赖和脚本。以下是我的 boilerplate 项目中的一部分内容：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+</pre></td><td class="code"><pre><span class="line"> 1 &#123;</span>
+<span class="line"> 2   "name": "npm-build-boilerplate",</span>
+<span class="line"> 3   "version": "1.0.0",</span>
+<span class="line"> 4   "scripts": &#123;</span>
+<span class="line"> 5     ...</span>
+<span class="line"> 6   &#125;,</span>
+<span class="line"> 7   "devDependencies": &#123;</span>
+<span class="line"> 8     ...</span>
+<span class="line"> 9   &#125;</span>
+<span class="line">10 &#125;</span>
+</pre></td></tr></table></figure>
+<p>接下来我们将逐步创建 <code>package.json</code> 文件。我们的脚本会写入 scripts 对象中，所有我们要使用的工具都会被安装并且写入 devDependencies 对象中。在开始之前，以下是本文中的项目结构:
+<img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="项目结构" class="hx_lazyimg" data-src="https://cdn.css-tricks.com/wp-content/uploads/2016/02/directory.png"></p>
+<h3 id="bian-yi-scss-wei-css">编译 scss 为 css</h3>
+<p>为了将 SCSS 编译成 CSS，我使用了 node-sass。首先，我们需要安装 node-sass，在命令行下运行以下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm install --save-dev node-sass</span>
+</pre></td></tr></table></figure>
+<p>这个命令会在当前目录下安装 node-sass，并添加到 <code>package.json</code> 的 devDependencies 对象中。当其他人使用你的项目时会非常方便，因为他们已经有了运行项目所需的所有内容。只要安装过一次，使用时在命令行运行以下代码即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">node-sass --output-style compressed -o dist/css src/scss</span>
+</pre></td></tr></table></figure>
+<p>让我们看一下这个命令做了什么：从后向前看，查找 <code>src/scss</code> 目录的 SCSS 文件，输出（-o 标识）编译的 CSS 到<code>dist/css</code>目录，压缩输出文件（使用 --output-style 标识，设置选项值为&quot;compressed&quot;）。
+现在我们知道了在命令行中如何工作，那么让我们把它放到 npm scirpt 中。在<code>package.json</code>的 scripts 对象中添加如下内容:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  "scss": "node-sass --output-style compressed -o dist/css src/scss"</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>现在回到命令行并运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm run scss</span>
+</pre></td></tr></table></figure>
+<p>可以看到这样运行的输出结果和直接在命令行使用 node-sass 命令得到的结果一致。
+本文剩余部分创建的任何一个 npm script，都可以像上例一样使用命令行运行。</p>
+<p>只要把你想要运行的任务名从 scss 替换成你想要的名字即可。</p>
+<p>你将看到，我们使用的很多命令行工具都有很多的配置项，你可以使用配置项来精确完成你想要做的工作。比如，这是node-sass的选项列表，以下展示了传多个配置项的配置方法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  "scss": "node-sass --output-style nested --indent-type tab --indent-width 4 -o dist/css src/scss"</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<h3 id="shi-yong-post-css-zi-dong-gei-css-jia-qian-zhui">使用 PostCSS 自动给 CSS 加前缀</h3>
+<p>我们已经能够把 SCSS 编译成 CSS，现在我们希望通过 Autoprefixer 和 PostCSS 自动给 CSS 代码添加厂商前缀，我们可以通过空格分隔的方式从而同时安装多个模块：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm install --save-dev postcss-cli autoprefixer</span>
+</pre></td></tr></table></figure>
+<p>因为 PostCSS 默认不做任何事情，所以我们安装了两个模块。PostCSS 依赖其他的插件来处理你提供的 CSS，比如 Autoprefixer。
+安装并保存必要工具到 devDependencies 后，在你的 scripts 对象中添加一个新任务:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "autoprefixer": "postcss -u autoprefixer -r dist/css/*"</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>这个任务的意思是：嗨 postcss，使用（-u 标识符）Autoprefixer 替换（-r标识符）<code>dist/css</code>目录下的所有<code>.css</code>文件，给他们添加厂商前缀代码。就是这样简单！想要修改默认浏览器前缀？只要给脚本添加如下代码即可:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">"autoprefixer": "postcss -u autoprefixer --autoprefixer.browsers '&amp;gt; 5%, ie 9' -r dist/css/*"</span>
+</pre></td></tr></table></figure>
+<p>再次申明，配置你自己的构建代码有很多选项可以使用：postcss-cli 和 autoprefixer。</p>
+<h3 id="java-script-dai-ma-jian-cha">JavaScript 代码检查</h3>
+<p>对于写代码来说，保持标准格式和样式是非常重要的，它能够确保错误最小化并提高开发效率。&quot;代码检查&quot;帮助我们自动化的完成了这个工作，所以我们通过使用 eslint 来进行代码检查。</p>
+<p>再次如上文所述，安装 eslint 的包，这次让我们使用快捷方式:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm i -D eslint</span>
+</pre></td></tr></table></figure>
+<p>这和如下代码是一样的效果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm install --save-dev eslint</span>
+</pre></td></tr></table></figure>
+<p>安装完成后，我们给 eslint 配置一些运行代码的基本规则。使用如下代码开始一个向导：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+</pre></td><td class="code"><pre><span class="line">eslint --init // 译者注：这里直接使用会抛错 eslint 找不到，因为这种使用方法必须安装在全局。</span>
+<span class="line">即通过 npm install i -g eslint 方式安装</span>
+</pre></td></tr></table></figure>
+<p>我建议选择&quot;回答代码风格问题&quot;并回答提问的相关问题。这个过程中 eslint 会在你的项目根目录下生成一个新文件，并检测你的相关代码。
+现在，让我们把代码风格检测任务添加到 <code>package.json</code> 的 scripts 对象中：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "lint": "eslint src/js"</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>我们的任务仅有 13 字符！它会查找 <code>src/js</code> 目录下的所有 JavaScript 文件，并根据刚才生成的规则进行代码检测。当然，如果感兴趣的话你可以详细配置各种规则：<a href="http://eslint.org/docs/user-guide/command-line-interface#options" target="_blank" rel="external">get crazy with the options</a></p>
+<h3 id="hun-yao-ya-suo-java-script-wen-jian">混淆压缩 JavaScript 文件</h3>
+<p>让我们继续，下面我们需要使用 uglify-js 来混淆压缩 JavaScript 文件，首先需要安装 uglify-js：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm i -D uglify-js</span>
+</pre></td></tr></table></figure>
+<p>然后我们可以在 <code>package.json</code> 里创建压缩混合任务：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "uglify": "mkdir -p dist/js &amp;&amp; uglifyjs src/js/*.js -m -o dist/js/app.js"</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>npm scripts 的任务的本质是：可以重复执行的、命令行任务的快捷方式（别名），这也是 npm scripts 的优点之一。这就意味着你可以直接在脚本里使用标准命令行代码！这个任务使用了两个标准命令行特性：mkdir 和 &amp;&amp;。</p>
+<p>这个任务的第一部分“ mkdir -p dist/js ”：如果不存在目录（-p 标识）就创建一个目录结构（mkdir），创建成功后执行 uglifyjs 命令。&amp;&amp; 帮助你连接多个命令，如果前一个命令成功执行的话，就分别顺序执行剩余的命令。</p>
+<p>这个任务的第二部分告诉 uglifyjs 针对 <code>src/js/</code> 目录下的所有 JS 文件（<code>*.js</code>），使用 <code>mangle</code>命令（-m 标识），输出结果到 <code>dist/js/app.js</code> 文件中。这里是 uglifyjs 工具的全部配置选项 list of options。</p>
+<p>让我们来更新一下 uglify 任务，创建一个 <code>dist/js/app.js</code> 的压缩版本，链接另外一个 uglifyjs 的命令并传参给 <code>compress</code>（-c标识）。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "uglify": "mkdir -p dist/js &amp;&amp; uglifyjs src/js/*.js -m -o dist/js/app.js &amp;&amp; uglifyjs src/js/*.js -m -c -o dist/js/app.min.js"</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<h3 id="ya-suo-tu-pian">压缩图片</h3>
+<p>下面我们将进行图片压缩的工作。根据 httparchive.org 的数据统计，网络上前 1000 名的网站平均页面大小为 1.9 M ，其中图片占了 1.1 M（with images accounting for 1.1mb of that total）。所以提高网页加载速度的其中一个好办法就是减小图片大小。</p>
+<p>安装 imagemin-cli:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm i -D imagemin-cli</span>
+</pre></td></tr></table></figure>
+<p>Imagemin 非常棒，它可以压缩大多数图片类型，包括 GIF、JPG、PNG 和 SVG。 使用如下代码可以将一整个文件夹的图片全部压缩：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "imagemin": "imagemin src/images dist/images -p",</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>这个任务告诉 imagemin 找到并压缩 <code>src/images</code> 中的所有图片并输出到 <code>dist/images</code>中。-p 标志在允许的情况下将图片处理成渐进图片。更多配置可查看文档 all available options</p>
+<h3 id="svg-jing-ling-sprites">SVG 精灵（Sprites）</h3>
+<p>关于 SVG 的讨论近年来逐渐火热，SVG 有众多优点：在所有的设备上保持松散结构、可通过 CSS 编辑、对读屏软件友好。然而，SVG 编辑软件经常会产生大量的冗余代码。幸运的是，svgo 可以帮助你自动删除这些冗余信息（我们马上就会安装 svgo）。</p>
+<p>接下来我们来安装 svg-sprite-generator，用于自动处理并整合多个 SVG 文件为一个 SVG 文件（更多处理方案：more on that technique here）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm i -D svgo svg-sprite-generator</span>
+</pre></td></tr></table></figure>
+<p>你现在应该已经熟悉了这个过程——添加一个任务在你的 <code>package.json</code> scripts 对象中：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "icons": "svgo -f src/images/icons &amp;&amp; mkdir -p dist/images &amp;&amp; svg-sprite-generate -d src/images/icons -o dist/images/icons.svg"</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>注意 icons 任务通过两个 &amp;&amp; 引导符做了三件事情：</p>
+<ol>
+<li>使用 svgo 传参一个 SVG 目录（-f标识），这个操作压缩了目录内的全部 SVG 文件；</li>
+<li>如果不存在 'dist/images' 目录则创建该目录（使用 mkdir -p命令）；</li>
+<li>使用 svg-sprite-generator，传参一个 SVG 目录（-d 标识）以及输出处理后的 SVG 文件的目录路径名（-o 标识）。</li>
+</ol>
+<h3 id="tong-guo-browser-sync-ti-gong-fu-wu-zi-dong-jian-ce-bing-zhu-ru-bian-geng">通过 BrowserSync 提供服务、自动监测并注入变更</h3>
+<p>最后一个插件是 BrowserSync，它可以做如下事情：启动一个本地服务，向连接的浏览器自动注入更新的文件，并同步浏览器的点击和滚动。安装并添加任务的代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line">npm i -D browser-sync</span>
+<span class="line"><span class="string">"scripts"</span>: &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  <span class="string">"serve"</span>: <span class="string">"browser-sync start --server --files 'dist/css/*.css, dist/js/*.js'"</span></span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>BrowserSync 任务默认使用当前根目录下的路径启动一个服务器（<code>--server</code> 标识），<code>--files</code> 标识告诉 BrowserSync 去监测 <code>dist</code> 目录的 CSS 或 JS 文件，一旦有任何变化，则自动向页面注入变化的文件。</p>
+<p>你可以同时打开多个浏览器（甚至在不同的设备上），他们都会实时更新文件变化的！</p>
+<h3 id="fen-zu-ren-wu">分组任务</h3>
+<p>使用以上任务我们可以做到如下功能：</p>
+<p>编译 SCSS 到 CSS 并自动添加厂商前缀
+对 Javascript 进行代码检查及混淆压缩
+压缩图片
+整合整个文件夹内的 SVG 文件为一个 SVG 文件
+启动一个本地服务并向连接至该服务的浏览器自动注入更新。
+这还不是全部内容！</p>
+<h3 id="he-bing-css-ren-wu">合并 CSS 任务</h3>
+<p>我们会添加一个新的任务，用于合并两个 CSS 相关的任务（处理 SASS 和执行加前缀的 Autoprefixer），有了这个任务我们就不用分别执行两个相关任务了：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "build:css": "npm run scss &amp;&amp; npm run autoprefixer"</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>当你运行 <code>npm run build:css</code> 时，这个任务会告诉命令行去执行 <code>npm run scss</code>，当这个任务成功完成后，会接着（&amp;&amp;）执行 <code>npm run autoprefixer</code>。</p>
+<p>就像这个 build:css 任务一样，我们可以把 JavaScript 任务也链接到一起以方便执行：</p>
+<h3 id="he-bing-java-script-ren-wu">合并 JavaScript 任务</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "build:js": "npm run lint &amp;&amp; npm run uglify"</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>现在，我们可以通过 <code>npm run build:js</code> 一步调用，来进行代码检测、混淆压缩 JavaScript 代码了！</p>
+<p>合并剩余任务</p>
+<p>对于图片任务、其他剩余构建任务，我们可以用相同的方法把他们变成一个任务：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "build:images": "npm run imagemin &amp;&amp; npm run icons",</span>
+<span class="line">  "build:all": "npm run build:css &amp;&amp; npm run build:js &amp;&amp; npm run build:images",</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<h3 id="bian-geng-jian-kong">变更监控</h3>
+<p>至此，我们的任务不断的需要对文件做一些变更，我们不断的需要切回命令行去运行相应的任务。针对这个问题，我们可以添加一个任务来监听文件变更，让文件在变更的时候自动执行这些任务。这里我推荐使用 onchange 插件，安装方法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm i -D onchange</span>
+</pre></td></tr></table></figure>
+<p>让我们来给CSS和JavaScript设置监控任务：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "watch:css": "onchange 'src/scss/*.scss' -- npm run build:css",</span>
+<span class="line">  "watch:js": "onchange 'src/js/*.js' -- npm run build:js",</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>这些任务可以分解如下：onchange 需要你传参想要监控的文件路径（字符串），这里我们传的是 SCSS 和 JS 源文件，我们想要运行的命令跟在--之后，这个命令当路径内的文件发生增删改的时候就会被立即执行。</p>
+<p>让我们再添加一个监控命令来完成我们的 npm scripts 构建过程。</p>
+<p>再添加一个包，<a href="https://github.com/keithamus/parallelshell" target="_blank" rel="external">parallelshell</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm i -D parallelshell</span>
+</pre></td></tr></table></figure>
+<p>再次给 scripts 对象添加一个新任务：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "watch:all": "parallelshell 'npm run serve' 'npm run watch:css' 'npm run watch:js'"</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>parallelshell 支持多个参数字符串，它会给 npm run 传多个任务用于执行。</p>
+<p>为什么时候 parallelshell 去合并多个任务，而不是像之前的任务一样使用 &amp;&amp; 呢？最开始我也尝试这么做了，但是问题是：&amp;&amp; 链接多个命令到一块，需要等待每一个命令成功完成后才会执行下一个任务。然而当我们运行 watch 命令时，这些命令一直都不会结束！这样我们就会卡在一个无限循环里。</p>
+<p>因此，使用 parallelshell 使得我们可以同时执行多个 watch 命令。（译者注：后来在评论里有人推荐使用 npm-run-all 插件来代替 parallelshell，它支持这种用法可以一次性检测全部 watch 任务更加方便：&quot;watch&quot;: &quot;npm-run-all --parallel serve watch:*&quot;）</p>
+<p>这个任务使用了 BrowserSync 的 npm run serve 任务启动了一个服务，然后对 CSS 和 JavaScript 文件执行了监控命令，一旦 CSS 或 JavaScript 文件有变更，监控任务就会执行相应的构建（build）任务。由于 BrowserSync 被设置成监控 <code>dist</code> 目录下的变更，所以它会自动的向相关联的 URL 内注入新的文件，真是太棒了！</p>
+<h3 id="qi-ta-shi-yong-ren-wu">其他实用任务</h3>
+<p>npm 有大量可以实用的插件（<a href="https://docs.npmjs.com/misc/scripts#description" target="_blank" rel="external">lots of baked in tasks</a> ），让我们再添加一个新的任务来看看这些插件对构建脚本的影响：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  ...</span>
+<span class="line">  "postinstall": "npm run watch:all"</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>当你在命令行中执行 <code>npm install</code> 的时候 postinstall 会立即执行，当团队合作时这个功能非常有用。当别人复制了你的项目并运行了 npm install 的时候，我们的 watch:all 任务就会马上执行，别人马上就会准备好一切开发环境：启动一个服务、打开一个浏览器窗口、监控文件变更。</p>
+<h3 id="da-bao">打包</h3>
+<p>万一你忘记了什么知识点，我用以上所有提到的任务创建了一个 <a href="https://github.com/damonbauer/npm-build-boilerplate" target="_blank" rel="external">npm-build-boilerplate</a> 项目以方便你学习。</p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/使用npm scripts构建项目.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/npm/">npm</a>
+                
+              
+                <a class="post-tags" href="/tags/构建工具/">构建工具</a>
+                
+              
+                <a class="post-tags" href="/tags/Gulp/">Gulp</a>
+                
+              
+                <a class="post-tags" href="/tags/Grunt/">Grunt</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=使用 npm scripts 构建项目 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2016/02/28/使用npm scripts构建项目/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2016/02/28/使用npm scripts构建项目/index.html&amp;title=使用 npm scripts 构建项目 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2016/02/28/使用npm scripts构建项目/index.html&amp;text=使用 npm scripts 构建项目;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=使用 npm scripts 构建项目 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2016/02/28/使用npm scripts构建项目/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2016/03/24/npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法/">
+      ← npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法
+    </a>
+  
+  
+    <a class="pull-right" href="/2016/01/14/Git日常使用提交信息参考规范及总结梳理/">
+      Git日常使用提交信息参考规范及总结梳理 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2016/02/28/使用npm scripts构建项目/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

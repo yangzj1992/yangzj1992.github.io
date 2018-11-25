@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#rong-yi-chu-cuo-de-code-var-code-bian-liang-ti-sheng"><span class="toc-number">1.</span> <span class="toc-text">容易出错的 var 变量提升</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shen-ceng-nei-rong-bian-liang-de-sheng-ming-zhou-qi"><span class="toc-number">2.</span> <span class="toc-text">深层内容: 变量的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#code-var-code-bian-liang-de-sheng-ming-zhou-qi"><span class="toc-number">3.</span> <span class="toc-text">var 变量的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#han-shu-sheng-ming-de-sheng-ming-zhou-qi"><span class="toc-number">4.</span> <span class="toc-text">函数声明的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#code-let-code-bian-liang-de-sheng-ming-zhou-qi"><span class="toc-number">5.</span> <span class="toc-text">let 变量的生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#wei-shi-yao-bian-liang-ti-sheng-zai-code-let-code-de-sheng-ming-zhou-qi-zhong-wu-xiao"><span class="toc-number">5.1.</span> <span class="toc-text">为什么变量提升在 let 的生命周期中无效</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jie-lun"><span class="toc-number">6.</span> <span class="toc-text">结论</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升</h1>
+          <time datetime="2016-08-03T05:21:20.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2016 年 08 月 03 日</span>
+            <span style="margin-left: 10px;">最近更新于：2016 年 10 月 24 日</span>
+            <span style="margin-left: 10px;">本文共 2,376 字，读完约 9 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <blockquote>
+<p>原文链接 : <a href="https://rainsoft.io/variables-lifecycle-and-why-let-is-not-hoisted/" target="_blank" rel="external">JavaScript variables lifecycle: why let is not hoisted</a><br>
+原文作者 : <a href="https://rainsoft.io/author/dmitri-pavlutin/" target="_blank" rel="external">Dmitri Pavlutin</a><br>
+译文出自 : <a href="http://zcfy.cc/" target="_blank" rel="external">众成翻译</a><br>
+译者 : <a href="http://qcyoung.com">yangzj1992</a><br>
+校对者: <a href="https://www.zhihu.com/people/ha-ha-qiu-52" target="_blank" rel="external">lisa</a><br>
+首发于: <a href="http://zcfy.cc/article/javascript-variables-lifecycle-why-let-is-not-hoisted-976.html" target="_blank" rel="external">众成翻译</a></p>
+</blockquote>
+<p>变量提升是一个将变量或者声明函数提升到作用域起始处的过程，通常指的是变量声明 <code>var</code> 和函数声明 <code>function fun() {...}</code></p>
+<p>当 <code>let</code>（以及具备了和 <code>let</code> 相似声明行为的 <code>const</code> 和 <code>class</code>）等声明方式在 ES2015 中被引入后，许多的开发者包括我都使用了<em>变量提升</em>的定义来描述变量是如何被访问的。但经过对这个问题更多的搜索后，我十分惊讶的发现<em>变量提升</em>并不是可以用来准确描述 <code>let</code> 变量初始化和可用性的合适术语。</p>
+<p>ES2015 为 <code>let</code> 提供了一个不同的改进机制。它要求了更严格的变量声明方式（你在定义变量前是无法访问它的）并且这也在结果上保证了更好的代码质量。</p>
+<p>现在让我们一起深入了解关于这个过程的更多细节。</p>
+<h3 id="rong-yi-chu-cuo-de-code-var-code-bian-liang-ti-sheng">容易出错的 <code>var</code> 变量提升</h3>
+<p>有时我会在作用域下的任何位置上看到一个奇怪的变量声明 <code>var varname</code> 和函数声明 <code>function funName() {...}</code> 。</p>
+<p><a href="http://jsbin.com/fewiri/1/edit?js,console" target="_blank" rel="external">Try in JS Bin</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// var hoisting</span></span>
+<span class="line">num;     <span class="comment">// =&gt; undefined</span></span>
+<span class="line"><span class="keyword">var</span> num;</span>
+<span class="line">num = <span class="number">10</span>;</span>
+<span class="line">num;     <span class="comment">// =&gt; 10</span></span>
+<span class="line"><span class="comment">// function hoisting</span></span>
+<span class="line">getPi;   <span class="comment">// =&gt; function getPi() &#123;...&#125;</span></span>
+<span class="line">getPi(); <span class="comment">// =&gt; 3.14</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPi</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">return</span> <span class="number">3.14</span>;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>变量 <code>num</code> 在它的声明语句 <code>var num</code> 之前就被访问了，所以它的值为 <code>undefined</code></p>
+<p>函数 <code>function getPi() {...}</code> 是定义在文件的末尾的。然而函数可以在它声明 <code>getPi()</code> 之前就被调用，因为它被提升到了作用域的顶部。</p>
+<p>这就是典型的<em>变量提升</em>。</p>
+<p>事实证明，在首次使用变量或函数后才声明变量或函数会很容易产生困惑。假设你正滚动查看一个大文件，然后发现了一个未声明的变量...你肯定会想它到底为什么在这里出现并且它是在哪定义的呢？</p>
+<p>当然一个熟练的 JavaScript 开发者并不会这样编写代码。但在成千上万个 JavaScript Github 库中却可能存在着相当数量的这样的代码。</p>
+<p>甚至在上面给出的代码示例中，我们也很难去明白代码中的声明流程。</p>
+<p>我们应当自然地首先声明或是描述一个未知的术语。在这之后再对它进行使用。<code>let</code> 便是鼓励你遵循这种方法来设置变量。</p>
+<h3 id="shen-ceng-nei-rong-bian-liang-de-sheng-ming-zhou-qi">深层内容: 变量的生命周期</h3>
+<p>当引擎使用变量时，它们的生命周期包含以下阶段：</p>
+<ol>
+<li>
+<p><strong>声明阶段</strong> 这一阶段在作用域中注册了一个变量。</p>
+</li>
+<li>
+<p><strong>初始化阶段</strong> 这一阶段分配了内存并在作用域中让内存与变量建立了一个绑定。在这一步变量会被自动初始化为 <code>undefined</code> 。</p>
+</li>
+<li>
+<p><strong>赋值阶段</strong> 这一阶段为初始化变量分配具体的一个值。</p>
+</li>
+</ol>
+<p>一个变量在通过声明阶段时它还是处于 <strong>未初始化的</strong> 状态，这时它仍然还没有到达初始化阶段。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="Infographic" class="hx_lazyimg" data-src="http://p0.qhimg.com/t01ea63a0e0c145b0f3.jpg"></p>
+<p>注意，按照变量的生命周期过程，<em>声明阶段</em>与我们通常所说的<em>变量声明</em>是不同的术语。简单来讲，引擎处理变量声明需要经过完整的这 3 个阶段：声明阶段，初始化阶段和赋值阶段。</p>
+<h3 id="code-var-code-bian-liang-de-sheng-ming-zhou-qi"><code>var</code> 变量的生命周期</h3>
+<p>稍微熟悉下这些生命周期阶段，现在让我们用它们来描述引擎是如何处理 <code>var</code> 变量的。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="Infographic" class="hx_lazyimg" data-src="http://p0.qhimg.com/t014b5f030a2ed83760.jpg"></p>
+<p>假设一个场景，当 JavaScript 遇到了一个函数作用域，其中包含了 <code>var variable</code> 的语句。则在任何语句执行之前，这个变量在作用域的开头就通过了<em>声明阶段</em>并马上来到了<em>初始化阶段</em>（步骤一）。</p>
+<p>同时 <code>var variable</code> 在函数作用域中的位置并不会影响它的声明和初始化阶段的进行。</p>
+<p>在声明和初始化阶段之后，赋值阶段之前，变量的值便是 <code>undefined</code> 并已经可以被使用了。</p>
+<p>在<em>赋值阶段</em> <code>variable = 'value'</code> 语句使变量接受了它的初始化值（步骤二）。</p>
+<p>这里的<em>变量提升</em>严格的说是指变量在函数作用域的<em>开始位置就完成了声明和初始化阶段</em>。在这里这两个阶段之间并没有任何的间隙。</p>
+<p>让我们参考一个示例来研究。下面的代码创建了一个包含 <code>var</code> 语句的函数作用域：</p>
+<p><a href="http://jsbin.com/karuxe/3/edit?js,console" target="_blank" rel="external">Try in JS Bin</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+</pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">multiplyByTen</span>(<span class="params">number</span>) </span>&#123;</span>
+<span class="line">  <span class="built_in">console</span>.log(ten); <span class="comment">// =&gt; undefined</span></span>
+<span class="line">  <span class="keyword">var</span> ten;</span>
+<span class="line">  ten = <span class="number">10</span>;</span>
+<span class="line">  <span class="built_in">console</span>.log(ten); <span class="comment">// =&gt; 10</span></span>
+<span class="line">  <span class="keyword">return</span> number * ten;</span>
+<span class="line">&#125;</span>
+<span class="line">multiplyByTen(<span class="number">4</span>); <span class="comment">// =&gt; 40</span></span>
+</pre></td></tr></table></figure>
+<p>当 JavaScript 开始执行 <code>multipleByTen(4)</code> 时进入了函数作用域中，变量 <code>ten</code> 在第一个语句之前就经过了声明和初始化阶段，所以当调用 <code>console.log(ten)</code> 时打印为 <code>undefined</code>。</p>
+<p>当语句 <code>ten = 10</code> 为变量赋值了初始化值。在赋值后，语句 <code>console.log(ten)</code> 打印了正确的 <code>10</code> 值。</p>
+<h3 id="han-shu-sheng-ming-de-sheng-ming-zhou-qi">函数声明的生命周期</h3>
+<p>对于一个 <em>函数声明语句</em> <code>function funName() {...}</code> 那就更简单了。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="Infographic" class="hx_lazyimg" data-src="http://p0.qhimg.com/t0134485377a7130217.jpg"></p>
+<p><em>声明、初始化和赋值阶段</em>在封闭的函数作用域的开头便立刻进行（只有一步）。 <code>funName()</code> 可以在作用域中的任意位置被调用，这与其声明语句所在的位置无关（它甚至可以被放在程序的最底部）。</p>
+<p>下面的代码是一个函数提升的演示：</p>
+<p><a href="http://jsbin.com/ximedo/2/edit?js,console" target="_blank" rel="external">Try in JS Bin</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+</pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sumArray</span>(<span class="params">array</span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">return</span> array.reduce(sum);</span>
+<span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">a, b</span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">return</span> a + b;</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+<span class="line">sumArray([<span class="number">5</span>, <span class="number">10</span>, <span class="number">8</span>]); <span class="comment">// =&gt; 23</span></span>
+</pre></td></tr></table></figure>
+<p>当 JavaScript 执行 <code>sumArray([5, 10, 8])</code> 时，它便进入了 <code>sumArray</code> 的函数作用域。在作用域内，任何语句执行之前的瞬间，<code>sum</code> 就经过了所有的三个阶段：声明，初始化和赋值阶段。</p>
+<p>这样 <code>array.reduce(sum)</code> 即使在它的声明语句 <code>function sum(a, b) {...}</code> 之前也可以使用 <code>sum</code>。</p>
+<h3 id="code-let-code-bian-liang-de-sheng-ming-zhou-qi"><code>let</code> 变量的生命周期</h3>
+<p><code>let</code> 变量的处理方式不同于 <code>var</code>。它的主要区分点在于声明和初始化阶段是分开的。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="Infographic" class="hx_lazyimg" data-src="http://p0.qhimg.com/t0122846bdbec4513d7.jpg"></p>
+<p>现在让我们研究这样一个场景，当解释器进入了一个包含 <code>let variable</code> 语句的块级作用域中。这个变量立即通过了<em>声明阶段</em>，并在作用域内注册了它的名称（步骤一）。</p>
+<p>然后解释器继续逐行解析块语句。</p>
+<p>这时如果你在这个阶段尝试访问 <code>variable</code>，JavaScript 将会抛出 <code>ReferenceError: variable is not defined</code>。因为这个变量的状态依然是<em>未初始化</em>的。</p>
+<p>此时 <code>variable</code> 处于<em>临时死区</em>中。</p>
+<p>当解释器到达语句 <code>let variable</code> 时，此时变量通过了初始化阶段（步骤二）。现在变量状态是<em>初始化的</em>并且访问它的值是 <code>undefined</code>。</p>
+<p>同时变量在此时也离开了<em>临时死区</em>。</p>
+<p>之后当到达赋值语句 <code>variable = 'value'</code> 时，变量通过了赋值阶段（步骤三）。</p>
+<p>如果 JavaScript 遇到这样的语句 <code>let variable = 'value'</code> ，那么变量会在这一条语句中同时经过初始化和赋值阶段。</p>
+<p>让我们继续看一个示例。这里 <code>let</code> 变量 <code>number</code> 被创建在了一个块级作用域中：</p>
+<p><a href="http://jsbin.com/qixoko/2/edit?js,console" target="_blank" rel="external">Try in JS Bin</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> condition = <span class="literal">true</span>;</span>
+<span class="line"><span class="keyword">if</span> (condition) &#123;</span>
+<span class="line">  <span class="comment">// console.log(number); // =&gt; Throws ReferenceError</span></span>
+<span class="line">  <span class="keyword">let</span> number;</span>
+<span class="line">  <span class="built_in">console</span>.log(number); <span class="comment">// =&gt; undefined</span></span>
+<span class="line">  number = <span class="number">5</span>;</span>
+<span class="line">  <span class="built_in">console</span>.log(number); <span class="comment">// =&gt; 5</span></span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>当 JavaScript 进入 <code>if (condition) {...}</code> 块级作用域中，<code>number</code> 立即通过了声明阶段。</p>
+<p>因为 <code>number</code> 尚未初始化并且处于临时死区，此时试图访问该变量会抛出 <code>ReferenceError: number is not defined</code>.</p>
+<p>之后语句 <code>let number</code> 使其得以初始化。现在变量可以被访问，但它的值是 <code>undefined</code>。</p>
+<p>之后赋值语句 <code>number = 5</code> 当然也使变量经过了赋值阶段。</p>
+<p><code>const</code> 和 <code>class</code> 类型与 <code>let</code> 有着相同的生命周期，除了它们的赋值语句只会发生一次。</p>
+<h4 id="wei-shi-yao-bian-liang-ti-sheng-zai-code-let-code-de-sheng-ming-zhou-qi-zhong-wu-xiao">为什么变量提升在 <code>let</code> 的生命周期中无效</h4>
+<p>如上所述，<em>变量提升</em>是变量的<em>耦合</em>声明并且在作用域的顶部完成初始化。</p>
+<p>然而 <code>let</code> 生命周期中将声明和初始化阶段<em>解耦</em>。这一解耦使 <code>let</code> 的<em>变量提升</em>现象消失。</p>
+<p>由于两个阶段之间的间隙创建了临时死区，在此时变量无法被访问。</p>
+<p>这就像科幻的风格一样，在 <code>let</code> 生命周期中由于<em>变量提升</em>失效所以产生了临时死区。</p>
+<h3 id="jie-lun">结论</h3>
+<p>使用 <code>var</code> 自由的去声明变量很容易出现错误。</p>
+<p>基于这一点，ES2015 引进了 <code>let</code>。它使用了一种改进的算法来声明变量并添加了块作用域。</p>
+<p>因为声明和初始化阶段是解耦的，变量提升对于 <code>let</code> 变量（也包括 <code>const</code> 和 <code>class</code>)是无效的。在初始化之前，变量处于临时死区中并不可被访问。</p>
+<p>为了保证平稳的变量声明，推荐这些技巧以供参考：</p>
+<ul>
+<li>
+<p>声明，初始化变量后再使用变量。这个流程才是正确并易于遵循的。</p>
+</li>
+<li>
+<p>尽可能的减少变量数。你暴露的变量越少，你的代码则会变得更加模块化。</p>
+</li>
+</ul>
+<p>这就是今天所有的内容。我们在下一篇文章再见。</p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/JavaScript/">JavaScript</a>
+                
+              
+                <a class="post-tags" href="/tags/ECMAScript6/">ECMAScript6</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2016/08/03/【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2016/08/03/【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升/index.html&amp;title=【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2016/08/03/【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升/index.html&amp;text=【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2016/08/03/【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2016/08/28/ssh_exchange_identification: Connection closed by remote host 报错问题/">
+      ← ssh_exchange_identification:Connection closed by remote host 报错问题
+    </a>
+  
+  
+    <a class="pull-right" href="/2016/07/18/某只程序猿的扇贝英语打卡500天有感/">
+      某只程序猿的扇贝英语打卡 500 天有感 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2016/08/03/【译】JavaScript 变量的生命周期：为什么 let 不存在变量提升/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

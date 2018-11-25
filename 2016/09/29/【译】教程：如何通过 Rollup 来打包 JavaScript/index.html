@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>【译】教程：如何通过 Rollup 来打包 JavaScript | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#yu-bei-zhi-shi"><span class="toc-number">1.</span> <span class="toc-text">预备知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shi-yao-shi-rollup"><span class="toc-number">2.</span> <span class="toc-text">什么是 Rollup?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#wei-shi-yao-ni-xu-yao-guan-xin-rollup"><span class="toc-number">2.1.</span> <span class="toc-text">为什么你需要关心 Rollup?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#di-yi-bu-fen-ru-he-shi-yong-rollup-lai-chu-li-bing-da-bao-java-script-wen-jian"><span class="toc-number">3.</span> <span class="toc-text">第一部分：如何使用 Rollup 来处理并打包 JavaScript 文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#di-0-bu-chuang-jian-yi-ge-bao-han-java-script-he-css-de-da-bao-xiang-mu"><span class="toc-number">3.1.</span> <span class="toc-text">第 0 步: 创建一个包含 JavaScript 和 CSS 的打包项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bu-zou-1-an-zhuang-rollup-bing-chuang-jian-pei-zhi-wen-jian"><span class="toc-number">3.2.</span> <span class="toc-text">步骤 1：安装 Rollup 并创建配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ce-shi-rollup-pei-zhi"><span class="toc-number">3.2.1.</span> <span class="toc-text">测试 Rollup 配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#da-bao-shu-chu-de-nei-rong"><span class="toc-number">3.2.2.</span> <span class="toc-text">打包输出的内容</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bu-zou-2-she-zhi-babel-lai-shi-yong-xin-de-java-script-te-xing"><span class="toc-number">3.3.</span> <span class="toc-text">步骤 2： 设置 Babel 来使用新的 JavaScript 特性。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#an-zhuang-bi-yao-de-mo-kuai"><span class="toc-number">3.3.1.</span> <span class="toc-text">安装必要的模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#chuang-jian-code-babelrc-code"><span class="toc-number">3.3.2.</span> <span class="toc-text">创建 .babelrc</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#geng-xin-code-rollup-config-js-code"><span class="toc-number">3.3.3.</span> <span class="toc-text">更新 rollup.config.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jian-cha-shu-chu-de-bundle"><span class="toc-number">3.3.4.</span> <span class="toc-text">检查输出的 bundle</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bu-zou-3-tian-jia-es-lint-lai-jian-cha-tong-chang-de-java-script-cuo-wu"><span class="toc-number">3.4.</span> <span class="toc-text">步骤 3: 添加 ESLint 来检查通常的 JavaScript 错误。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#an-zhuang-mo-kuai"><span class="toc-number">3.4.1.</span> <span class="toc-text">安装模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sheng-cheng-yi-ge-code-eslintrc-json-code"><span class="toc-number">3.4.2.</span> <span class="toc-text">生成一个 .eslintrc.json。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#diao-zheng-code-eslintrc-json-code"><span class="toc-number">3.4.3.</span> <span class="toc-text">调整 .eslintrc.json。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#geng-xin-code-rollup-config-js-code-1"><span class="toc-number">3.4.4.</span> <span class="toc-text">更新 rollup.config.js。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jian-cha-kong-zhi-tai-shu-chu"><span class="toc-number">3.4.5.</span> <span class="toc-text">检查控制台输出</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bu-zou-4-tian-jia-cha-jian-lai-chu-li-fei-es-mo-kuai"><span class="toc-number">3.5.</span> <span class="toc-text">步骤4：添加插件来处理非 ES 模块。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#tian-jia-node-mo-kuai-zuo-wei-yi-lai-xiang"><span class="toc-number">3.5.1.</span> <span class="toc-text">添加 Node 模块作为依赖项。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#an-zhuang-mo-kuai-1"><span class="toc-number">3.5.2.</span> <span class="toc-text">安装模块。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#geng-xin-code-rollup-config-js-code-2"><span class="toc-number">3.5.3.</span> <span class="toc-text">更新 rollup.config.js.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jian-cha-kong-zhi-tai-shu-chu-1"><span class="toc-number">3.5.4.</span> <span class="toc-text">检查控制台输出。</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bu-zou-5-tian-jia-cha-jian-lai-ti-dai-huan-jing-bian-liang"><span class="toc-number">3.6.</span> <span class="toc-text">步骤5：添加插件来替代环境变量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#zai-code-main-js-code-zhong-tian-jia-ji-chu-pei-zhi-code-env-code"><span class="toc-number">3.6.1.</span> <span class="toc-text">在 main.js 中添加基础配置 ENV。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#an-zhuang-mo-kuai-2"><span class="toc-number">3.6.2.</span> <span class="toc-text">安装模块</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#geng-xin-code-rollup-config-js-code-3"><span class="toc-number">3.7.</span> <span class="toc-text">更新 rollup.config.js</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#jian-cha-jie-guo"><span class="toc-number">3.7.1.</span> <span class="toc-text">检查结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bu-zou-6-tian-jia-uglify-js-lai-zui-xiao-hua-ya-suo-wo-men-sheng-cheng-jiao-ben-de-ti-ji"><span class="toc-number">3.8.</span> <span class="toc-text">步骤 6: 添加 UglifyJS 来最小化压缩我们生成脚本的体积。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#an-zhuang-cha-jian"><span class="toc-number">3.8.1.</span> <span class="toc-text">安装插件。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#geng-xin-code-rollup-config-js-code-4"><span class="toc-number">3.8.2.</span> <span class="toc-text">更新 rollup.config.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jian-cha-zui-xiao-hua-bundle"><span class="toc-number">3.8.3.</span> <span class="toc-text">检查最小化 bundle。</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kuo-zhan-yue-du"><span class="toc-number">4.</span> <span class="toc-text">扩展阅读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#you-wen-ti-you-xiang-fa-fa-xian-liao-yi-ge-bug"><span class="toc-number">5.</span> <span class="toc-text">有问题？有想法？发现了一个BUG?</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">【译】教程：如何通过 Rollup 来打包 JavaScript</h1>
+          <time datetime="2016-09-29T15:58:14.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2016 年 09 月 29 日</span>
+            <span style="margin-left: 10px;">最近更新于：2016 年 10 月 24 日</span>
+            <span style="margin-left: 10px;">本文共 5,941 字，读完约 25 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <blockquote>
+<p>原文链接 : <a href="https://code.lengstorf.com/learn-rollup-js/" target="_blank" rel="external">Tutorial: How to Bundle JavaScript With Rollup</a><br>
+原文作者 : <a href="https://github.com/jlengstorf/" target="_blank" rel="external">jlengstorf</a><br>
+译文出自 : <a href="http://zcfy.cc/" target="_blank" rel="external">众成翻译</a><br>
+译者 : <a href="http://qcyoung.com">yangzj1992</a><br>
+校对者: <a href="https://www.zhihu.com/people/ha-ha-qiu-52" target="_blank" rel="external">lisa</a><br>
+首发于: <a href="http://zcfy.cc/article/how-to-bundle-javascript-with-rollup-step-by-step-tutorial-1254.html" target="_blank" rel="external">众成翻译</a></p>
+</blockquote>
+<blockquote>
+<p>本文将通过一步步的系列教学来学习如何使用更小，更高效的工具 Rollup 来代替 Webpack 和 Browserify 打包 JavaScript 文件。</p>
+</blockquote>
+<p>这周，我们将第一次用 <a href="http://rollupjs.org/" target="_blank" rel="external">Rollup</a> 来构建我们的项目，它是一款用来打包 Javascript 代码的构建工具（它同样支持样式表，但我们将在下周单独介绍这一点）</p>
+<blockquote>
+<p>译者注：原文系列文章如下(本文为第一篇)<br>
+<a href="https://code.lengstorf.com/learn-rollup-js/" target="_blank" rel="external">Part I: How to Use Rollup to Process and Bundle JavaScript Files</a><br>
+<a href="https://code.lengstorf.com/learn-rollup-css/" target="_blank" rel="external">Part II: How to Use Rollup to Process and Bundle Stylesheets</a><br>
+<a href="https://code.lengstorf.com/learn-rollup-css/#livereload" target="_blank" rel="external">Part III: How to Use Rollup to Watch and Live Reload Files During Development</a></p>
+</blockquote>
+<p>通过本教程，我们会了解到以下 Rollup 的相关配置方式：</p>
+<ul>
+<li>组合我们的脚本,</li>
+<li>移除未使用的代码,</li>
+<li>转译代码使其支持老版本浏览器,</li>
+<li>在浏览器中支持使用 Node modules,</li>
+<li>使用环境变量,</li>
+<li>压缩文件代码使文件大小尽可能最小化。</li>
+</ul>
+<h2 id="yu-bei-zhi-shi">预备知识</h2>
+<ul>
+<li>如果你了解 JavaScript 的相关知识那么对阅读此文会更有帮助。</li>
+<li>熟悉 <a href="https://github.com/getify/You-Dont-Know-JS/blob/master/es6%20%26%20beyond/ch3.md#modules" target="_blank" rel="external">ES2015 modules</a>当然更没有什么坏处。</li>
+<li>你需要在你的机器上安装 <code>npm</code> (还没有安装? <a href="https://nodejs.org/" target="_blank" rel="external">在这安装 Node.js</a>)</li>
+</ul>
+<h2 id="shi-yao-shi-rollup">什么是 Rollup?</h2>
+<p>Rollup 是下一代的 JavaScript 模块打包工具。当你使用 ES2015 模块来编写你的应用或者库时，它可以对它们有效的打包来成为一个单独文件供浏览器和 Node.js 使用。</p>
+<p>这与 <a href="http://browserify.org/" target="_blank" rel="external">Browserify</a> 和 <a href="https://webpack.github.io" target="_blank" rel="external">webpack</a> 很相似。</p>
+<p>你也可以把 Rollup 称为一个构建工具，类似于 <a href="http://gruntjs.com/" target="_blank" rel="external">Grunt</a> 和 <a href="https://github.com/gulpjs/gulp" target="_blank" rel="external">Gulp</a>。然而，你需要重点注意的是当你使用 Grunt 和 Gulp 去处理类似创建 JavaScript bundles 的任务时，这些工具在底层也会像 Rollup, Browserify 或是 webpack 一样去使用一些相同的方式来处理。</p>
+<h3 id="wei-shi-yao-ni-xu-yao-guan-xin-rollup">为什么你需要关心 Rollup?</h3>
+<p>Rollup 如此令人兴奋的原因在于它能够保持文件体积更小。这听上去很傻瓜，所以 <strong>tl;dr</strong> 版本在这：相比于其他工具创建的 JavaScript bundles，Rollup 总是会创建相比之更小，更快的 bundle。</p>
+<p>之所以会这样是因为 Rollup 是基于 ES2015 模块的，它相比于 webpack 和 Browserify 所使用的 CommonJS 模块更加具有效率，另外 Rollup 也会使用一种叫 <em>tree-shaking</em> 的特性来更容易的移除模块中未使用的代码，这意味着在最终的 bundle 中只有我们实际需要的代码。</p>
+<p>Tree-shaking 在我们引用了包含很多可用的函数或方法的第三方工具或框架时就会变得十分重要。例如我们只使用它们中的一两个方法时 —— 像 <a href="https://lodash.com/" target="_blank" rel="external">lodash</a> 或 <a href="https://jquery.com/" target="_blank" rel="external">jQuery</a> 这样的库就会在加载时产生<strong>许多</strong>额外的开销。</p>
+<p>目前 Browserify 和 webpack 在最终生成时仍会包含大量未使用的代码（译者注：在 webpack2 中也引入了 tree-shaking 特性）。但 Rollup 并不如此 —— 它只会生成我们最终实际使用的代码。</p>
+<p><strong>(2016 年 8 月 22 日更新)</strong> 澄清一下， Rollup 只会在 ES 模块中支持 tree-shaking 特性。目前依照 CommonJS 模块所编写的 lodash 和 jQuery 不能被支持 tree-shaken。然而 tree-shaking <strong>并不是</strong> Rollup 唯一的速度和性能上的优势。可以看这些文章了解更多信息<a href="https://www.reddit.com/r/javascript/comments/4yprc5/how_to_bundle_javascript_with_rollup_stepbystep/d6qzgzm" target="_blank" rel="external">Rich Harris’s explanation</a>、<a href="https://www.reddit.com/r/javascript/comments/4yprc5/how_to_bundle_javascript_with_rollup_stepbystep/d6qzmgh?context=3" target="_blank" rel="external">Nolan Lawson’s added info</a></p>
+<h2 id="di-yi-bu-fen-ru-he-shi-yong-rollup-lai-chu-li-bing-da-bao-java-script-wen-jian">第一部分：如何使用 Rollup 来处理并打包 JavaScript 文件</h2>
+<p>为了展示 Rollup 是如何运作的，让我们一起针对一个十分简单的项目用 Rollup 处理打包 JavaScript。</p>
+<h3 id="di-0-bu-chuang-jian-yi-ge-bao-han-java-script-he-css-de-da-bao-xiang-mu">第 0 步: 创建一个包含 JavaScript 和 CSS 的打包项目</h3>
+<p>开始之前，我们需要一个项目来进行工作。在此教学中，我们将会根据此 <a href="https://github.com/jlengstorf/learn-rollup" target="_blank" rel="external">Github 项目</a>来进行展示。</p>
+<p>目录结构是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+</pre></td><td class="code"><pre><span class="line">learn-rollup/</span>
+<span class="line">├── src/</span>
+<span class="line">│   ├── scripts/</span>
+<span class="line">│   │   ├── modules/</span>
+<span class="line">│   │   │   ├── mod1.js</span>
+<span class="line">│   │   │   └── mod2.js</span>
+<span class="line">│   │   └── main.js</span>
+<span class="line">│   └── styles/</span>
+<span class="line">│       └── main.css</span>
+<span class="line">└── package.json</span>
+</pre></td></tr></table></figure>
+<p>你可以在你的终端中执行下面的命令来安装此项目，在本教学中我们将通过此项目进行展示。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment"># Move to the folder where you keep your dev projects.</span></span>
+<span class="line"><span class="built_in">cd</span> /path/to/your/projects</span>
+<span class="line"></span>
+<span class="line"><span class="comment"># Clone the starter branch of the app from GitHub.</span></span>
+<span class="line">git <span class="built_in">clone</span> -b step-0 --single-branch https://github.com/jlengstorf/learn-rollup.git</span>
+<span class="line"></span>
+<span class="line"><span class="comment"># The files are downloaded to /path/to/your/projects/learn-rollup/</span></span>
+</pre></td></tr></table></figure>
+<h3 id="bu-zou-1-an-zhuang-rollup-bing-chuang-jian-pei-zhi-wen-jian">步骤 1：安装 Rollup 并创建配置文件</h3>
+<p>首先，通过下面的命令安装 Rollup:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm install --save-dev rollup</span>
+</pre></td></tr></table></figure>
+<p>接下来，在 <code>learn-rollup</code> 文件夹中创建一个新文件 <code>rollup.config.js</code>。之后在文件中添加下面的内容：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span>
+<span class="line">  <span class="attr">entry</span>: <span class="string">'src/scripts/main.js'</span>,</span>
+<span class="line">  <span class="attr">dest</span>: <span class="string">'build/js/main.min.js'</span>,</span>
+<span class="line">  <span class="attr">format</span>: <span class="string">'iife'</span>,</span>
+<span class="line">  <span class="attr">sourceMap</span>: <span class="string">'inline'</span>,</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>下面是每一个配置选项都做了些什么：</p>
+<ul>
+<li>
+<p><code>entry</code> —— 这是我们希望 Rollup 去执行的文件。在大多数项目中，这将是你主要的 JavaScript 文件，它负责一切的初始化工作并作为开始文件。</p>
+</li>
+<li>
+<p><code>dest</code> —— 这是脚本程序执行后所存储的位置。</p>
+</li>
+<li>
+<p><code>format</code> —— Rollup 支持多种输出格式。因为我们在浏览器中运行，我们希望使用<a href="http://benalman.com/news/2010/11/immediately-invoked-function-expression/" target="_blank" rel="external">立即调用的函数表达式</a>(immediately-invoked function expression,IIFE)。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+</li>
+<li>
+<p><code>sourceMap</code> —— 如果有 sourcemap 的话，那么在调试代码时会提供很大的帮助，这个选项会在生成文件中添加 sourcemap，来让事情变得更加简单。</p>
+</li>
+</ul>
+<p><strong>注意：</strong> 关于其他的 <code>format</code> 选项以及什么场合你可能会需要它们，可以参考 <a href="https://github.com/rollup/rollup/wiki/JavaScript-API#format" target="_blank" rel="external">Rollup’s wiki</a></p>
+<h4 id="ce-shi-rollup-pei-zhi">测试 Rollup 配置</h4>
+<p>一旦我们创建了配置文件，就可以在我们的终端里运行下面的代码进行测试了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">./node_modules/.bin/rollup -c</span>
+</pre></td></tr></table></figure>
+<p>这样会在你的项目中创建一个新的 <code>build</code> 文件夹，它包含了一个 <code>js</code> 的子文件夹，在 <code>js</code> 文件夹中还包含了我们生成的 <code>main.min.js</code> 文件。</p>
+<p>我们在浏览器中打开 <code>build/index.html</code> 可以看到 bundle 已经被正确创建了。</p>
+<p><strong>注意：</strong> 在这个阶段，只有现代浏览器会正常工作并不产生错误。如果要让不支持<code>ES2015/ES6</code> 的旧版本的浏览器也正常工作，我们需要添加一些插件。</p>
+<h4 id="da-bao-shu-chu-de-nei-rong">打包输出的内容</h4>
+<p>Rollup 如此强大的原因在于它的 “tree-shaking” 特性，它会将我们引用的模块中未使用的代码剥离。例如，在 <code>src/scripts/modules/mod1.js</code> 中有一个名为 <code>sayGoodbyeTo()</code> 的函数并未在你的项目中使用 —— 既然它不会被使用，那么 Rollup 在最后的 bundle 中就不会包含它：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+</pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line"><span class="meta">'use strict'</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="comment">/**</span>
+<span class="line"> * Says hello.</span>
+<span class="line"> * @param  &#123;String&#125; name a name</span>
+<span class="line"> * @return &#123;String&#125;      a greeting for `name`</span>
+<span class="line"> */</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHelloTo</span>(<span class="params"> name </span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">const</span> toSay = <span class="string">`Hello, <span class="subst">$&#123;name&#125;</span>!`</span>;</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">return</span> toSay;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="comment">/**</span>
+<span class="line"> * Adds all the values in an array.</span>
+<span class="line"> * @param  &#123;Array&#125; arr an array of numbers</span>
+<span class="line"> * @return &#123;Number&#125;    the sum of all the array values</span>
+<span class="line"> */</span></span>
+<span class="line"><span class="keyword">const</span> addArray = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span>
+<span class="line">  <span class="keyword">const</span> result = arr.reduce(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a + b, <span class="number">0</span>);</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">return</span> result;</span>
+<span class="line">&#125;;</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// Import a couple modules for testing.</span></span>
+<span class="line"><span class="comment">// Run some functions from our imported modules.</span></span>
+<span class="line"><span class="keyword">const</span> result1 = sayHelloTo(<span class="string">'Jason'</span>);</span>
+<span class="line"><span class="keyword">const</span> result2 = addArray([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// Print the results on the page.</span></span>
+<span class="line"><span class="keyword">const</span> printTarget = <span class="built_in">document</span>.getElementsByClassName(<span class="string">'debug__output'</span>)[<span class="number">0</span>];</span>
+<span class="line"></span>
+<span class="line">printTarget.innerText = <span class="string">`sayHelloTo('Jason') =&gt; <span class="subst">$&#123;result1&#125;</span>\n\n`</span></span>
+<span class="line">printTarget.innerText += <span class="string">`addArray([1, 2, 3, 4]) =&gt; <span class="subst">$&#123;result2&#125;</span>`</span>;</span>
+<span class="line"></span>
+<span class="line">&#125;());</span>
+<span class="line"><span class="comment">//# sourceMappingURL=data:application/json;charset=utf-8;base64,...</span></span>
+</pre></td></tr></table></figure>
+<p>而在其他的构建工具中却并不会如此，因此如果我们引用了一个很大的库如 <a href="https://lodash.com/" target="_blank" rel="external">lodash</a> 却只为了使用它一到两个方法的话，最后的 bundles 会<strong>十分</strong>的巨大。</p>
+<p>例如，使用 <a href="https://webpack.github.io" target="_blank" rel="external">webpack</a> 的话，<code>sayGoodbyeTo()</code> 函数就会被引入，并且最终的 bundle 体积相比于 Rollup 所生成的 bundle 要大两倍还多。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<h3 id="bu-zou-2-she-zhi-babel-lai-shi-yong-xin-de-java-script-te-xing">步骤 2： 设置 Babel 来使用新的 JavaScript 特性。</h3>
+<p>此时，我们获得了可以在现代浏览器中运行的代码包，然而如果访问的浏览器仍是旧版本的话那么就会产生错误 —— 这样不太理想。</p>
+<p>幸好，<a href="https://babeljs.io" target="_blank" rel="external">Babel</a> 已经提供了支持。它能够帮助我们<a href="https://scotch.io/tutorials/javascript-transpilers-what-they-are-why-we-need-them" target="_blank" rel="external">转译 JavaScript 新特性</a><a href="https://github.com/getify/You-Dont-Know-JS/blob/master/es6%20%26%20beyond/ch1.md" target="_blank" rel="external">(ES6/ES2015 等等)</a>到 ES5 版本，这也将支持目前所有的浏览器来正常运行代码。</p>
+<p>如果你从未使用过 Babel，那么从今以后你作为开发者的日子就要永远改变了。去尝试 JavaScript 的新特性可以让你的语言变得更简单、干净，让你的开发更加愉快。</p>
+<p>所以让我们立刻开始 Rollup 的这一部分吧。</p>
+<h4 id="an-zhuang-bi-yao-de-mo-kuai">安装必要的模块</h4>
+<p>首先，我们需要安装 <a href="https://github.com/rollup/rollup-plugin-babel" target="_blank" rel="external">Babel Rollup 插件</a> 和 <a href="https://github.com/rollup/babel-preset-es2015-rollup" target="_blank" rel="external">合适的 Babel preset</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment"># Install Rollup’s Babel plugin.</span></span>
+<span class="line">npm install --save-dev rollup-plugin-babel</span>
+<span class="line"></span>
+<span class="line"><span class="comment"># Install the Babel preset for transpiling ES2015 using Rollup.</span></span>
+<span class="line">npm install --save-dev babel-preset-es2015-rollup</span>
+</pre></td></tr></table></figure>
+<p><strong>注意:</strong> Babel preset 是一个有关 Babel 插件的集合，它会告诉 Babel 我们实际上想要转译什么。</p>
+<h4 id="chuang-jian-code-babelrc-code">创建 <code>.babelrc</code></h4>
+<p>接下来，在你的项目根目录(<code>learn-rollup/</code>)创建一个名为 <code>.babelrc</code> 的新文件，在它内部添加以下 JSON 内容：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">&#123;</span>
+<span class="line">  <span class="attr">"presets"</span>: [<span class="string">"es2015-rollup"</span>],</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>这会告诉 Babel 它应该使用哪种 preset 来转译代码。</p>
+<h4 id="geng-xin-code-rollup-config-js-code">更新 <code>rollup.config.js</code></h4>
+<p>要让它能够真正运行，我们需要更新 <code>rollup.config.js</code>。</p>
+<p>在 <code>rollup.config.js</code> 中，我们需要 <code>import</code> Babel 插件，将它添加到一个新的配置选项 <code>plugins</code> 中，它会管控一个数组形式的插件列表。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// Rollup plugins</span></span>
+<span class="line"><span class="keyword">import</span> babel <span class="keyword">from</span> <span class="string">'rollup-plugin-babel'</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span>
+<span class="line">  <span class="attr">entry</span>: <span class="string">'src/scripts/main.js'</span>,</span>
+<span class="line">  <span class="attr">dest</span>: <span class="string">'build/js/main.min.js'</span>,</span>
+<span class="line">  <span class="attr">format</span>: <span class="string">'iife'</span>,</span>
+<span class="line">  <span class="attr">sourceMap</span>: <span class="string">'inline'</span>,</span>
+<span class="line">  <span class="attr">plugins</span>: [</span>
+<span class="line">    babel(&#123;</span>
+<span class="line">      <span class="attr">exclude</span>: <span class="string">'node_modules/**'</span>,</span>
+<span class="line">    &#125;),</span>
+<span class="line">  ],</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>为了避免转译第三方脚本，我们需要设置一个 <code>exclude</code> 的配置选项来忽略掉 <code>node_modules</code> 目录</p>
+<h4 id="jian-cha-shu-chu-de-bundle">检查输出的 bundle</h4>
+<p>安装和配置完成后，我们可以重新构建 bundle:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">./node_modules/.bin/rollup -c</span>
+<span class="line"></span>
+<span class="line">// 译者注：若执行报错，运行 npm install --save-dev babel-preset-es2015 具体issue 详情见：https://github.com/jlengstorf/learn-rollup/issues/2</span>
+</pre></td></tr></table></figure>
+<p>当我们观察输出时，它看上去<strong>貌似没有什么</strong>改变。然而实际上它还是有一些细微的区别的：例如， <code>addArray()</code> 函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> addArray = <span class="function"><span class="keyword">function</span> <span class="title">addArray</span>(<span class="params">arr</span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> result = arr.reduce(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">return</span> a + b;</span>
+<span class="line">  &#125;, <span class="number">0</span>);</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">return</span> result;</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>这里可以看到 Babel 如何转换 <a href="https://strongloop.com/strongblog/an-introduction-to-javascript-es6-arrow-functions/" target="_blank" rel="external">箭头表示函数</a> (<code>arr.reduce((a, b) =&gt; a + b, 0)</code>) 到一个常规函数。</p>
+<p>在转译运行完成后，程序执行的结果依然相同，但是代码已经支持到了 IE9 之前的浏览器。</p>
+<p><strong>重点:</strong> Babel 也提供了 <a href="https://babeljs.io/docs/usage/polyfill/" target="_blank" rel="external"><code>babel-polyfill</code></a>，它可以让类似像 <code>Array.prototype.reduce()</code> 的代码可以在 IE8 以及更早的浏览器上能够得到顺利执行。</p>
+<h3 id="bu-zou-3-tian-jia-es-lint-lai-jian-cha-tong-chang-de-java-script-cuo-wu">步骤 3: 添加 ESLint 来检查通常的 JavaScript 错误。</h3>
+<p>在你的代码中使用 linter 无疑是十分好的决定，因为它会强制执行一致的编码规范来帮助你捕捉像是漏掉了括弧这种棘手的 bug。</p>
+<p>在这个项目中，我们将会使用 <a href="http://eslint.org/" target="_blank" rel="external">ESLint</a>。</p>
+<h4 id="an-zhuang-mo-kuai">安装模块</h4>
+<p>为了使用 ESLint，我们将要安装 <a href="https://github.com/TrySound/rollup-plugin-eslint" target="_blank" rel="external">ESLint Rollup plugin</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm install --save-dev rollup-plugin-eslint</span>
+</pre></td></tr></table></figure>
+<h4 id="sheng-cheng-yi-ge-code-eslintrc-json-code">生成一个 <code>.eslintrc.json</code>。</h4>
+<p>为了确保我们只获取我们想要的错误，我们需要首先配置 ESLint。这里可以通过下面的代码来自动生成大多数配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+</pre></td><td class="code"><pre><span class="line">$ ./node_modules/.bin/eslint --init</span>
+<span class="line">? How would you like to configure ESLint? Answer questions about your style</span>
+<span class="line">? Are you using ECMAScript 6 features? Yes</span>
+<span class="line">? Are you using ES6 modules? Yes</span>
+<span class="line">? Where will your code run? Browser</span>
+<span class="line">? Do you use CommonJS? No</span>
+<span class="line">? Do you use JSX? No</span>
+<span class="line">? What style of indentation do you use? Spaces</span>
+<span class="line">? What quotes do you use for strings? Single</span>
+<span class="line">? What line endings do you use? Unix</span>
+<span class="line">? Do you require semicolons? Yes</span>
+<span class="line">? What format do you want your config file to be in? JSON</span>
+<span class="line">Successfully created .eslintrc.json file in /Users/jlengstorf/dev/code.lengstorf.com/projects/learn-rollup</span>
+</pre></td></tr></table></figure>
+<p>如果你回答了上述的问题，你将会在 <code>.eslintrc.json</code> 中获得以下输出内容：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+</pre></td><td class="code"><pre><span class="line">&#123;</span>
+<span class="line">  <span class="attr">"env"</span>: &#123;</span>
+<span class="line">    <span class="attr">"browser"</span>: <span class="literal">true</span>,</span>
+<span class="line">    <span class="attr">"es6"</span>: <span class="literal">true</span></span>
+<span class="line">  &#125;,</span>
+<span class="line">  <span class="attr">"extends"</span>: <span class="string">"eslint:recommended"</span>,</span>
+<span class="line">  <span class="attr">"parserOptions"</span>: &#123;</span>
+<span class="line">    <span class="attr">"sourceType"</span>: <span class="string">"module"</span></span>
+<span class="line">  &#125;,</span>
+<span class="line">  <span class="attr">"rules"</span>: &#123;</span>
+<span class="line">    <span class="attr">"indent"</span>: [</span>
+<span class="line">      <span class="string">"error"</span>,</span>
+<span class="line">      <span class="number">4</span></span>
+<span class="line">    ],</span>
+<span class="line">    <span class="attr">"linebreak-style"</span>: [</span>
+<span class="line">      <span class="string">"error"</span>,</span>
+<span class="line">      <span class="string">"unix"</span></span>
+<span class="line">    ],</span>
+<span class="line">    <span class="attr">"quotes"</span>: [</span>
+<span class="line">      <span class="string">"error"</span>,</span>
+<span class="line">      <span class="string">"single"</span></span>
+<span class="line">    ],</span>
+<span class="line">    <span class="attr">"semi"</span>: [</span>
+<span class="line">      <span class="string">"error"</span>,</span>
+<span class="line">      <span class="string">"always"</span></span>
+<span class="line">    ]</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<h4 id="diao-zheng-code-eslintrc-json-code">调整 <code>.eslintrc.json</code>。</h4>
+<p>然而，我们还需要去做一些调整来避免我们的项目出现问题：</p>
+<ol>
+<li>
+<p>我们要用 2 缩进符来代替 4 缩进符。</p>
+</li>
+<li>
+<p>我们将使用一个全局变量 <code>ENV</code>，所以我们需要为它设置一个白名单。</p>
+</li>
+</ol>
+<p>所以我们来做以下调整 —— 在你的 <code>.eslintrc.json</code> 中修改 <code>globals</code> 属性和 <code>indent</code> 属性：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+</pre></td><td class="code"><pre><span class="line">&#123;</span>
+<span class="line">  <span class="attr">"env"</span>: &#123;</span>
+<span class="line">    <span class="attr">"browser"</span>: <span class="literal">true</span>,</span>
+<span class="line">    <span class="attr">"es6"</span>: <span class="literal">true</span></span>
+<span class="line">  &#125;,</span>
+<span class="line">  <span class="attr">"globals"</span>: &#123;</span>
+<span class="line">    <span class="attr">"ENV"</span>: <span class="literal">true</span></span>
+<span class="line">  &#125;,</span>
+<span class="line">  <span class="attr">"extends"</span>: <span class="string">"eslint:recommended"</span>,</span>
+<span class="line">  <span class="attr">"parserOptions"</span>: &#123;</span>
+<span class="line">    <span class="attr">"sourceType"</span>: <span class="string">"module"</span></span>
+<span class="line">  &#125;,</span>
+<span class="line">  <span class="attr">"rules"</span>: &#123;</span>
+<span class="line">    <span class="attr">"indent"</span>: [</span>
+<span class="line">      <span class="string">"error"</span>,</span>
+<span class="line">      <span class="number">2</span></span>
+<span class="line">    ],</span>
+<span class="line">    <span class="attr">"linebreak-style"</span>: [</span>
+<span class="line">      <span class="string">"error"</span>,</span>
+<span class="line">      <span class="string">"unix"</span></span>
+<span class="line">    ],</span>
+<span class="line">    <span class="attr">"quotes"</span>: [</span>
+<span class="line">      <span class="string">"error"</span>,</span>
+<span class="line">      <span class="string">"single"</span></span>
+<span class="line">    ],</span>
+<span class="line">    <span class="attr">"semi"</span>: [</span>
+<span class="line">      <span class="string">"error"</span>,</span>
+<span class="line">      <span class="string">"always"</span></span>
+<span class="line">    ]</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<h4 id="geng-xin-code-rollup-config-js-code-1">更新 <code>rollup.config.js</code>。</h4>
+<p>接下来，<code>import</code> ESLint 插件并将它添加到 Rollup 配置中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// Rollup plugins</span></span>
+<span class="line"><span class="keyword">import</span> babel <span class="keyword">from</span> <span class="string">'rollup-plugin-babel'</span>;</span>
+<span class="line"><span class="keyword">import</span> eslint <span class="keyword">from</span> <span class="string">'rollup-plugin-eslint'</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span>
+<span class="line">  <span class="attr">entry</span>: <span class="string">'src/scripts/main.js'</span>,</span>
+<span class="line">  <span class="attr">dest</span>: <span class="string">'build/js/main.min.js'</span>,</span>
+<span class="line">  <span class="attr">format</span>: <span class="string">'iife'</span>,</span>
+<span class="line">  <span class="attr">sourceMap</span>: <span class="string">'inline'</span>,</span>
+<span class="line">  <span class="attr">plugins</span>: [</span>
+<span class="line">    babel(&#123;</span>
+<span class="line">      <span class="attr">exclude</span>: <span class="string">'node_modules/**'</span>,</span>
+<span class="line">    &#125;),</span>
+<span class="line">    eslint(&#123;</span>
+<span class="line">      <span class="attr">exclude</span>: [</span>
+<span class="line">        <span class="string">'src/styles/**'</span>,</span>
+<span class="line">      ]</span>
+<span class="line">    &#125;),</span>
+<span class="line">  ],</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<h4 id="jian-cha-kong-zhi-tai-shu-chu">检查控制台输出</h4>
+<p>首先，我们运行 <code>./node_modules/.bin/rollup -c</code>，然而好像并没有发生什么，这是因为在标准设置下，应用代码已经顺利通过了 linter 的检查并且没有发现任何问题。</p>
+<p>但是如果我们引入一个问题 —— 比如移除一个分号 —— 我们则会看到 ESLint 的帮助提示:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+</pre></td><td class="code"><pre><span class="line">$ ./node_modules/.bin/rollup -c</span>
+<span class="line"></span>
+<span class="line">/Users/jlengstorf/dev/code.lengstorf.com/projects/learn-rollup/src/scripts/main.js</span>
+<span class="line">  12:64  error  Missing semicolon  semi</span>
+<span class="line"></span>
+<span class="line">✖ 1 problem (1 error, 0 warnings)</span>
+</pre></td></tr></table></figure>
+<p>像这样一些无意间引入的神秘 bug 就会被立刻发现，帮助信息中也包含了文件名，行数以及列数。</p>
+<p>尽管这并不会消除我们项目中所有需要调试的问题，但对明显的拼写错误和疏忽起到了相当大的帮助。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<h3 id="bu-zou-4-tian-jia-cha-jian-lai-chu-li-fei-es-mo-kuai">步骤4：添加插件来处理非 ES 模块。</h3>
+<p>如果你的依赖项使用了 Node 模式的模块那么下面的插件是很重要的。如果没有它，你将会在 <code>require</code> 时产生错误。</p>
+<h4 id="tian-jia-node-mo-kuai-zuo-wei-yi-lai-xiang">添加 Node 模块作为依赖项。</h4>
+<p>在这个示例项目中如果没有引用第三方模块的话将会变得很麻烦，但这并不是让你将第三方模块剪切到实际项目中。所以，为了使我们的 Rollup <strong>更方便使用</strong>，让我们为代码添加引用第三方模块的功能。</p>
+<p>为了简单起见，我们将在代码中添加一个 <a href="https://www.npmjs.com/package/debug" target="_blank" rel="external"><code>debug</code></a> 包来简单的记录日志，通过下面的命令安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm install --save debug</span>
+</pre></td></tr></table></figure>
+<p><strong>注意:</strong> 由于这将被引用到主项目中，使用 <code>--save</code> 参数是很重要的，这将避免在生产环境中由于 <code>devDependencies</code> 没有被安装而导致的错误。</p>
+<p>然后，在 <code>src/scripts/main.js</code>中，我们添加一些简单的日志：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// Import a couple modules for testing.</span></span>
+<span class="line"><span class="keyword">import</span> &#123; sayHelloTo &#125; <span class="keyword">from</span> <span class="string">'./modules/mod1'</span>;</span>
+<span class="line"><span class="keyword">import</span> addArray <span class="keyword">from</span> <span class="string">'./modules/mod2'</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// Import a logger for easier debugging.</span></span>
+<span class="line"><span class="keyword">import</span> debug <span class="keyword">from</span> <span class="string">'debug'</span>;</span>
+<span class="line"><span class="keyword">const</span> log = debug(<span class="string">'app:log'</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// Enable the logger.</span></span>
+<span class="line">debug.enable(<span class="string">'*'</span>);</span>
+<span class="line">log(<span class="string">'Logging is enabled!'</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// Run some functions from our imported modules.</span></span>
+<span class="line"><span class="keyword">const</span> result1 = sayHelloTo(<span class="string">'Jason'</span>);</span>
+<span class="line"><span class="keyword">const</span> result2 = addArray([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// Print the results on the page.</span></span>
+<span class="line"><span class="keyword">const</span> printTarget = <span class="built_in">document</span>.getElementsByClassName(<span class="string">'debug__output'</span>)[<span class="number">0</span>];</span>
+<span class="line"></span>
+<span class="line">printTarget.innerText = <span class="string">`sayHelloTo('Jason') =&gt; <span class="subst">$&#123;result1&#125;</span>\n\n`</span>;</span>
+<span class="line">printTarget.innerText += <span class="string">`addArray([1, 2, 3, 4]) =&gt; <span class="subst">$&#123;result2&#125;</span>`</span>;</span>
+</pre></td></tr></table></figure>
+<p>到目前为止一切顺利，但是当我们运行 rollup 时我们会得到一个警告：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">$ ./node_modules/.bin/rollup -c</span>
+<span class="line">Treating &apos;debug&apos; as external dependency</span>
+<span class="line">No name was provided for external module &apos;debug&apos; in options.globals – guessing &apos;debug&apos;</span>
+</pre></td></tr></table></figure>
+<p>如果我们再一次检查我们的 <code>index.html</code> ，我们会发现 <code>debug</code> 会抛出一个 <code>ReferenceError</code></p>
+<p>通常情况下，第三方 Node 模块并不会被 Rollup 正确加载</p>
+<p>这是由于 Node 模块使用的是 <a href="http://wiki.commonjs.org/wiki/Modules/1.1" target="_blank" rel="external">CommonJS</a>，它并不被 Rollup 兼容因此不能直接使用。为了解决它，我们需要添加一些插件来处理 Node 依赖和 CommonJS 模块。</p>
+<h4 id="an-zhuang-mo-kuai-1">安装模块。</h4>
+<p>为了解决这个问题，我们准备为 Rollup 添加两个插件:</p>
+<ol>
+<li>
+<p><a href="https://github.com/rollup/rollup-plugin-node-resolve" target="_blank" rel="external"><code>rollup-plugin-node-resolve</code></a>, 它会允许加载在 <code>node_modules</code> 中的第三方模块。</p>
+</li>
+<li>
+<p><a href="https://github.com/rollup/rollup-plugin-commonjs" target="_blank" rel="external"><code>rollup-plugin-commonjs</code></a>, 它会将 CommonJS 模块转换为 ES6,来为 Rollup 获得兼容。</p>
+</li>
+</ol>
+<p>用下面的命令安装这两个插件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm install --save-dev rollup-plugin-node-resolve rollup-plugin-commonjs</span>
+</pre></td></tr></table></figure>
+<h4 id="geng-xin-code-rollup-config-js-code-2">更新 <code>rollup.config.js</code>.</h4>
+<p>接下来，在 Rollup 配置中 <code>import</code> 来添加插件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// Rollup plugins</span></span>
+<span class="line"><span class="keyword">import</span> babel <span class="keyword">from</span> <span class="string">'rollup-plugin-babel'</span>;</span>
+<span class="line"><span class="keyword">import</span> eslint <span class="keyword">from</span> <span class="string">'rollup-plugin-eslint'</span>;</span>
+<span class="line"><span class="keyword">import</span> resolve <span class="keyword">from</span> <span class="string">'rollup-plugin-node-resolve'</span>;</span>
+<span class="line"><span class="keyword">import</span> commonjs <span class="keyword">from</span> <span class="string">'rollup-plugin-commonjs'</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span>
+<span class="line">  <span class="attr">entry</span>: <span class="string">'src/scripts/main.js'</span>,</span>
+<span class="line">  <span class="attr">dest</span>: <span class="string">'build/js/main.min.js'</span>,</span>
+<span class="line">  <span class="attr">format</span>: <span class="string">'iife'</span>,</span>
+<span class="line">  <span class="attr">sourceMap</span>: <span class="string">'inline'</span>,</span>
+<span class="line">  <span class="attr">plugins</span>: [</span>
+<span class="line">    resolve(&#123;</span>
+<span class="line">      <span class="attr">jsnext</span>: <span class="literal">true</span>,</span>
+<span class="line">      <span class="attr">main</span>: <span class="literal">true</span>,</span>
+<span class="line">      <span class="attr">browser</span>: <span class="literal">true</span>,</span>
+<span class="line">    &#125;),</span>
+<span class="line">    commonjs(),</span>
+<span class="line">    eslint(&#123;</span>
+<span class="line">      <span class="attr">exclude</span>: [</span>
+<span class="line">        <span class="string">'src/styles/**'</span>,</span>
+<span class="line">      ]</span>
+<span class="line">    &#125;),</span>
+<span class="line">    babel(&#123;</span>
+<span class="line">      <span class="attr">exclude</span>: <span class="string">'node_modules/**'</span>,</span>
+<span class="line">    &#125;),</span>
+<span class="line">  ],</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p><strong>注意：</strong> <code>jsnext</code> 属性是指定<a href="https://github.com/rollup/rollup/wiki/jsnext:main" target="_blank" rel="external">将 Node 包转换为 ES2015 模块</a>。<code>main</code> 和 <code>browser</code> 属性将使插件决定将哪些文件应用到 bundle。</p>
+<h4 id="jian-cha-kong-zhi-tai-shu-chu-1">检查控制台输出。</h4>
+<p>用 <code>./node_modules/.bin/rollup -c</code> 重新构建 bundle，然后在浏览器中再次检查输出：</p>
+<p>好的！我们的日志现在正常展示了。</p>
+<h3 id="bu-zou-5-tian-jia-cha-jian-lai-ti-dai-huan-jing-bian-liang">步骤5：添加插件来替代环境变量</h3>
+<p>环境变量能为我们的开发流程提供很大的帮助，我们可以通过它来执行像是关闭或开启日志、注入开发环境脚本等功能。</p>
+<p>所以让我们来确保 Rollup 能够使用这一特性。</p>
+<h4 id="zai-code-main-js-code-zhong-tian-jia-ji-chu-pei-zhi-code-env-code">在 <code>main.js</code> 中添加基础配置 <code>ENV</code>。</h4>
+<p>让我们添加一个环境变量来使我们的日志脚本只在非 <code>production</code> 环境下才会执行。在  <code>src/scripts/main.js</code> 中让我们改变 <code>log()</code> 初始化后的逻辑：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// Import a logger for easier debugging.</span></span>
+<span class="line"><span class="keyword">import</span> debug <span class="keyword">from</span> <span class="string">'debug'</span>;</span>
+<span class="line"><span class="keyword">const</span> log = debug(<span class="string">'app:log'</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// The logger should only be disabled if we’re not in production.</span></span>
+<span class="line"><span class="keyword">if</span> (ENV !== <span class="string">'production'</span>) &#123;</span>
+<span class="line"></span>
+<span class="line">  <span class="comment">// Enable the logger.</span></span>
+<span class="line">  debug.enable(<span class="string">'*'</span>);</span>
+<span class="line">  log(<span class="string">'Logging is enabled!'</span>);</span>
+<span class="line">&#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">  debug.disable();</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>然而，当我们重新构建我们的 bundle (<code>./node_modules/.bin/rollup -c</code>) 并检查浏览器，我们可以看到 <code>ENV</code> 报出了 <code>ReferenceError</code> 的错误。</p>
+<p>这并不奇怪，因为我们并没有在所有位置定义它，我们试着运行 <code>ENV=production ./node_modules/.bin/rollup -c</code> ，然而它仍然没有正常工作。这是由于用这种方式设置环境变量只会对 Rollup 生效，对 Rollup 生成的 bundle 并不起作用。</p>
+<p>我们仍需要一个插件来将我们的环境变量作用到 bundle 中。</p>
+<h4 id="an-zhuang-mo-kuai-2">安装模块</h4>
+<p>首先安装 <a href="https://github.com/rollup/rollup-plugin-replace" target="_blank" rel="external"><code>rollup-plugin-replace</code></a>,它本质上是一个用来查找和替换的工具。它可以做很多事，但对我们来说只需要找到目前的环境变量并用实际值来替代就可以了。（例如：在 bundle 中出现的所有 <code>ENV</code> 将被 <code>&quot;production&quot;</code> 替换）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm install --save-dev rollup-plugin-replace</span>
+</pre></td></tr></table></figure>
+<h3 id="geng-xin-code-rollup-config-js-code-3">更新 <code>rollup.config.js</code></h3>
+<p>在 <code>rollup.config.js</code> 中, 让我们 <code>import</code> 插件并添加到我们的插件列表里。</p>
+<p>配置很简单：我们可以添加一个 <code>key:value</code> 的配对表，<code>key</code> 值是准备被替换的键值，而 <code>value</code> 是将要被替换的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// Rollup plugins</span></span>
+<span class="line"><span class="keyword">import</span> babel <span class="keyword">from</span> <span class="string">'rollup-plugin-babel'</span>;</span>
+<span class="line"><span class="keyword">import</span> eslint <span class="keyword">from</span> <span class="string">'rollup-plugin-eslint'</span>;</span>
+<span class="line"><span class="keyword">import</span> resolve <span class="keyword">from</span> <span class="string">'rollup-plugin-node-resolve'</span>;</span>
+<span class="line"><span class="keyword">import</span> commonjs <span class="keyword">from</span> <span class="string">'rollup-plugin-commonjs'</span>;</span>
+<span class="line"><span class="keyword">import</span> replace <span class="keyword">from</span> <span class="string">'rollup-plugin-replace'</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span>
+<span class="line">  <span class="attr">entry</span>: <span class="string">'src/scripts/main.js'</span>,</span>
+<span class="line">  <span class="attr">dest</span>: <span class="string">'build/js/main.min.js'</span>,</span>
+<span class="line">  <span class="attr">format</span>: <span class="string">'iife'</span>,</span>
+<span class="line">  <span class="attr">sourceMap</span>: <span class="string">'inline'</span>,</span>
+<span class="line">  <span class="attr">plugins</span>: [</span>
+<span class="line">    resolve(&#123;</span>
+<span class="line">      <span class="attr">jsnext</span>: <span class="literal">true</span>,</span>
+<span class="line">      <span class="attr">main</span>: <span class="literal">true</span>,</span>
+<span class="line">      <span class="attr">browser</span>: <span class="literal">true</span>,</span>
+<span class="line">    &#125;),</span>
+<span class="line">    commonjs(),</span>
+<span class="line">    eslint(&#123;</span>
+<span class="line">      <span class="attr">exclude</span>: [</span>
+<span class="line">        <span class="string">'src/styles/**'</span>,</span>
+<span class="line">      ]</span>
+<span class="line">    &#125;),</span>
+<span class="line">    babel(&#123;</span>
+<span class="line">      <span class="attr">exclude</span>: <span class="string">'node_modules/**'</span>,</span>
+<span class="line">    &#125;),</span>
+<span class="line">    replace(&#123;</span>
+<span class="line">      <span class="attr">ENV</span>: <span class="built_in">JSON</span>.stringify(process.env.NODE_ENV || <span class="string">'development'</span>),</span>
+<span class="line">    &#125;),</span>
+<span class="line">  ],</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>在我们的配置中，我们会找到每一个 <code>ENV</code> 并用 <code>process.env.NODE_ENV</code> 去替换 —— 在 Node 应用或是 <code>development</code> 中我们会用传统的方式去设置环境。我们会使用 <code>JSON.stringify</code> 来确保值是双引号的，不像 <code>ENV</code> 这样。</p>
+<h4 id="jian-cha-jie-guo">检查结果</h4>
+<p>首先，重新构建 bundle 并在浏览器中检查。此时控制台应该像以前一样已经输出显示了 —— 这意味着我们的默认值被接受了。</p>
+<p>为了查看真实的效果，让我们在 <code>production</code> 环境中运行下面代码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">`NODE_ENV=production ./node_modules/.bin/rollup -c`</span>
+</pre></td></tr></table></figure>
+<p><strong>注意:</strong> 在 Windows 中，使用 <code>SET NODE_ENV=production ./node_modules/.bin/rollup -c</code> 来避免在设置环境变量时产生错误。</p>
+<p>当我们重新加载浏览器时，在控制台中就不再有输出内容了：</p>
+<p>这样我们通过零代码修改，仅使用一个环境变量就禁用了日志记录。</p>
+<h3 id="bu-zou-6-tian-jia-uglify-js-lai-zui-xiao-hua-ya-suo-wo-men-sheng-cheng-jiao-ben-de-ti-ji">步骤 6: 添加 UglifyJS 来最小化压缩我们生成脚本的体积。</h3>
+<p>本教程最后一步的任务是添加 UglifyJS 来最小化压缩 bundle。它可以通过移除注上释、缩短变量名、重整代码来<strong>极大程度的</strong>减少 bundle 的体积大小 —— 这样在一定程度降低了代码的可读性，但是在网络通信上变得更有效率。</p>
+<h4 id="an-zhuang-cha-jian">安装插件。</h4>
+<p>我们将会使用 <a href="https://github.com/mishoo/UglifyJS2/" target="_blank" rel="external">UglifyJS</a> 来压缩 bundle，这里我们通过 <a href="https://github.com/TrySound/rollup-plugin-uglify" target="_blank" rel="external"><code>rollup-plugin-uglify</code></a> 来实现。</p>
+<p>用下面的命令来安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm install --save-dev rollup-plugin-uglify</span>
+</pre></td></tr></table></figure>
+<h4 id="geng-xin-code-rollup-config-js-code-4">更新 <code>rollup.config.js</code></h4>
+<p>接下来，让我们在 Rollup 配置中添加 Uglify 。然而，为了在开发中使代码更具可读性，让我们来设置只在生产环境中压缩混淆代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// Rollup plugins</span></span>
+<span class="line"><span class="keyword">import</span> babel <span class="keyword">from</span> <span class="string">'rollup-plugin-babel'</span>;</span>
+<span class="line"><span class="keyword">import</span> eslint <span class="keyword">from</span> <span class="string">'rollup-plugin-eslint'</span>;</span>
+<span class="line"><span class="keyword">import</span> resolve <span class="keyword">from</span> <span class="string">'rollup-plugin-node-resolve'</span>;</span>
+<span class="line"><span class="keyword">import</span> commonjs <span class="keyword">from</span> <span class="string">'rollup-plugin-commonjs'</span>;</span>
+<span class="line"><span class="keyword">import</span> replace <span class="keyword">from</span> <span class="string">'rollup-plugin-replace'</span>;</span>
+<span class="line"><span class="keyword">import</span> uglify <span class="keyword">from</span> <span class="string">'rollup-plugin-uglify'</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span>
+<span class="line">  <span class="attr">entry</span>: <span class="string">'src/scripts/main.js'</span>,</span>
+<span class="line">  <span class="attr">dest</span>: <span class="string">'build/js/main.min.js'</span>,</span>
+<span class="line">  <span class="attr">format</span>: <span class="string">'iife'</span>,</span>
+<span class="line">  <span class="attr">sourceMap</span>: <span class="string">'inline'</span>,</span>
+<span class="line">  <span class="attr">plugins</span>: [</span>
+<span class="line">    resolve(&#123;</span>
+<span class="line">      <span class="attr">jsnext</span>: <span class="literal">true</span>,</span>
+<span class="line">      <span class="attr">main</span>: <span class="literal">true</span>,</span>
+<span class="line">      <span class="attr">browser</span>: <span class="literal">true</span>,</span>
+<span class="line">    &#125;),</span>
+<span class="line">    commonjs(),</span>
+<span class="line">    eslint(&#123;</span>
+<span class="line">      <span class="attr">exclude</span>: [</span>
+<span class="line">        <span class="string">'src/styles/**'</span>,</span>
+<span class="line">      ]</span>
+<span class="line">    &#125;),</span>
+<span class="line">    babel(&#123;</span>
+<span class="line">      <span class="attr">exclude</span>: <span class="string">'node_modules/**'</span>,</span>
+<span class="line">    &#125;),</span>
+<span class="line">    replace(&#123;</span>
+<span class="line">      <span class="attr">ENV</span>: <span class="built_in">JSON</span>.stringify(process.env.NODE_ENV || <span class="string">'development'</span>),</span>
+<span class="line">    &#125;),</span>
+<span class="line">    (process.env.NODE_ENV === <span class="string">'production'</span> &amp;&amp; uglify()),</span>
+<span class="line">  ],</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>我们使用了<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_Operators#Short-Circuit_Evaluation" target="_blank" rel="external">短路计算</a>策略，这是一种常见的（尽管<a href="http://stackoverflow.com/questions/5049006/using-s-short-circuiting-as-an-if-statement" target="_blank" rel="external">有些讨厌</a>)捷径来在条件性的情况下设置一个值。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>在我们的例子中，我们只会在 <code>NODE_ENV</code> 设置为 <code>production</code> 时加载 <code>uglify()</code>。</p>
+<h4 id="jian-cha-zui-xiao-hua-bundle">检查最小化 bundle。</h4>
+<p>当配置保存后，让我们设置 <code>NODE_ENV</code> 为 production 并运行 Rollup:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">`NODE_ENV=production ./node_modules/.bin/rollup -c`</span>
+</pre></td></tr></table></figure>
+<p><strong>注意:</strong> 在 Windows 中, 使用 <code>SET NODE_ENV=production ./node_modules/.bin/rollup -c</code> 来避免在设置环境变量时产生错误。</p>
+<p>这样的输出并不整洁，但它的体积<strong>十分</strong>小。</p>
+<p>在之前，我们的 bundle 大小是 42KB。 在通过 UglifyJS 运行后，它减少到了 29KB —— 这样我们在没有额外付出的情况下就节省了超过 30% 的文件体积。</p>
+<h2 id="kuo-zhan-yue-du">扩展阅读</h2>
+<ul>
+<li>
+<p><a href="https://nolanlawson.com/2016/08/15/the-cost-of-small-modules/" target="_blank" rel="external">The cost of small modules</a> —— 是这篇文章让我对 Rollup 产生了兴趣，因为它展示了 Rollup 相比 webpack 和 Browserify 的一些显著的优势。</p>
+</li>
+<li>
+<p><a href="http://rollupjs.org/guide/" target="_blank" rel="external">Rollup’s getting started guide</a></p>
+</li>
+<li>
+<p><a href="https://github.com/rollup/rollup/wiki/Command-Line-Interface" target="_blank" rel="external">Rollup’s CLI docs</a></p>
+</li>
+<li>
+<p><a href="https://github.com/rollup/rollup/wiki/Plugins" target="_blank" rel="external">A list of Rollup plugins</a></p>
+</li>
+</ul>
+<hr>
+<h2 id="you-wen-ti-you-xiang-fa-fa-xian-liao-yi-ge-bug">有问题？有想法？发现了一个BUG?</h2>
+<p>本文中的代码被托管在 GitHub 上。你可以 <a href="https://github.com/jlengstorf/learn-rollup" target="_blank" rel="external">fork 项目</a> 来修改并测试它，<a href="https://github.com/jlengstorf/learn-rollup/issues" target="_blank" rel="external">开启一个 issue</a> 来报告 bug，或是 <a href="https://github.com/jlengstorf/learn-rollup/compare" target="_blank" rel="external">创建一个 PR</a>来提出改进或修改。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>这是一个相当复杂难以理解的概念, 所以如果不能完全明白也不要感到有压力。简而言之，我们希望我们的代码能在我们的作用域内，从而避免与其他的脚本产生冲突。这里 IIFE 是一个包含我们的代码并在它自身作用域产生的<a href="http://skilldrick.co.uk/2011/04/closures-explained-with-javascript/" target="_blank" rel="external">闭包</a> <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>重要的是需要记住，目前我们处理的是这样的一个小例子，这并不是很复杂就使文件大小大了一倍。在这时文件大小的比对是 3KB 和 8KB。 <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>就像之前花费无数个小时去追踪一个 bug，最终发现原因仅仅是傻傻的变量名拼写错误一样。linter 对工作效率的提高十分明显，这并不是我们夸大其词。 <a href="#fnref3" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>例如，我们很常见到用这样的方式来指定默认值(例如: <code>var foo = maybeThisExists || 'default';</code>)。 <a href="#fnref4" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/【译】教程：如何通过 Rollup 来打包 JavaScript.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/Rollup/">Rollup</a>
+                
+              
+                <a class="post-tags" href="/tags/webpack/">webpack</a>
+                
+              
+                <a class="post-tags" href="/tags/构建工具/">构建工具</a>
+                
+              
+                <a class="post-tags" href="/tags/前端工程/">前端工程</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=【译】教程：如何通过 Rollup 来打包 JavaScript | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2016/09/29/【译】教程：如何通过 Rollup 来打包 JavaScript/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2016/09/29/【译】教程：如何通过 Rollup 来打包 JavaScript/index.html&amp;title=【译】教程：如何通过 Rollup 来打包 JavaScript | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2016/09/29/【译】教程：如何通过 Rollup 来打包 JavaScript/index.html&amp;text=【译】教程：如何通过 Rollup 来打包 JavaScript;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=【译】教程：如何通过 Rollup 来打包 JavaScript | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2016/09/29/【译】教程：如何通过 Rollup 来打包 JavaScript/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2016/11/07/2016.10 - 往日的伤秋情怀也在这短暂的秋天里变得没影了/">
+      ← 2016.10 - 往日的伤秋情怀也在这短暂的秋天里变得没影了
+    </a>
+  
+  
+    <a class="pull-right" href="/2016/09/28/【译】使用 currentColor 属性写出更好的 CSS 代码/">
+      【译】使用 currentColor 属性写出更好的 CSS 代码 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2016/09/29/【译】教程：如何通过 Rollup 来打包 JavaScript/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>【译】如何编写避免垃圾开销的实时 JavaScript 代码 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#jian-dan-de-ji-qiao"><span class="toc-number">1.</span> <span class="toc-text">简单的技巧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jin-jie-ji-qiao"><span class="toc-number">2.</span> <span class="toc-text">进阶技巧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jie-lun"><span class="toc-number">3.</span> <span class="toc-text">结论</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">【译】如何编写避免垃圾开销的实时 JavaScript 代码</h1>
+          <time datetime="2016-06-12T08:33:21.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2016 年 06 月 12 日</span>
+            <span style="margin-left: 10px;">最近更新于：2017 年 04 月 21 日</span>
+            <span style="margin-left: 10px;">本文共 2,923 字，读完约 10 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <blockquote>
+<p>原文链接 : <a href="https://www.scirra.com/blog/76/how-to-write-low-garbage-real-time-javascript" target="_blank" rel="external">How to write low garbage real-time Javascript</a><br>
+原文作者 : <a href="https://www.scirra.com/users/ashley" target="_blank" rel="external">Ashley </a><br>
+译文出自 : <a href="https://github.com/xitu/gold-miner" target="_blank" rel="external">掘金翻译计划</a><br>
+译者 : <a href="http://qcyoung.com">yangzj1992</a><br>
+校对者: <a href="https://github.com/L9m" target="_blank" rel="external">L9m</a>, <a href="https://github.com/ldhlfzysys" target="_blank" rel="external">Dwight</a>, <a href="https://github.com/godofchina" target="_blank" rel="external">宁金</a><br>
+首发于: <a href="http://gold.xitu.io/entry/575d14937db2a2005437df32/detail" target="_blank" rel="external">掘金</a></p>
+</blockquote>
+<p><em>编辑于 2012 年 3 月 27 日: 哇，这篇文章已经写了有很长一段时间了，十分感谢那些精彩的回复！其中有一些对于一些技术的指正，如使用 'delete' 。我知道了使用它可能会导致其他的降速问题，因此，我们在引擎中极少使用它。一如既往的你还需要对所有的事进行权衡并且需要通过其他关注点来平衡垃圾回收机制，这也只是一个在我们引擎中发现的的实用、简单的技术列表，它并不是一个完整的参考列表。但是我希望它还是有用的！</em></p>
+<p>一个用 Javascript 编写的 HTML5 游戏，要达到流畅体验的一个最大阻碍就是<strong>垃圾回收 ( GC )  卡顿</strong>。 Javascript 并没有一个显式的内存管理，意味着你创造东西后却不能释放它们占用的内存。因此迟早浏览器便会替你决定去清理它们：这时代码执行就会被暂停，浏览器会找出哪一部分内存是现在仍在被使用的，并把其他所有东西占用的内存释放掉。这篇博文将会去探究避开 GC 开销的技术细节，这对方便进行使用任何插件或是使用 Construct 2 进行 <a href="http://www.scirra.com/manual/15/sdk" title="Construct 2 Javascript Plugin and Behavior SDK" target="_blank" rel="external">Javascript SDK</a>开发都应该能派上用场。</p>
+<p>浏览器有很多技术性手段来减少 GC 卡顿，但是如果你的代码创造了许多垃圾，迟早浏览器也将会暂停并进行清理。随着对象逐步创建的过程中，之后浏览器又突然清理，这最后将导致内存使用情况图表呈现 z 字形。例如，下面是 Chrome 在玩太空爆破手时的内存使用情况。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="Chrome garbage-collected memory usage" class="hx_lazyimg" data-src="https://www.scirra.com/images/chromememoryusage.png"></p>
+<p><em>当在玩一个 Javascript 游戏时会呈现 z 字形的内存占用情况。这可能是一个内存泄漏错误，但是实际上是 JavaScript 的正常操作。</em></p>
+<p>此外，游戏以 60 fps 运行时只有 16 ms 的时间来渲染每一帧，但是 GC 会很轻易的产生最少 100 ms 以上明显的卡顿，在更糟的情况下，这会导致不断卡顿的游戏体验，因此对于像游戏引擎一样实时运行的 Javascript 代码，解决办法是努力尝试在典型帧的持续时间内<em>你不要创建任何东西</em>。这实际上是相当困难的，因为有许多看上去无害的 Javascript 语句实际上却创造了垃圾，它们<em>都</em>必须从每帧动画的代码路径里删除掉。在 Construct 2 中我们竭尽全力减少每一处引擎的垃圾开销，但是你可以从图表中看到上面仍然有许多小的对象被创建所以 Chrome 还会每隔数秒进行一次清除。要注意这里只是一个小的清理 - 这里并没有大量的内存被清理出来，因为一个更高更极端的z曲线会更引起关注，但是它可能已经足够好了，因为小型的垃圾集合执行会更快并且偶尔的小卡顿也一般不太引人注意 - 因此我们应该看到了，有时我们确实很难避免产生新的资源分配。</p>
+<p>同样重要的包括第三方插件以及开发人员行为也需要遵守这些原则，否则，一个写的不好的插件可以产生许多垃圾并会让游戏十分卡顿，尽管主引擎 Construct 2 已经是一个非常低垃圾开销的引擎了。</p>
+<h2 id="jian-dan-de-ji-qiao">简单的技巧</h2>
+<p>首先，最明显的是，关键词 <code>new</code> 指示了资源的分配，例如 <code>new Foo()</code>  在可能的情况下，它会在启动时尝试创建一个对象，并且尽可能长时间、简单的<strong>重新使用相同的对象</strong>。</p>
+<p>不太明显的是，这里有三种快捷语法方式来相似的调用 <code>new</code> :</p>
+<p><code>{}</code> <em>（创建一个新对象）</em>
+<code>[]</code> <em>（创建一个新数组）</em>
+<code>function () { ... }</code> <em>（创建一个新函数，也会被垃圾收集）</em></p>
+<p>对于对象，用避免 <code>{}</code> 一样的方式来避免 <code>new</code> - 尝试去回收对象。请注意这包括像 <code>{ &quot;foo&quot;: &quot;bar&quot; }</code> 这样带属性的对象，也就是我们在函数中常用的一次性返回多个值。或许将每一次的返回值写入一个相同的(全局)对象来返回的写法是更好的 - 在文档中要仔细记录这一点，因为如果你保持引用这样的返回对象，可能在每次调用改变的时候发生错误。</p>
+<p>实际上你可以回收一个存在的对象（如果它没有原型链）通过删除它的所有属性，将它还原为一个空的对象如 <code>{}</code> 一样。为此你可以使用 <code>cr.wipe(obj)</code> 函数，它的定义如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// remove all own properties on obj,</span></span>
+<span class="line">effectively reverting it to a <span class="keyword">new</span> object</span>
+<span class="line">cr.wipe = <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>)</span>
+<span class="line"></span>&#123;</span>
+<span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> p <span class="keyword">in</span> obj)</span>
+<span class="line">    &#123;</span>
+<span class="line">        <span class="keyword">if</span> (obj.hasOwnProperty(p))</span>
+<span class="line">            <span class="keyword">delete</span> obj[p];</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>因此在某些情况下，你可以调用 <code>cr.wipe(obj)</code> 并为其再次添加属性来重用一个对象。比起重新简单分配 <code>{}</code> 现场清除一个对象可能需要更长的时间，但是在实时处理的代码中更重要的是避免产生垃圾，从而减少未来可能产生的卡顿情况。</p>
+<p>分配 <code>[]</code> 到一个数组中被经常用来作为一个快捷方式去清除这个数组（例如 <code>arr = [];</code>），但请注意这将创建一个新的空数组并使旧的数组成为一个垃圾！更好的写法是 <code>arr.length = 0;</code> ，这种方式具有相同的效果但却继续使用了相同的数组对象。</p>
+<p>函数则有一点棘手，函数通常在执行时创建并且不倾向于在运行时进行过多分配 - 但这意味着它们在动态创建时很容易被忽视。一个例子是返回函数的函数。主要的游戏循环使用了 <code>setTimeout</code> 或者 <code>requestAnimationFrame</code> 方法来调用一个成员函数类似如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+</pre></td><td class="code"><pre><span class="line">setTimeout(</span>
+<span class="line">    (<span class="function"><span class="keyword">function</span> (<span class="params">self</span>) </span>&#123;</span>
+<span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line">            self.tick(); </span>
+<span class="line">        &#125;; </span>
+<span class="line">    &#125;)(<span class="keyword">this</span>)</span>
+<span class="line">, <span class="number">16</span>);</span>
+</pre></td></tr></table></figure>
+<p>这看起来像是一个合理的方式来每 16ms 调用一次 <code>this.tick()</code> 。然而，这也意味着每一次执行 tick 函数都会返回一个新函数！这可以通过永久存储函数的方法来避免，例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">// at startup</span></span>
+<span class="line"><span class="keyword">this</span>.tickFunc = (<span class="function"><span class="keyword">function</span> (<span class="params">self</span>) </span>&#123; <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line">self.tick(); &#125;; &#125;)(<span class="keyword">this</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// in the tick() function</span></span>
+<span class="line">setTimeout(<span class="keyword">this</span>.tickFunc, <span class="number">16</span>);</span>
+</pre></td></tr></table></figure>
+<p>这将在每次执行 tick 函数时重复使用相同的函数来代替产生一个新的函数。这个方法可以应用到任意其他地方的返回函数中或是运行创建的函数中。</p>
+<h2 id="jin-jie-ji-qiao">进阶技巧</h2>
+<p>随着我们的进展，进一步的避免产生垃圾变得更加困难，由于 Javascript 本身就是围绕着 GC 所设计的。许多 Javascript 中方便的库函数也总是创建了新的对象。这儿没有什么你可以做的但是当你返回文档查阅那些返回值时。例如，数组中的 <code>slice()</code> 方法会返回一个数组（基于保持不变的原始数组范围内），字符串的 <code>substr</code> 会返回一个新的字符串（基于保持不变的原始字符串字符的范围），等等。调用这些函数都会产生垃圾，而你能做的就是不要去调用它们，或是在极端情况下重写你的函数使它们不再产生垃圾。例如在 Construct 2 这种引擎，由于各种原因一个经常的操作是通过索引去删除数组里的一个元素。这个方法的快捷使用方式如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sliced = arr.slice(index + <span class="number">1</span>);</span>
+<span class="line">arr.length = index;</span>
+<span class="line">arr.push.apply(arr, sliced);</span>
+</pre></td></tr></table></figure>
+<p>然而 <code>slice()</code> 返回一个原始数组的后半部分来组成了一个新的数组，并且在被 (<code>arr.push.apply</code>)复制后产生了垃圾。由于这是我们引擎中一个生产垃圾的热门处，它被改写为了一个迭代版本：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = index, len = arr.length - <span class="number">1</span>; i &lt; len; i++)</span>
+<span class="line">    arr[i] = arr[i + <span class="number">1</span>];</span>
+<span class="line"></span>
+<span class="line">arr.length = len;</span>
+</pre></td></tr></table></figure>
+<p>显然重写大量的库函数是相当痛苦的，所以你需要仔细的权衡需求实现的方便性以及垃圾产生之间的平衡。如果它在每帧中被调用了很多次，你可能最好重写这个你需要的函数库。</p>
+<p>这里可以很容易的使用 <code>{}</code> 语法来沿着递归函数传递数据。通过一个数组来表示一个堆栈，在这个堆栈中对递归的每一级进行 push 和 pop 是更好的。更好的是，实际上你并不需要在数组中 pop  - 你应该将数组中最后一个对象像垃圾一样处理掉。来代替使用一个 <code>top index</code> 变量进行简单减量。然后为了代替 pushing ,则增加 <code>top index</code> 并且如果有的话就重用数组中的下一个对象，否则执行真正的 push。</p>
+<p>此外，<strong>在所有可能的情况下避免向量对象</strong>（如 vector2 中的 x 和 y 属性）。虽然可能函数返回这些对象会让它们立刻改变或返回这两个值时会方便些，你可以在<em>每一帧</em>中轻松地结束数百个这样的创建对象，这将导致可怕的 GC 性能。这些函数必须分离出来在每个单独的组件中工作，例如：使用 <code>getX()</code> 和 <code>getY()</code> 来代替 <code>getPosition()</code> 来返回一个 vector2 对象。</p>
+<p>有时候你无法摆脱一个库是一个产生垃圾的噩梦。 Box2Dweb 是一个典型的例子：它每一帧产生了数百个 b2Vec2 对象并且不断的在浏览器产生垃圾，并最终导致垃圾处理器产生显著的卡顿效果。在这种情况下最好的办法是创建一个缓存回收机制。我们一直在测试 Box2D (<a href="https://github.com/illandril/box2dweb-closure" target="_blank" rel="external">Box2Dweb-closure</a>) 的修正版本，它似乎可以使 GC 暂停进行缓解（虽然没有完全解决）。查阅 <a href="https://github.com/illandril/box2dweb-closure/blob/master/src/common/math/b2Vec2.js" target="_blank" rel="external">b2Vec2.js</a> 的 <code>Get</code> 和 <code>Free</code> 代码。这里有一个名字叫 <code>free cache</code> 的数组，在之后的整个代码中如果不再使用 b2Vec2，它就会在 free cache 中被释放，当需要请求一个新的 b2Vec2，而它如果在 free cache 中还存在那么它就会被重用，否则才会分配一个新的。这并不完美，在一些测试后通常只有一半的 b2Vec2s 被创建并回收，但它确实帮助 GC 缓解了压力从而减少了频繁的卡顿。</p>
+<h2 id="jie-lun">结论</h2>
+<p>在 Javascript 中很难去完全避免垃圾。它的垃圾收集模式根本上是不符合像游戏这样的实时软件的需求的。从 Javascript 代码中需要进行大量的工作来消除垃圾，因为有很多直接的代码含有创建大量垃圾的副作用。然而，只要仔细小心一些，Javascript 也是可以在实时项目中不产生或是制造很少的垃圾开销，而对于需要保持高度响应性的游戏和应用程序这也是至关重要的。</p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/【译】如何编写避免垃圾开销的实时 Javascript 代码.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/JavaScript/">JavaScript</a>
+                
+              
+                <a class="post-tags" href="/tags/浏览器/">浏览器</a>
+                
+              
+                <a class="post-tags" href="/tags/性能优化/">性能优化</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=【译】如何编写避免垃圾开销的实时 JavaScript 代码 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2016/06/12/【译】如何编写避免垃圾开销的实时 Javascript 代码/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2016/06/12/【译】如何编写避免垃圾开销的实时 Javascript 代码/index.html&amp;title=【译】如何编写避免垃圾开销的实时 JavaScript 代码 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2016/06/12/【译】如何编写避免垃圾开销的实时 Javascript 代码/index.html&amp;text=【译】如何编写避免垃圾开销的实时 JavaScript 代码;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=【译】如何编写避免垃圾开销的实时 JavaScript 代码 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2016/06/12/【译】如何编写避免垃圾开销的实时 Javascript 代码/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2016/07/04/【译】JSON Web Tokens (JWT) 与 Sessions/">
+      ← 【译】JSON Web Tokens (JWT) 与 Sessions
+    </a>
+  
+  
+    <a class="pull-right" href="/2016/06/07/【个人总结】正则表达式语法及常用正则/">
+      【个人总结】正则表达式语法及常用正则 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2016/06/12/【译】如何编写避免垃圾开销的实时 Javascript 代码/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

@@ -1,0 +1,2162 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>前端动画原理与实现 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#dong-hua-de-ben-zhi-dong-hua-shi-guan-yu-shi-jian-de-han-shu"><span class="toc-number">1.</span> <span class="toc-text">动画的本质（动画是关于时间的函数）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dong-hua-de-chong-lei"><span class="toc-number">2.</span> <span class="toc-text">动画的种类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dong-hua-de-kong-zhi"><span class="toc-number">3.</span> <span class="toc-text">动画的控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#li-1-1-jian-dan-dong-hua"><span class="toc-number">3.1.</span> <span class="toc-text">例 1-1 简单动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-1-2-gai-jin-jian-dan-dong-hua"><span class="toc-number">3.2.</span> <span class="toc-text">例 1-2 改进简单动画</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zhi-xian-dong-hua"><span class="toc-number">4.</span> <span class="toc-text">直线动画</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#li-2-1-yun-su-yun-dong"><span class="toc-number">4.1.</span> <span class="toc-text">例 2-1 匀速运动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-2-2-yun-jia-su-yun-dong"><span class="toc-number">4.2.</span> <span class="toc-text">例 2-2 匀加速运动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-2-3-yun-jian-su-yun-dong"><span class="toc-number">4.3.</span> <span class="toc-text">例 2-3 匀减速运动</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ping-mian-shang-de-yun-dong"><span class="toc-number">5.</span> <span class="toc-text">平面上的运动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#li-3-1-xie-xian-yun-dong"><span class="toc-number">5.1.</span> <span class="toc-text">例3-1 斜线运动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-3-2-pao-wu-xian-yun-dong"><span class="toc-number">5.2.</span> <span class="toc-text">例3-2 抛物线运动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-3-3-jian-xie-zhen-dong"><span class="toc-number">5.3.</span> <span class="toc-text">例3-3 简谐振动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-3-4-zheng-xian-qu-xian"><span class="toc-number">5.4.</span> <span class="toc-text">例3-4 正弦曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-3-5-yuan-zhou-yun-dong"><span class="toc-number">5.5.</span> <span class="toc-text">例3-5 圆周运动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-3-6-yuan-zhou-yun-dong"><span class="toc-number">5.6.</span> <span class="toc-text">例3-6 圆周运动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dong-hua-de-yao-su-fen-xi"><span class="toc-number">5.7.</span> <span class="toc-text">动画的要素分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dong-hua-de-jian-yi-feng-zhuang"><span class="toc-number">5.8.</span> <span class="toc-text">动画的简易封装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-4-1-chi-xu-yuan-zhou-yun-dong"><span class="toc-number">5.9.</span> <span class="toc-text">例4-1 持续圆周运动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-4-2-zhe-xian-yun-dong"><span class="toc-number">5.10.</span> <span class="toc-text">例4-2 折线运动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dong-hua-dui-lie-feng-zhuang"><span class="toc-number">5.11.</span> <span class="toc-text">动画队列封装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-4-3-ju-xing-xian"><span class="toc-number">5.12.</span> <span class="toc-text">例4-3 矩形线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gai-liang-dong-hua-dui-lie"><span class="toc-number">5.13.</span> <span class="toc-text">改良动画队列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-4-4-xun-huan-zhe-xian-dong-hua"><span class="toc-number">5.14.</span> <span class="toc-text">例4-4 循环折线动画</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jing-dian-xiao-qiu-yun-dong"><span class="toc-number">6.</span> <span class="toc-text">经典小球运动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#li-5-1-dan-tiao-de-xiao-qiu-zi-you-luo-ti-dan-qi-xun-huan"><span class="toc-number">6.1.</span> <span class="toc-text">例5-1 弹跳的小球（自由落体、弹起、循环）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-5-2-dan-tiao-de-xiao-qiu-neng-liang-sun-hao"><span class="toc-number">6.2.</span> <span class="toc-text">例5-2 弹跳的小球（能量损耗）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-5-3-gun-dong-de-xiao-qiu"><span class="toc-number">6.3.</span> <span class="toc-text">例5-3 滚动的小球</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-5-4-shuai-chu-xiao-qiu-guan-xing"><span class="toc-number">6.4.</span> <span class="toc-text">例5-4 甩出小球（惯性）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-5-5-yun-jia-su-dao-yun-su-dao-jian-su-yun-dong"><span class="toc-number">6.5.</span> <span class="toc-text">例5-5 匀加速到匀速到减速运动</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bei-sai-er-qu-xian"><span class="toc-number">7.</span> <span class="toc-text">贝塞尔曲线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#li-6-1-ease-in-out-quint-dong-hua"><span class="toc-number">7.1.</span> <span class="toc-text">例6-1 easeInOutQuint动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-6-2-ease-in-out-back-dong-hua"><span class="toc-number">7.2.</span> <span class="toc-text">例6-2 easeInOutBack动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-6-3-ease-in-out-back-xy-dong-hua"><span class="toc-number">7.3.</span> <span class="toc-text">例6-3 easeInOutBackXY动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-6-4-3-dease-in-out-back-xy-dong-hua"><span class="toc-number">7.4.</span> <span class="toc-text">例6-4 3DeaseInOutBackXY动画</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zhu-zheng-dong-hua"><span class="toc-number">8.</span> <span class="toc-text">逐帧动画</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#li-7-1-flappy-bird"><span class="toc-number">8.1.</span> <span class="toc-text">例7-1 FlappyBird</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#css-3-dong-hua"><span class="toc-number">9.</span> <span class="toc-text">CSS3动画</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#li-8-1-yuan-zhou-yun-dong"><span class="toc-number">9.1.</span> <span class="toc-text">例8-1 圆周运动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-8-2-bei-sai-er-qu-xian"><span class="toc-number">9.2.</span> <span class="toc-text">例8-2 贝塞尔曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-8-3-transition-fu-gai"><span class="toc-number">9.3.</span> <span class="toc-text">例8-3 transition覆盖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-8-4-wang-fu-yuan-zhou-yun-dong"><span class="toc-number">9.4.</span> <span class="toc-text">例8-4 往复圆周运动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-8-5-wang-fu-yuan-zhou-yun-dong-bei-sai-er-qu-xian"><span class="toc-number">9.5.</span> <span class="toc-text">例8-5 往复圆周运动（贝塞尔曲线）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#li-8-6-zu-he-dong-hua"><span class="toc-number">9.6.</span> <span class="toc-text">例8-6 组合动画</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#svg-dong-hua"><span class="toc-number">10.</span> <span class="toc-text">SVG 动画</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dong-hua-xing-neng"><span class="toc-number">11.</span> <span class="toc-text">动画性能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zong-jie"><span class="toc-number">12.</span> <span class="toc-text">总结</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">前端动画原理与实现</h1>
+          <time datetime="2016-04-10T02:55:11.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2016 年 04 月 10 日</span>
+            <span style="margin-left: 10px;">最近更新于：2016 年 10 月 24 日</span>
+            <span style="margin-left: 10px;">本文共 4,606 字，读完约 24 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <p>参考月影大大同名<a href="http://matrix.h5jun.com/slide/show?id=117#/" target="_blank" rel="external">分享内容</a>总结了此份博文。经过一番归纳整理后熟悉了很多，整理于此，以供参考。</p>
+<h2 id="dong-hua-de-ben-zhi-dong-hua-shi-guan-yu-shi-jian-de-han-shu">动画的本质（动画是关于时间的函数）</h2>
+<ul>
+<li>定时器 改变元素的属性</li>
+<li>浏览器/GPU 的渲染过程</li>
+</ul>
+<h2 id="dong-hua-de-chong-lei">动画的种类</h2>
+<ul>
+<li>JavaScript 动画</li>
+</ul>
+<ol>
+<li>DOM 动画</li>
+<li>Canvas 动画</li>
+</ol>
+<ul>
+<li>CSS3 动画</li>
+</ul>
+<ol>
+<li>transition</li>
+<li>animation</li>
+</ol>
+<ul>
+<li>SVG 动画</li>
+</ul>
+<h2 id="dong-hua-de-kong-zhi">动画的控制</h2>
+<h3 id="li-1-1-jian-dan-dong-hua">例 1-1 简单动画</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> deg = <span class="number">0</span>;</span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span>
+<span class="line">  setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    self.style.transform = <span class="string">'rotate('</span> + (deg++) +<span class="string">'deg)'</span>;</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/WwpMGm/" target="_blank" rel="external">demo</a></p>
+<p>弊端：动画应该用当前时间和开始时间的差值来计算当前动画元素的位置而不是像上例那样用属性增量来实现动画，因为每隔多少毫秒增加一点属性的话，浏览器timer并不能保证在那个准确的时间点执行，而且那样做也很难精确控制动画的各个物理量。（造成丢帧）</p>
+<p>建议使用 <code>requestAnimationFrame</code>
+定义绘制每一帧前的工作。 <code>requestAnimationFrame(callback)</code>
+方法可以自动调节频率。callback 工作太多时无法在一帧内完成，会自动降低为 30 FPS, 虽然频率会降低但比丢帧好。
+渲染一帧目标（ 1 / 60 FPS = 16 ms-)</p>
+<p>具体表格体现如下:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align:center">时间</th>
+<th style="text-align:center">增量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>幅度控制</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+</tr>
+<tr>
+<td>时间控制</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">×</td>
+</tr>
+<tr>
+<td>速度控制</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+</tr>
+<tr>
+<td>不会延迟</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">×</td>
+</tr>
+<tr>
+<td>不会掉帧</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">✓</td>
+</tr>
+</tbody>
+</table>
+<h3 id="li-1-2-gai-jin-jian-dan-dong-hua">例 1-2 改进简单动画</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+</pre></td><td class="code"><pre><span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>, startTime = <span class="built_in">Date</span>.now();</span>
+<span class="line">  setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> T = <span class="number">1000</span>;</span>
+<span class="line">    <span class="keyword">var</span> p = (<span class="built_in">Date</span>.now() - startTime) / T;</span>
+<span class="line">    self.style.transform = <span class="string">'rotate('</span> + (<span class="number">360</span> * p) +<span class="string">'deg)'</span>;</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/zqZXLV" target="_blank" rel="external">demo</a></p>
+<h2 id="zhi-xian-dong-hua">直线动画</h2>
+<h3 id="li-2-1-yun-su-yun-dong">例 2-1 匀速运动</h3>
+<p>问：让滑块在 2 秒内向右匀速移动 200px</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+</pre></td><td class="code"><pre><span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>, startTime = <span class="built_in">Date</span>.now(),</span>
+<span class="line">      distance = <span class="number">200</span>, T = <span class="number">2000</span>;</span>
+<span class="line">  requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> p = <span class="built_in">Math</span>.min(<span class="number">1.0</span>, (<span class="built_in">Date</span>.now() - startTime) / T);</span>
+<span class="line">    self.style.transform = <span class="string">'translateX('</span> + (distance * p) +<span class="string">'px)'</span>;</span>
+<span class="line">    <span class="keyword">if</span>(p &lt; <span class="number">1.0</span>) requestAnimationFrame(step);</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/eZvVeJ" target="_blank" rel="external">demo</a></p>
+<p>基本公式：</p>
+<p>时间：$t = T⋅p$</p>
+<p>位移：$S_t = S⋅p = v⋅t$</p>
+<p>速度：$v = \frac{S⋅p}{t} = \frac{S}{T}$</p>
+<p>加速度：$a = 0$</p>
+<h3 id="li-2-2-yun-jia-su-yun-dong">例 2-2 匀加速运动</h3>
+<p>问：让滑块在 2 秒内向右匀加速移动 200px，速度从 0 开始</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+</pre></td><td class="code"><pre><span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>, startTime = <span class="built_in">Date</span>.now(),</span>
+<span class="line">      distance = <span class="number">200</span>, T = <span class="number">2000</span>;</span>
+<span class="line">  requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> p = <span class="built_in">Math</span>.min(<span class="number">1.0</span>, (<span class="built_in">Date</span>.now() - startTime) / T);</span>
+<span class="line">    self.style.transform = <span class="string">'translateX('</span> + (distance * p * p) +<span class="string">'px)'</span>;</span>
+<span class="line">    <span class="keyword">if</span>(p &lt; <span class="number">1.0</span>) requestAnimationFrame(step);</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/xVqNyr" target="_blank" rel="external">demo</a></p>
+<p>时间：$t = T⋅p$</p>
+<p>位移：$S_t = S⋅p^2 = t^2 ⋅\frac{S}{T^2}$</p>
+<p>速度：$v = \frac{2S}{T^2}⋅t = \frac{2Sp}{T}$</p>
+<p>加速度：$a = \frac{2S}{T^2}$</p>
+<h3 id="li-2-3-yun-jian-su-yun-dong">例 2-3 匀减速运动</h3>
+<p>让滑块在 2 秒内向右匀减速移动 200px，速度从最大减为 0</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+</pre></td><td class="code"><pre><span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>, startTime = <span class="built_in">Date</span>.now(),</span>
+<span class="line">      distance = <span class="number">200</span>, T = <span class="number">2000</span>;</span>
+<span class="line">  requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> p = <span class="built_in">Math</span>.min(<span class="number">1.0</span>, (<span class="built_in">Date</span>.now() - startTime) / T);</span>
+<span class="line">    self.style.transform = <span class="string">'translateX('</span> </span>
+<span class="line">      + (distance * p * (<span class="number">2</span>-p)) +<span class="string">'px)'</span>;</span>
+<span class="line">    <span class="keyword">if</span>(p &lt; <span class="number">1.0</span>) requestAnimationFrame(step);</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/JXWqVr" target="_blank" rel="external">demo</a></p>
+<p>时间：$t = T⋅p$</p>
+<p>位移：$S_t = \frac{2S}{T}⋅t - t^2 ⋅\frac{S}{T^2} = Sp(2-p)$</p>
+<p>速度：$v = \frac{2S(1-p)}{T} = \frac{2S}{T} - \frac{2S}{T^2}⋅t$</p>
+<p>加速度：$a = - \frac{2S}{T^2}$</p>
+<h2 id="ping-mian-shang-de-yun-dong">平面上的运动</h2>
+<h3 id="li-3-1-xie-xian-yun-dong">例3-1 斜线运动</h3>
+<p>让滑块沿斜线运动 2s，x、y 移动距离都是 200px</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+</pre></td><td class="code"><pre><span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>, startTime = <span class="built_in">Date</span>.now(),</span>
+<span class="line">      distance = <span class="number">200</span>, T = <span class="number">2000</span>;</span>
+<span class="line">  requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> p = <span class="built_in">Math</span>.min(<span class="number">1.0</span>, (<span class="built_in">Date</span>.now() - startTime) / T);</span>
+<span class="line">    <span class="keyword">var</span> tx = distance * p;</span>
+<span class="line">    <span class="keyword">var</span> ty = tx;</span>
+<span class="line"></span>
+<span class="line">    self.style.transform = <span class="string">'translate('</span> </span>
+<span class="line">      + tx + <span class="string">'px'</span> + <span class="string">','</span> + ty +<span class="string">'px)'</span>;</span>
+<span class="line">    <span class="keyword">if</span>(p &lt; <span class="number">1.0</span>) requestAnimationFrame(step);</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/XdRWrM" target="_blank" rel="external">demo</a>
+（就是 x 轴 y 轴各自方向的匀速运动）</p>
+<h3 id="li-3-2-pao-wu-xian-yun-dong">例3-2 抛物线运动</h3>
+<p>让滑块做抛物线运动（平抛）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+</pre></td><td class="code"><pre><span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>, startTime = <span class="built_in">Date</span>.now(),</span>
+<span class="line">      disX = <span class="number">200</span>, disY = <span class="number">200</span>, </span>
+<span class="line">      T = <span class="number">1000</span> * <span class="built_in">Math</span>.sqrt(<span class="number">2</span> * disY / <span class="number">98</span>); </span>
+<span class="line">    <span class="comment">//假设10px是1米，disY = 20米</span></span>
+<span class="line"></span>
+<span class="line">  requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> p = <span class="built_in">Math</span>.min(<span class="number">1.0</span>, (<span class="built_in">Date</span>.now() - startTime) / T);</span>
+<span class="line">    <span class="keyword">var</span> tx = disX * p;</span>
+<span class="line">    <span class="keyword">var</span> ty = disY * p * p;</span>
+<span class="line"></span>
+<span class="line">    self.style.transform = <span class="string">'translate('</span> </span>
+<span class="line">      + tx + <span class="string">'px'</span> + <span class="string">','</span> + ty +<span class="string">'px)'</span>;</span>
+<span class="line">    <span class="keyword">if</span>(p &lt; <span class="number">1.0</span>) requestAnimationFrame(step);</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/jqmOPb" target="_blank" rel="external">demo</a>
+（$y = ax^2 + bx + c$）</p>
+<h3 id="li-3-3-jian-xie-zhen-dong">例3-3 简谐振动</h3>
+<p>让滑块做简谐摆运动（简谐振动）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+</pre></td><td class="code"><pre><span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>, startTime = <span class="built_in">Date</span>.now(),</span>
+<span class="line">      distance = <span class="number">100</span>, </span>
+<span class="line">      T = <span class="number">2000</span>; </span>
+<span class="line"></span>
+<span class="line">  requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> p = <span class="built_in">Math</span>.min(<span class="number">1.0</span>, (<span class="built_in">Date</span>.now() - startTime) / T);</span>
+<span class="line">    <span class="keyword">var</span> tx = distance * <span class="built_in">Math</span>.sin(<span class="number">2</span> * <span class="built_in">Math</span>.PI * p);</span>
+<span class="line"></span>
+<span class="line">    self.style.transform = <span class="string">'translateX('</span> </span>
+<span class="line">      + tx + <span class="string">'px)'</span>;</span>
+<span class="line">    <span class="keyword">if</span>(p &lt; <span class="number">1.0</span>) requestAnimationFrame(step);</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/grWOWN" target="_blank" rel="external">demo</a>
+（正弦曲线）</p>
+<h3 id="li-3-4-zheng-xian-qu-xian">例3-4 正弦曲线</h3>
+<p>让滑块沿正弦曲线运动</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+</pre></td><td class="code"><pre><span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>, startTime = <span class="built_in">Date</span>.now(),</span>
+<span class="line">      distance = <span class="number">100</span>, </span>
+<span class="line">      T = <span class="number">2000</span>; </span>
+<span class="line"></span>
+<span class="line">  requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> p = <span class="built_in">Math</span>.min(<span class="number">1.0</span>, (<span class="built_in">Date</span>.now() - startTime) / T);</span>
+<span class="line">    <span class="keyword">var</span> ty = distance * <span class="built_in">Math</span>.sin(<span class="number">2</span> * <span class="built_in">Math</span>.PI * p);</span>
+<span class="line">    <span class="keyword">var</span> tx = <span class="number">2</span> * distance * p;</span>
+<span class="line"></span>
+<span class="line">    self.style.transform = <span class="string">'translate('</span> </span>
+<span class="line">      + tx + <span class="string">'px,'</span> + ty + <span class="string">'px)'</span>;</span>
+<span class="line">    <span class="keyword">if</span>(p &lt; <span class="number">1.0</span>) requestAnimationFrame(step);</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/EKoopm" target="_blank" rel="external">demo</a></p>
+<h3 id="li-3-5-yuan-zhou-yun-dong">例3-5 圆周运动</h3>
+<p>让滑块做圆周运动</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+</pre></td><td class="code"><pre><span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>, startTime = <span class="built_in">Date</span>.now(),</span>
+<span class="line">      r = <span class="number">100</span>, T = <span class="number">2000</span>; </span>
+<span class="line"></span>
+<span class="line">  requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> p = <span class="built_in">Math</span>.min(<span class="number">1.0</span>, (<span class="built_in">Date</span>.now() - startTime) / T);</span>
+<span class="line">    <span class="keyword">var</span> rotation = <span class="number">360</span> * p;</span>
+<span class="line"></span>
+<span class="line">    self.style.transformOrigin = <span class="string">'0 '</span> + r + <span class="string">'px'</span>;</span>
+<span class="line">    self.style.transform = <span class="string">'rotate('</span> </span>
+<span class="line">      + rotation + <span class="string">'deg)'</span>;</span>
+<span class="line">    <span class="keyword">if</span>(p &lt; <span class="number">1.0</span>) requestAnimationFrame(step);</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/WwjbrE" target="_blank" rel="external">demo</a></p>
+<h3 id="li-3-6-yuan-zhou-yun-dong">例3-6 圆周运动</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+</pre></td><td class="code"><pre><span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>, startTime = <span class="built_in">Date</span>.now(),</span>
+<span class="line">      r = <span class="number">100</span>, T = <span class="number">2000</span>; </span>
+<span class="line"></span>
+<span class="line">  requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> p = <span class="built_in">Math</span>.min(<span class="number">1.0</span>, (<span class="built_in">Date</span>.now() - startTime) / T);</span>
+<span class="line">    <span class="keyword">var</span> tx = -r * <span class="built_in">Math</span>.sin(<span class="number">2</span> * <span class="built_in">Math</span>.PI * p),</span>
+<span class="line">        ty = -r * <span class="built_in">Math</span>.cos(<span class="number">2</span> * <span class="built_in">Math</span>.PI * p);</span>
+<span class="line"></span>
+<span class="line">    self.style.transform = <span class="string">'translate('</span> </span>
+<span class="line">      + tx + <span class="string">'px,'</span> + ty + <span class="string">'px)'</span>;</span>
+<span class="line">    <span class="keyword">if</span>(p &lt; <span class="number">1.0</span>) requestAnimationFrame(step);</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/ONmPgp" target="_blank" rel="external">demo</a></p>
+<p>圆的轨迹方程</p>
+<ul>
+<li>代数方程： $x^2 + y^2 = r^2$</li>
+<li>参数方程（更优）：$x = R⋅cos(ωt)$  $y = R⋅sin(ωt)$</li>
+<li>极坐标方程（更优）：$ρ = R$</li>
+</ul>
+<h3 id="dong-hua-de-yao-su-fen-xi">动画的要素分析</h3>
+<p>动画时长：$T$</p>
+<p>动画进程：$p = \frac{t}{T}(p ∈ [0,1])$</p>
+<p>easing：$e = f(p)$</p>
+<p>动画方程：$[x,y] = G(e)$</p>
+<p>动画开始、进行中、结束：onStart、onProgress、onFinished</p>
+<h3 id="dong-hua-de-jian-yi-feng-zhuang">动画的简易封装</h3>
+<p>对动画进行简易封装</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+</pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span>
+<span class="line"> * [Animator description]</span>
+<span class="line"> * @param &#123;[type]&#125; duration [时间]</span>
+<span class="line"> * @param &#123;[type]&#125; progress [运动公式]</span>
+<span class="line"> * @param &#123;[type]&#125; easing   [缓动函数]</span>
+<span class="line"> */</span></span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animator</span>(<span class="params">duration, progress, easing</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">this</span>.duration = duration;</span>
+<span class="line">  <span class="keyword">this</span>.progress = progress;</span>
+<span class="line">  <span class="keyword">this</span>.easing = easing || <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;<span class="keyword">return</span> p&#125;;</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line">Animator.prototype = &#123;</span>
+<span class="line">  <span class="attr">start</span>: <span class="function"><span class="keyword">function</span>(<span class="params">finished</span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> startTime = <span class="built_in">Date</span>.now();</span>
+<span class="line">    <span class="keyword">var</span> duration = <span class="keyword">this</span>.duration, </span>
+<span class="line">        self = <span class="keyword">this</span>;</span>
+<span class="line"></span>
+<span class="line">    requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">      <span class="keyword">var</span> p = (<span class="built_in">Date</span>.now() - startTime) / duration;<span class="comment">//当前时间</span></span>
+<span class="line">      <span class="keyword">var</span> next = <span class="literal">true</span>;</span>
+<span class="line"></span>
+<span class="line">      <span class="keyword">if</span>(p &lt; <span class="number">1.0</span>)&#123;</span>
+<span class="line">        self.progress(self.easing(p), p);<span class="comment">//传p执行动画</span></span>
+<span class="line">      &#125;<span class="keyword">else</span>&#123;</span>
+<span class="line">        <span class="keyword">if</span>(<span class="keyword">typeof</span> finished === <span class="string">'function'</span>)&#123; <span class="comment">//结束判断</span></span>
+<span class="line">          next = finished() === <span class="literal">false</span>;</span>
+<span class="line">        &#125;<span class="keyword">else</span>&#123;</span>
+<span class="line">          next = finished === <span class="literal">false</span>;</span>
+<span class="line">        &#125;</span>
+<span class="line"></span>
+<span class="line">        <span class="keyword">if</span>(!next)&#123;</span>
+<span class="line">          self.progress(self.easing(<span class="number">1.0</span>), <span class="number">1.0</span>);<span class="comment">//动画中断</span></span>
+<span class="line">        &#125;<span class="keyword">else</span>&#123;</span>
+<span class="line">          startTime += duration;<span class="comment">//循环时间</span></span>
+<span class="line">          self.progress(self.easing(p), p);</span>
+<span class="line">        &#125;</span>
+<span class="line">      &#125;</span>
+<span class="line">    </span>
+<span class="line">      <span class="keyword">if</span>(next) requestAnimationFrame(step);<span class="comment">//反复执行</span></span>
+<span class="line">    &#125;);</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<h3 id="li-4-1-chi-xu-yuan-zhou-yun-dong">例4-1 持续圆周运动</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> animator = <span class="keyword">new</span> Animator(<span class="number">2000</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> tx = <span class="number">-100</span> * <span class="built_in">Math</span>.sin(<span class="number">2</span> * <span class="built_in">Math</span>.PI * p),</span>
+<span class="line">        ty = <span class="number">-100</span> * <span class="built_in">Math</span>.cos(<span class="number">2</span> * <span class="built_in">Math</span>.PI * p);</span>
+<span class="line"></span>
+<span class="line">    block.style.transform = <span class="string">'translate('</span> </span>
+<span class="line">      + tx + <span class="string">'px,'</span> + ty + <span class="string">'px)'</span>;     </span>
+<span class="line">  &#125;);</span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  animator.start(<span class="literal">false</span>);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/grWxNx" target="_blank" rel="external">demo</a></p>
+<h3 id="li-4-2-zhe-xian-yun-dong">例4-2 折线运动</h3>
+<p>让滑块先向右然后再向下运动</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">1000</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> tx = <span class="number">100</span> * p;</span>
+<span class="line"></span>
+<span class="line">    block.style.transform = <span class="string">'translateX('</span> </span>
+<span class="line">      + tx + <span class="string">'px)'</span>;     </span>
+<span class="line">  &#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a2 = <span class="keyword">new</span> Animator(<span class="number">1000</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> ty = <span class="number">100</span> * p;</span>
+<span class="line"></span>
+<span class="line">  block.style.transform = <span class="string">'translate(100px,'</span> </span>
+<span class="line">    + ty + <span class="string">'px)'</span>;     </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  a1.start(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    a2.start();</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/oxwEXj" target="_blank" rel="external">demo</a>这里有两个连续的动画，所以我们最好对动画做一个队列的封装。</p>
+<h3 id="dong-hua-dui-lie-feng-zhuang">动画队列封装</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+</pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">AnimationQueue</span>(<span class="params">animators</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">this</span>.animators = animators || [];</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line">AnimationQueue.prototype = &#123;</span>
+<span class="line">  <span class="attr">status</span>: <span class="string">'ready'</span>,</span>
+<span class="line">  <span class="attr">append</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> args = [].slice.call(<span class="built_in">arguments</span>);</span>
+<span class="line">    <span class="keyword">this</span>.animators.push.apply(<span class="keyword">this</span>.animators, args);</span>
+<span class="line">  &#125;,</span>
+<span class="line">  <span class="attr">flush</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.animators.length)&#123;</span>
+<span class="line">      <span class="keyword">var</span> self = <span class="keyword">this</span>;</span>
+<span class="line"></span>
+<span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">play</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">        <span class="keyword">var</span> animator = self.animators.shift();</span>
+<span class="line">        animator.start(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">          <span class="keyword">if</span>(self.animators.length)&#123;</span>
+<span class="line">            play();</span>
+<span class="line">          &#125;</span>
+<span class="line">        &#125;);</span>
+<span class="line">      &#125;</span>
+<span class="line">      play();</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<h3 id="li-4-3-ju-xing-xian">例4-3 矩形线</h3>
+<p>让滑块沿一个矩形边界运动</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">1000</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> tx = <span class="number">100</span> * p;</span>
+<span class="line">  block.style.transform = <span class="string">'translateX('</span> </span>
+<span class="line">    + tx + <span class="string">'px)'</span>;     </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a2 = <span class="keyword">new</span> Animator(<span class="number">1000</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> ty = <span class="number">100</span> * p;</span>
+<span class="line">  block.style.transform = <span class="string">'translate(100px,'</span> </span>
+<span class="line">    + ty + <span class="string">'px)'</span>;     </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a3 = <span class="keyword">new</span> Animator(<span class="number">1000</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> tx = <span class="number">100</span> * (<span class="number">1</span>-p);</span>
+<span class="line">  block.style.transform = <span class="string">'translate('</span> </span>
+<span class="line">    + tx + <span class="string">'px, 100px)'</span>;     </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a4 = <span class="keyword">new</span> Animator(<span class="number">1000</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> ty = <span class="number">100</span> * (<span class="number">1</span>-p);</span>
+<span class="line">  block.style.transform = <span class="string">'translateY('</span>  </span>
+<span class="line">    + ty + <span class="string">'px)'</span>;     </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line"><span class="keyword">var</span> animators = <span class="keyword">new</span> AnimationQueue();</span>
+<span class="line">  animators.append(a1, a2, a3, a4);</span>
+<span class="line">  animators.flush();</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/XdgZpL" target="_blank" rel="external">demo</a></p>
+<h3 id="gai-liang-dong-hua-dui-lie">改良动画队列</h3>
+<p>添加了 animator 是否为 Animator 的实例判断</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+</pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">AnimationQueue</span>(<span class="params">animators</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">this</span>.animators = animators || [];</span>
+<span class="line">&#125;</span>
+<span class="line"></span>
+<span class="line">AnimationQueue.prototype = &#123;</span>
+<span class="line">  <span class="attr">status</span>: <span class="string">'ready'</span>,</span>
+<span class="line">  <span class="attr">append</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> args = [].slice.call(<span class="built_in">arguments</span>);</span>
+<span class="line">    <span class="keyword">this</span>.animators.push.apply(<span class="keyword">this</span>.animators, args);</span>
+<span class="line">  &#125;,</span>
+<span class="line">  <span class="attr">flush</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.animators.length)&#123;</span>
+<span class="line">      <span class="keyword">var</span> self = <span class="keyword">this</span>;</span>
+<span class="line"></span>
+<span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">play</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">        <span class="keyword">var</span> animator = self.animators.shift();</span>
+<span class="line"></span>
+<span class="line">        <span class="keyword">if</span>(animator <span class="keyword">instanceof</span> Animator)&#123;</span>
+<span class="line">          animator.start(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">            <span class="keyword">if</span>(self.animators.length)&#123;</span>
+<span class="line">              play();</span>
+<span class="line">            &#125;</span>
+<span class="line">          &#125;);</span>
+<span class="line">        &#125;<span class="keyword">else</span>&#123;</span>
+<span class="line">          animator.apply(self);</span>
+<span class="line">          <span class="keyword">if</span>(self.animators.length)&#123;</span>
+<span class="line">            play();</span>
+<span class="line">          &#125;</span>
+<span class="line">        &#125;</span>
+<span class="line">      &#125;</span>
+<span class="line">      play();</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<h3 id="li-4-4-xun-huan-zhe-xian-dong-hua">例4-4 循环折线动画</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">1000</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> tx = <span class="number">100</span> * p;</span>
+<span class="line">  block.style.transform = <span class="string">'translateX('</span> </span>
+<span class="line">    + tx + <span class="string">'px)'</span>;     </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a2 = <span class="keyword">new</span> Animator(<span class="number">1000</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> ty = <span class="number">100</span> * p;</span>
+<span class="line">  block.style.transform = <span class="string">'translate(100px,'</span> </span>
+<span class="line">    + ty + <span class="string">'px)'</span>;     </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a3 = <span class="keyword">new</span> Animator(<span class="number">1000</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> tx = <span class="number">100</span> * (<span class="number">1</span>-p);</span>
+<span class="line">  block.style.transform = <span class="string">'translate('</span> </span>
+<span class="line">    + tx + <span class="string">'px, 100px)'</span>;     </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a4 = <span class="keyword">new</span> Animator(<span class="number">1000</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> ty = <span class="number">100</span> * (<span class="number">1</span>-p);</span>
+<span class="line">  block.style.transform = <span class="string">'translateY('</span>  </span>
+<span class="line">    + ty + <span class="string">'px)'</span>;     </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> animators = <span class="keyword">new</span> AnimationQueue();</span>
+<span class="line">  animators.append(a1, a2, a3, a4, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">this</span>.append(a1, a2, a3, a4, <span class="built_in">arguments</span>.callee);</span>
+<span class="line">  &#125;);</span>
+<span class="line">  animators.flush();</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/RaxRQp" target="_blank" rel="external">demo</a></p>
+<h2 id="jing-dian-xiao-qiu-yun-dong">经典小球运动</h2>
+<h3 id="li-5-1-dan-tiao-de-xiao-qiu-zi-you-luo-ti-dan-qi-xun-huan">例5-1 弹跳的小球（自由落体、弹起、循环）</h3>
+<p>小球方程
+设 20px 为 1 米，下落距离为 200px（10 米）</p>
+<p>$g \approx 10米/秒$</p>
+<p>$S = \frac{1}{2}gT^2 = 10米$</p>
+<p>$T = \sqrt\frac{2S}{g} = \sqrt2\approx1.414秒 = 1414毫秒$</p>
+<p>下落阶段：$S_t = Sp^2$</p>
+<p>上升阶段：$S_t = S - S_p(2 - p)$</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">1414</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> ty = <span class="number">200</span> * p * p;</span>
+<span class="line">  block.style.transform = <span class="string">'translateY('</span> </span>
+<span class="line">    + ty + <span class="string">'px)'</span>;     </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a2 = <span class="keyword">new</span> Animator(<span class="number">1414</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> ty = <span class="number">200</span> - <span class="number">200</span> * p * (<span class="number">2</span>-p);</span>
+<span class="line">  block.style.transform = <span class="string">'translateY('</span> </span>
+<span class="line">    + ty + <span class="string">'px)'</span>;     </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> animators = <span class="keyword">new</span> AnimationQueue();</span>
+<span class="line">  animators.append(a1,a2, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">this</span>.append(a1, a2, <span class="built_in">arguments</span>.callee);</span>
+<span class="line">  &#125;);</span>
+<span class="line">  animators.flush();</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/BKJrZd" target="_blank" rel="external">demo</a></p>
+<h3 id="li-5-2-dan-tiao-de-xiao-qiu-neng-liang-sun-hao">例5-2 弹跳的小球（能量损耗）</h3>
+<p>设每一个周期损耗为0.7：$T = 0.7T$
+`
+上升距离：$S = 0.49S$</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+</pre></td><td class="code"><pre><span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> T = <span class="number">1414</span>;</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(T,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> s = <span class="keyword">this</span>.duration * <span class="number">200</span> / T;</span>
+<span class="line">    <span class="keyword">var</span> ty = s * (p * p - <span class="number">1</span>);</span>
+<span class="line">    block.style.transform = <span class="string">'translateY('</span> </span>
+<span class="line">      + ty + <span class="string">'px)'</span>;     </span>
+<span class="line">  &#125;);</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">var</span> a2 = <span class="keyword">new</span> Animator(T,  <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> s = <span class="keyword">this</span>.duration * <span class="number">200</span> / T;</span>
+<span class="line">    <span class="keyword">var</span> ty = - s * p * (<span class="number">2</span>-p);</span>
+<span class="line">    block.style.transform = <span class="string">'translateY('</span> </span>
+<span class="line">      + ty + <span class="string">'px)'</span>;     </span>
+<span class="line">  &#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> animators = <span class="keyword">new</span> AnimationQueue();</span>
+<span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    a2.duration *= <span class="number">0.7</span>;</span>
+<span class="line">    <span class="keyword">if</span>(a2.duration &lt;= <span class="number">0.0001</span>)&#123;</span>
+<span class="line">      animators.animators.length = <span class="number">0</span>;</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;</span>
+<span class="line">  animators.append(a1 ,foo, a2,</span>
+<span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    a1.duration *= <span class="number">0.7</span>;</span>
+<span class="line">    <span class="keyword">this</span>.append(a1, foo, a2, b);</span>
+<span class="line">  &#125;);</span>
+<span class="line">  animators.flush();</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/jqYzZp" target="_blank" rel="external">demo</a></p>
+<h3 id="li-5-3-gun-dong-de-xiao-qiu">例5-3 滚动的小球</h3>
+<p>小球直径：$d = 50px$</p>
+<p>圆周长：$l = πd$</p>
+<p>周期：$T = 2秒$</p>
+<p>滚动时间：$t_{max} = 4秒$</p>
+<p>滚动距离等于：$S = πd·\frac{t_{max}}{T} = 314px$</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">4000</span>, <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> rotation = <span class="string">'rotate('</span> + <span class="number">720</span> * p + <span class="string">'deg)'</span>;</span>
+<span class="line">  <span class="keyword">var</span> x = <span class="number">50</span> + <span class="number">314</span> * p + <span class="string">'px'</span>;</span>
+<span class="line"></span>
+<span class="line">  block.style.transform = rotation;</span>
+<span class="line">  block.style.left = x;</span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  a1.start();</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/GZydrd" target="_blank" rel="external">demo</a></p>
+<h3 id="li-5-4-shuai-chu-xiao-qiu-guan-xing">例5-4 甩出小球（惯性）</h3>
+<p>1）小球做半径 100px 的匀速圆周运动，周期 2s
+2）在 2.8s 后小球从手中甩出</p>
+<p>甩出小球公式：</p>
+<p>$x = − rsin(πt)$</p>
+<p>$v_x = − πrcos(πt)$</p>
+<p>$y = r − rcos(πt)$</p>
+<p>$v_y = πrsin(πt)$</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">2800</span>, <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> x = <span class="number">-100</span> * <span class="built_in">Math</span>.sin(<span class="number">2.8</span> * <span class="built_in">Math</span>.PI * p);</span>
+<span class="line">  <span class="keyword">var</span> y = <span class="number">100</span> - <span class="number">100</span> * <span class="built_in">Math</span>.cos(<span class="number">2.8</span> * <span class="built_in">Math</span>.PI * p);</span>
+<span class="line"></span>
+<span class="line">  block.style.transform = <span class="string">'translate('</span> + x + <span class="string">'px,'</span></span>
+<span class="line">    + y + <span class="string">'px)'</span>;</span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a2 = <span class="keyword">new</span> Animator(<span class="number">5000</span>, <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> x = <span class="number">-100</span> * <span class="built_in">Math</span>.sin(<span class="number">2.8</span> * <span class="built_in">Math</span>.PI) </span>
+<span class="line">      <span class="number">-100</span> * <span class="built_in">Math</span>.cos(<span class="number">2.8</span> * <span class="built_in">Math</span>.PI) * <span class="built_in">Math</span>.PI * <span class="number">5</span> * p;</span>
+<span class="line"></span>
+<span class="line">  <span class="keyword">var</span> y = <span class="number">100</span> - <span class="number">100</span> * <span class="built_in">Math</span>.cos(<span class="number">2.8</span> * <span class="built_in">Math</span>.PI) </span>
+<span class="line">      + <span class="number">100</span> * <span class="built_in">Math</span>.sin(<span class="number">2.8</span> * <span class="built_in">Math</span>.PI) * <span class="built_in">Math</span>.PI * <span class="number">5</span> * p;</span>
+<span class="line"></span>
+<span class="line">  block.style.transform = <span class="string">'translate('</span> + x + <span class="string">'px,'</span></span>
+<span class="line">    + y + <span class="string">'px)'</span>;    </span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">a1.start(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    a2.start();</span>
+<span class="line">  &#125;);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/ONzZzr" target="_blank" rel="external">demo</a></p>
+<h3 id="li-5-5-yun-jia-su-dao-yun-su-dao-jian-su-yun-dong">例5-5 匀加速到匀速到减速运动</h3>
+<p>滑块 1s 匀加速运动 100px，匀速运动 100px，
+然后再经过 50px 速度减为 0。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">1000</span>, <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> x = <span class="number">100</span> * p * p;</span>
+<span class="line"></span>
+<span class="line">  block.style.transform = <span class="string">'translateX('</span> + x + <span class="string">'px)'</span>;</span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a2 = <span class="keyword">new</span> Animator(<span class="number">500</span>, <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> x = <span class="number">100</span> + <span class="number">100</span> * p;</span>
+<span class="line"></span>
+<span class="line">  block.style.transform = <span class="string">'translateX('</span> + x + <span class="string">'px)'</span>;</span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a3 = <span class="keyword">new</span> Animator(<span class="number">500</span>, <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> x = <span class="number">200</span> + <span class="number">50</span> * p * (<span class="number">2</span> - p);</span>
+<span class="line"></span>
+<span class="line">  block.style.transform = <span class="string">'translateX('</span> + x + <span class="string">'px)'</span>;</span>
+<span class="line">&#125;);</span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line"><span class="keyword">var</span> animators = <span class="keyword">new</span> AnimationQueue();</span>
+<span class="line">  animators.append(a1, a2, a3);</span>
+<span class="line">  animators.flush();</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/YqYLea" target="_blank" rel="external">demo</a></p>
+<p>此类型运动运动过程均可以用熟悉的速度-时间图表示</p>
+<iframe src="/project/method-draw-image.svg" width="100%" height="400px" id="framedemo" frameborder="0" scrolling="no"></iframe>
+<h2 id="bei-sai-er-qu-xian">贝塞尔曲线</h2>
+<p>我们可以使用二阶贝塞尔曲线来构造平滑动画，这里如果对贝塞尔曲线还不太了解，可以看看下面这篇详解
+<a href="http://www.html-js.com/article/1628" target="_blank" rel="external">贝塞尔曲线扫盲</a></p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="贝塞尔曲线模拟" class="hx_lazyimg" data-src="http://htmljs.b0.upaiyun.com/uploads/1415845715278-bezier-quadratic-animation.gif"></p>
+<p>这里有一些贝塞尔曲线的实现资源库和文档：</p>
+<p><a href="https://github.com/gre/bezier-easing" target="_blank" rel="external">bezier-easing</a></p>
+<p><a href="http://cubic-bezier.com/" target="_blank" rel="external">cubic-bezier</a></p>
+<p><a href="http://easings.net/zh-cn" target="_blank" rel="external">缓动函数速查表</a></p>
+<p>借助资源库我们可以方便实现简单的贝塞尔曲线动画</p>
+<h3 id="li-6-1-ease-in-out-quint-dong-hua">例6-1 easeInOutQuint动画</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> easing = BezierEasing(<span class="number">0.86</span>, <span class="number">0</span>, <span class="number">0.07</span>, <span class="number">1</span>);</span>
+<span class="line"><span class="comment">//easeInOutQuint</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">2000</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ep,p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> x = <span class="number">200</span> * ep;</span>
+<span class="line"></span>
+<span class="line">  block.style.transform = <span class="string">'translateX('</span> + x + <span class="string">'px)'</span>;</span>
+<span class="line">&#125;, easing);</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  a1.start();</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/eZyaNv" target="_blank" rel="external">demo</a></p>
+<h3 id="li-6-2-ease-in-out-back-dong-hua">例6-2 easeInOutBack动画</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> easing = BezierEasing(<span class="number">0.68</span>, <span class="number">-0.55</span>, <span class="number">0.265</span>, <span class="number">1.55</span>);</span>
+<span class="line"><span class="comment">//easeInOutQuint</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">2000</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ep,p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> x = <span class="number">200</span> * ep;</span>
+<span class="line"></span>
+<span class="line">  block.style.transform = <span class="string">'translateX('</span> + x + <span class="string">'px)'</span>;</span>
+<span class="line">&#125;, easing);</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  a1.start();</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/repgLw" target="_blank" rel="external">demo</a></p>
+<h3 id="li-6-3-ease-in-out-back-xy-dong-hua">例6-3 easeInOutBackXY动画</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> easing = BezierEasing(<span class="number">0.68</span>, <span class="number">-0.55</span>, <span class="number">0.265</span>, <span class="number">1.55</span>);</span>
+<span class="line"><span class="comment">//easeInOutQuint</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">2000</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ep,p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> x = <span class="number">200</span> * ep;</span>
+<span class="line">  <span class="keyword">var</span> y = <span class="number">-200</span> * p; </span>
+<span class="line"></span>
+<span class="line">  block.style.transform = <span class="string">'translate('</span> + x + <span class="string">'px,'</span> + y + <span class="string">'px)'</span>;</span>
+<span class="line">&#125;, easing);</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  a1.start();</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/vGpwXb" target="_blank" rel="external">demo</a></p>
+<h3 id="li-6-4-3-dease-in-out-back-xy-dong-hua">例6-4 3DeaseInOutBackXY动画</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> easing = BezierEasing(<span class="number">0.68</span>, <span class="number">-0.55</span>, <span class="number">0.265</span>, <span class="number">1.55</span>);</span>
+<span class="line"><span class="comment">//easeInOutQuint</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">2000</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ep,p</span>)</span>&#123;</span>
+<span class="line">  <span class="keyword">var</span> y = <span class="number">-200</span> * ep;</span>
+<span class="line">  <span class="keyword">var</span> x = <span class="number">200</span> * p; </span>
+<span class="line">  <span class="keyword">var</span> r = <span class="number">360</span> * ep;</span>
+<span class="line"></span>
+<span class="line">  block.style.transform = <span class="string">'translate('</span> + x + <span class="string">'px,'</span> </span>
+<span class="line">    + y + <span class="string">'px) rotateY('</span> + r + <span class="string">'deg)'</span>;</span>
+<span class="line">&#125;, easing);</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  a1.start();</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/KzZLmN" target="_blank" rel="external">demo</a></p>
+<h2 id="zhu-zheng-dong-hua">逐帧动画</h2>
+<h3 id="li-7-1-flappy-bird">例7-1 FlappyBird</h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+</pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span><span class="css"></span>
+<span class="line"><span class="selector-class">.sprite</span> &#123;<span class="attribute">display</span>:inline-block; <span class="attribute">overflow</span>:hidden; <span class="attribute">background-repeat</span>: no-repeat;<span class="attribute">background-image</span>:<span class="built_in">url</span>(http://res.h5jun.com/matrix/8PQEganHkhynPxk-CUyDcJEk.png);&#125;</span>
+<span class="line"></span>
+<span class="line"><span class="selector-class">.bird0</span> &#123;<span class="attribute">width</span>:<span class="number">86px</span>; <span class="attribute">height</span>:<span class="number">60px</span>; <span class="attribute">background-position</span>: -<span class="number">178px</span> -<span class="number">2px</span>&#125;</span>
+<span class="line"><span class="selector-class">.bird1</span> &#123;<span class="attribute">width</span>:<span class="number">86px</span>; <span class="attribute">height</span>:<span class="number">60px</span>; <span class="attribute">background-position</span>: -<span class="number">90px</span> -<span class="number">2px</span>&#125;</span>
+<span class="line"><span class="selector-class">.bird2</span> &#123;<span class="attribute">width</span>:<span class="number">86px</span>; <span class="attribute">height</span>:<span class="number">60px</span>; <span class="attribute">background-position</span>: -<span class="number">2px</span> -<span class="number">2px</span>&#125;</span>
+<span class="line"></span>
+<span class="line"> <span class="selector-id">#bird</span>&#123;</span>
+<span class="line">   <span class="attribute">position</span>: absolute;</span>
+<span class="line">   <span class="attribute">left</span>: <span class="number">100px</span>;</span>
+<span class="line">   <span class="attribute">top</span>: <span class="number">100px</span>;</span>
+<span class="line">   <span class="attribute">zoom</span>: <span class="number">0.5</span>;</span>
+<span class="line"> &#125;</span>
+<span class="line"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span>
+<span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"bird"</span> <span class="attr">class</span>=<span class="string">"sprite bird1"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>
+<span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span>
+<span class="line"><span class="keyword">var</span> i = <span class="number">0</span>;</span>
+<span class="line">setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  bird.className = <span class="string">"sprite "</span> + <span class="string">'bird'</span> + ((i++) % <span class="number">3</span>);</span>
+<span class="line">&#125;, <span class="number">1000</span>/<span class="number">10</span>);</span>
+<span class="line"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/EKozmQ" target="_blank" rel="external">demo</a></p>
+<h2 id="css-3-dong-hua">CSS3动画</h2>
+<ul>
+<li>
+<p>transitions属性:</p>
+<p>支持浏览器：<a href="http://caniuse.com/#feat=css-transitions" target="_blank" rel="external">IE10+,GC,FF</a></p>
+<p>timing functions属性：</p>
+<p><code>linear</code>（规定以相同速度开始至结束的过渡效果（等于 cubic-bezier(0,0,1,1)）</p>
+<p><code>ease</code>（规定慢速开始，然后变快，然后慢速结束的过渡效果（cubic-bezier(0.25,0.1,0.25,1)）</p>
+<p><code>ease-in</code>（规定以慢速开始的过渡效果（等于 cubic-bezier(0.42,0,1,1)）</p>
+<p><code>ease-out</code>（规定以慢速结束的过渡效果（等于 cubic-bezier(0,0,0.58,1)）</p>
+<p><code>ease-in-out</code>（规定以慢速开始和结束的过渡效果（等于 cubic-bezier(0.42,0,0.58,1)）</p>
+<p><code>cubic-bezier(n,n,n,n)</code></p>
+</li>
+</ul>
+<h3 id="li-8-1-yuan-zhou-yun-dong">例8-1 圆周运动</h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+</pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span>
+<span class="line">  <span class="selector-id">#block</span>&#123;</span>
+<span class="line">  	<span class="attribute">position</span>:absolute;</span>
+<span class="line">    <span class="attribute">left</span>: <span class="number">200px</span>;</span>
+<span class="line">    <span class="attribute">top</span>: <span class="number">100px</span>;</span>
+<span class="line">    <span class="attribute">width</span>: <span class="number">20px</span>;</span>
+<span class="line">    <span class="attribute">height</span>: <span class="number">20px</span>;</span>
+<span class="line">    <span class="attribute">background</span>: <span class="number">#0c8</span>;</span>
+<span class="line">    <span class="attribute">text-align</span>: center;</span>
+<span class="line">    <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span>
+<span class="line">    <span class="attribute">transform-origin</span>: <span class="number">0</span> <span class="number">100px</span>;</span>
+<span class="line">    <span class="attribute">transform</span>: <span class="built_in">rotate</span>(0deg);</span>
+<span class="line">  &#125;</span>
+<span class="line">  <span class="selector-id">#block</span><span class="selector-class">.play</span> &#123;</span>
+<span class="line">    <span class="attribute">transform</span>: <span class="built_in">rotate</span>(360deg);</span>
+<span class="line">  	<span class="attribute">transition</span>: transform <span class="number">2.0s</span> linear;</span>
+<span class="line">  &#125;</span>
+<span class="line"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span>
+<span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"block"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>
+<span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span>
+<span class="line">  block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  	block.className = <span class="string">'play'</span>;</span>
+<span class="line">  &#125;);</span>
+<span class="line"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/Myrdro" target="_blank" rel="external">demo</a></p>
+<h3 id="li-8-2-bei-sai-er-qu-xian">例8-2 贝塞尔曲线</h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+</pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span>
+<span class="line">  <span class="selector-id">#block</span>&#123;</span>
+<span class="line">  	<span class="attribute">position</span>:absolute;</span>
+<span class="line">    <span class="attribute">left</span>: <span class="number">50px</span>;</span>
+<span class="line">    <span class="attribute">top</span>: <span class="number">200px</span>;</span>
+<span class="line">    <span class="attribute">width</span>: <span class="number">20px</span>;</span>
+<span class="line">    <span class="attribute">height</span>: <span class="number">20px</span>;</span>
+<span class="line">    <span class="attribute">background</span>: <span class="number">#0c8</span>;</span>
+<span class="line">    <span class="attribute">text-align</span>: center;</span>
+<span class="line">    <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span>
+<span class="line">  &#125;</span>
+<span class="line">  <span class="selector-id">#block</span><span class="selector-class">.play</span> &#123;</span>
+<span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateX</span>(200px);</span>
+<span class="line">  	<span class="attribute">transition</span>: transform <span class="number">2.0s</span> <span class="built_in">cubic-bezier</span>(0.68, -0.55, 0.265, 1.55);</span>
+<span class="line">  &#125;</span>
+<span class="line"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span>
+<span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"block"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>
+<span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span>
+<span class="line">  block.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">  	block.className = <span class="string">'play'</span>;</span>
+<span class="line">  &#125;);</span>
+<span class="line"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/BKJgBQ" target="_blank" rel="external">demo</a></p>
+<h3 id="li-8-3-transition-fu-gai">例8-3 transition覆盖</h3>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+</pre></td><td class="code"><pre><span class="line"><span class="selector-id">#block</span><span class="selector-class">.play</span> &#123;</span>
+<span class="line">  <span class="attribute">border-radius</span>: <span class="number">0</span>;</span>
+<span class="line">  <span class="attribute">transform</span>: <span class="built_in">scale</span>(2.0);</span>
+<span class="line">  <span class="attribute">background</span>: <span class="number">#c80</span>;</span>
+<span class="line">  <span class="attribute">transition</span>: all <span class="number">2.0s</span> <span class="built_in">cubic-bezier</span>(0.68, -0.55, 0.265, 1.55) <span class="number">3s</span>;</span>
+<span class="line">&#125;</span>
+<span class="line"><span class="selector-id">#block</span><span class="selector-class">.play2</span> &#123;</span>
+<span class="line">  <span class="comment">/* transition 覆盖*/</span></span>
+<span class="line">  <span class="attribute">background</span>: <span class="number">#c8f</span>;</span>
+<span class="line">  <span class="attribute">transition</span>: all <span class="number">2.0s</span> linear <span class="number">0.5s</span>; </span>
+<span class="line">  <span class="attribute">transform</span>: <span class="built_in">scale</span>(2.0) <span class="built_in">rotate</span>(360deg);</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/aNEgOX" target="_blank" rel="external">demo</a></p>
+<ul>
+<li>
+<p>animations:</p>
+<p>支持浏览器：<a href="http://caniuse.com/#feat=css-animation" target="_blank" rel="external">IE10+,GC,FF</a></p>
+<p>主要属性：</p>
+<p><code>keyframes'name</code>（规定需要绑定到选择器的 keyframe 名称）</p>
+<p><code>duration</code>（规定完成动画所花费的时间，以秒或毫秒计）</p>
+<p><code>timing functions</code>（规定动画的速度曲线）</p>
+<p><code>delay</code>（规定在动画开始之前的延迟）</p>
+<p><code>iteration count</code>（规定动画应该播放的次数）</p>
+<p><code>direction</code>（规定是否应该轮流反向播放动画）</p>
+</li>
+</ul>
+<h3 id="li-8-4-wang-fu-yuan-zhou-yun-dong">例8-4 往复圆周运动</h3>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+</pre></td><td class="code"><pre><span class="line"><span class="selector-id">#block</span>&#123;</span>
+<span class="line">  <span class="attribute">position</span>:absolute;</span>
+<span class="line">  <span class="attribute">left</span>: <span class="number">200px</span>;</span>
+<span class="line">  <span class="attribute">top</span>: <span class="number">100px</span>;</span>
+<span class="line">  <span class="attribute">width</span>: <span class="number">20px</span>;</span>
+<span class="line">  <span class="attribute">height</span>: <span class="number">20px</span>;</span>
+<span class="line">  <span class="attribute">background</span>: <span class="number">#0c8</span>;</span>
+<span class="line">  <span class="attribute">text-align</span>: center;</span>
+<span class="line">  <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span>
+<span class="line">  <span class="attribute">animation</span>: roll <span class="number">2.0s</span> linear <span class="number">0s</span> infinite alternate;</span>
+<span class="line">  <span class="attribute">transform-origin</span>: <span class="number">0</span> <span class="number">100px</span>;</span>
+<span class="line">&#125;</span>
+<span class="line"> @<span class="keyword">keyframes</span> roll&#123;</span>
+<span class="line">  0%&#123;<span class="attribute">transform</span>:<span class="built_in">rotate</span>(0deg)&#125;</span>
+<span class="line">  100%&#123;<span class="attribute">transform</span>:<span class="built_in">rotate</span>(360deg)&#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/BKJgpR" target="_blank" rel="external">demo</a></p>
+<h3 id="li-8-5-wang-fu-yuan-zhou-yun-dong-bei-sai-er-qu-xian">例8-5 往复圆周运动（贝塞尔曲线）</h3>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+</pre></td><td class="code"><pre><span class="line"><span class="selector-id">#block</span>&#123;</span>
+<span class="line">  <span class="attribute">position</span>:absolute;</span>
+<span class="line">  <span class="attribute">left</span>: <span class="number">200px</span>;</span>
+<span class="line">  <span class="attribute">top</span>: <span class="number">100px</span>;</span>
+<span class="line">  <span class="attribute">width</span>: <span class="number">20px</span>;</span>
+<span class="line">  <span class="attribute">height</span>: <span class="number">20px</span>;</span>
+<span class="line">  <span class="attribute">background</span>: <span class="number">#0c8</span>;</span>
+<span class="line">  <span class="attribute">text-align</span>: center;</span>
+<span class="line">  <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span>
+<span class="line">  <span class="attribute">animation</span>: roll <span class="number">4.0s</span> linear <span class="number">0s</span> infinite;</span>
+<span class="line">  <span class="attribute">transform-origin</span>: <span class="number">0</span> <span class="number">100px</span>;</span>
+<span class="line">&#125;</span>
+<span class="line"> @<span class="keyword">keyframes</span> roll&#123;</span>
+<span class="line">  0%&#123;<span class="attribute">transform</span>:<span class="built_in">rotate</span>(0deg)&#125;</span>
+<span class="line">  50%&#123;<span class="attribute">transform</span>:<span class="built_in">rotate</span>(360deg)&#125;</span>
+<span class="line">  100%&#123;<span class="attribute">transform</span>:<span class="built_in">rotate</span>(0deg)&#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/oxprWg" target="_blank" rel="external">demo</a></p>
+<ul>
+<li>
+<p>动画组合：</p>
+<p>主要内容：</p>
+<p><code>animation-fill-mode</code></p>
+<p><code>webkitAnimationEnd</code></p>
+</li>
+</ul>
+<h3 id="li-8-6-zu-he-dong-hua">例8-6 组合动画</h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+<span class="line">44</span>
+<span class="line">45</span>
+<span class="line">46</span>
+<span class="line">47</span>
+<span class="line">48</span>
+<span class="line">49</span>
+<span class="line">50</span>
+<span class="line">51</span>
+<span class="line">52</span>
+<span class="line">53</span>
+<span class="line">54</span>
+<span class="line">55</span>
+<span class="line">56</span>
+<span class="line">57</span>
+<span class="line">58</span>
+<span class="line">59</span>
+<span class="line">60</span>
+<span class="line">61</span>
+<span class="line">62</span>
+<span class="line">63</span>
+<span class="line">64</span>
+<span class="line">65</span>
+<span class="line">66</span>
+<span class="line">67</span>
+<span class="line">68</span>
+</pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span>
+<span class="line">  <span class="selector-id">#block</span>&#123;</span>
+<span class="line">  	<span class="attribute">position</span>:absolute;</span>
+<span class="line">    <span class="attribute">left</span>: <span class="number">150px</span>;</span>
+<span class="line">    <span class="attribute">top</span>: <span class="number">200px</span>;</span>
+<span class="line">    <span class="attribute">width</span>: <span class="number">20px</span>;</span>
+<span class="line">    <span class="attribute">height</span>: <span class="number">20px</span>;</span>
+<span class="line">    <span class="attribute">background</span>: <span class="number">#0c8</span>;</span>
+<span class="line">    <span class="attribute">text-align</span>: center;</span>
+<span class="line">    <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span>
+<span class="line">    <span class="attribute">animation</span>: anim <span class="number">2.0s</span> linear <span class="number">0s</span> forwards;</span>
+<span class="line">  &#125;</span>
+<span class="line">  @<span class="keyword">keyframes</span> anim&#123;</span>
+<span class="line">    0%&#123;<span class="attribute">border-radius</span>: <span class="number">50%</span>&#125;</span>
+<span class="line">    50%&#123;<span class="attribute">border-radius</span>: <span class="number">0</span>; <span class="attribute">background</span>: <span class="number">#c80</span>;&#125;</span>
+<span class="line">    100%&#123;<span class="attribute">border-radius</span>: <span class="number">20%</span>; <span class="attribute">transform</span>:<span class="built_in">scale</span>(2.0); <span class="attribute">background</span>: <span class="number">#08c</span>;&#125;</span>
+<span class="line">  &#125;</span>
+<span class="line"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span>
+<span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"block"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>
+<span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span>
+<span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Animator</span>(<span class="params">duration, progress, easing</span>)</span>&#123;</span>
+<span class="line">    <span class="keyword">this</span>.duration = duration;</span>
+<span class="line">    <span class="keyword">this</span>.progress = progress;</span>
+<span class="line">    <span class="keyword">this</span>.easing = easing || <span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;<span class="keyword">return</span> p&#125;;</span>
+<span class="line">  &#125;</span>
+<span class="line">  </span>
+<span class="line">  Animator.prototype = &#123;</span>
+<span class="line">  	<span class="attr">start</span>: <span class="function"><span class="keyword">function</span>(<span class="params">finished</span>)</span>&#123;</span>
+<span class="line">      <span class="keyword">var</span> startTime = <span class="built_in">Date</span>.now();</span>
+<span class="line">      <span class="keyword">var</span> duration = <span class="keyword">this</span>.duration,</span>
+<span class="line">          self = <span class="keyword">this</span>;</span>
+<span class="line">      </span>
+<span class="line">      requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">      	<span class="keyword">var</span> p = (<span class="built_in">Date</span>.now() - startTime) / duration;</span>
+<span class="line">        <span class="keyword">var</span> next =  <span class="literal">true</span>;</span>
+<span class="line">        </span>
+<span class="line">        <span class="keyword">if</span>(p &lt; <span class="number">1.0</span>)&#123;</span>
+<span class="line">          self.progress(self.easing(p), p);</span>
+<span class="line">        &#125;<span class="keyword">else</span>&#123;</span>
+<span class="line">          <span class="keyword">if</span>(<span class="keyword">typeof</span> finished === <span class="string">'function'</span>)&#123;</span>
+<span class="line">          	next = finished() === <span class="literal">false</span>;</span>
+<span class="line">          &#125;<span class="keyword">else</span>&#123;</span>
+<span class="line">          	next = finished === <span class="literal">false</span>;</span>
+<span class="line">          &#125;</span>
+<span class="line">          </span>
+<span class="line">          <span class="keyword">if</span>(!next)&#123;</span>
+<span class="line">            self.progress(self.easing(<span class="number">1.0</span>), <span class="number">1.0</span>);</span>
+<span class="line">          &#125;<span class="keyword">else</span>&#123;</span>
+<span class="line">            startTime += duration;</span>
+<span class="line">            self.progress(self.easing(p), p);</span>
+<span class="line">          &#125;</span>
+<span class="line">        &#125;</span>
+<span class="line">        </span>
+<span class="line">        <span class="keyword">if</span>(next) requestAnimationFrame(step);</span>
+<span class="line">      &#125;);</span>
+<span class="line">    &#125;</span>
+<span class="line">  &#125;;</span>
+<span class="line">  </span>
+<span class="line">  <span class="keyword">var</span> easing = BezierEasing(<span class="number">0.68</span>, <span class="number">-0.55</span>, <span class="number">0.265</span>, <span class="number">1.55</span>);</span>
+<span class="line">  <span class="keyword">var</span> a1 = <span class="keyword">new</span> Animator(<span class="number">2000</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ep,p</span>)</span>&#123;</span>
+<span class="line">	<span class="keyword">var</span> x = <span class="number">150</span> + <span class="number">200</span> * ep;</span>
+<span class="line">    block.style.left = x + <span class="string">'px'</span>;</span>
+<span class="line">  &#125;, easing);</span>
+<span class="line">  </span>
+<span class="line">  block.addEventListener(<span class="string">'webkitAnimationEnd'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span>
+<span class="line">    a1.start();</span>
+<span class="line">  &#125;);</span>
+<span class="line"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span>
+</pre></td></tr></table></figure>
+<p><a href="http://codepen.io/yangzj1992/pen/dMJBeG" target="_blank" rel="external">demo</a></p>
+<h2 id="svg-dong-hua">SVG 动画</h2>
+<p><a href="http://www.zhangxinxu.com/wordpress/2014/08/so-powerful-svg-smil-animation/" target="_blank" rel="external">超级强大的SVG SMIL animation动画详解</a></p>
+<h2 id="dong-hua-xing-neng">动画性能</h2>
+<p><a href="http://melonh.com/sharing/slides.html?file=high_performance_animation" target="_blank" rel="external">动画性能</a></p>
+<p>具体参考即为如下几点:
+由于渲染三阶段分为：Layout---&gt;Paint---&gt;Composite，针对此三者进行优化。
+优化目标：15FPS 不流畅 ，30FPS+ 感觉流畅，60FPS 舒适完美</p>
+<p>触发 Layout 的方式有：</p>
+<ul>
+<li>改变 width, height, margin 等和大小、位置相关的属性</li>
+<li>读取 size, position 相关得属性
+要点：</li>
+<li>使用 transform 代替 top, left 的动画</li>
+<li>分离读写，减少 Layout</li>
+<li>面对解耦代码，使用 rAF 推迟的方法分离读写。</li>
+</ul>
+<p>触发 Paint 的方式：
+当修改 border-radius, box-shadow,color 等展示相关属性时，会触发 paint
+要点：</p>
+<ul>
+<li>简化绘制的复杂度</li>
+<li>避免不必要的绘制</li>
+<li>减少绘制区域</li>
+</ul>
+<p>Composite 小结:</p>
+<ul>
+<li>GPU 是有限度的，不要滥用 GPU 资源生成不必要的 Layer</li>
+<li>留意意外生成的 Layer</li>
+</ul>
+<h2 id="zong-jie">总结</h2>
+<p>以上是所有内容，相关代码同时整理了一份在 <a href="https://github.com/yangzj1992/Animation-tutorial" target="_blank" rel="external">github</a> 上，再次感谢月影大大<a href="http://matrix.h5jun.com/slide/show?id=117#/" target="_blank" rel="external">分享</a></p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/前端动画原理与实现.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/前端知识/">前端知识</a>
+                
+              
+                <a class="post-tags" href="/tags/浏览器/">浏览器</a>
+                
+              
+                <a class="post-tags" href="/tags/web动画/">web动画</a>
+                
+              
+                <a class="post-tags" href="/tags/性能优化/">性能优化</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=前端动画原理与实现 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2016/04/10/前端动画原理与实现/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2016/04/10/前端动画原理与实现/index.html&amp;title=前端动画原理与实现 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2016/04/10/前端动画原理与实现/index.html&amp;text=前端动画原理与实现;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=前端动画原理与实现 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2016/04/10/前端动画原理与实现/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2016/05/11/【译】基于 Meteor1.3 和 React 创建简单 App/">
+      ← 【译】基于 Meteor1.3 和 React 创建简单 App
+    </a>
+  
+  
+    <a class="pull-right" href="/2016/03/24/npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法/">
+      npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+    tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+    TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+    messageStyle: "none"
+  }); 
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2016/04/10/前端动画原理与实现/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

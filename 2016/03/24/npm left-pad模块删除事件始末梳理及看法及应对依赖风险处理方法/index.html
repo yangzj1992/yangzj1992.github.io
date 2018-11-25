@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shi-jian-qi-yin"><span class="toc-number">1.</span> <span class="toc-text">事件起因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#npm-mo-kuai-yi-lai-de-sheng-tai-huan-jing"><span class="toc-number">2.</span> <span class="toc-text">npm 模块依赖的生态环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kan-fa"><span class="toc-number">3.</span> <span class="toc-text">看法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hou-xu"><span class="toc-number">4.</span> <span class="toc-text">后续</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jing-yan-jiao-xun-a-href-https-segmentfault-com-a-1190000004700432-can-kao-a"><span class="toc-number">5.</span> <span class="toc-text">经验教训(参考)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#bu-yao-tai-yi-lai-ta-ren"><span class="toc-number">5.1.</span> <span class="toc-text">不要太依赖他人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#po-jie-qiang-yi-lai"><span class="toc-number">5.2.</span> <span class="toc-text">破解强依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dong-jie-yi-lai-mo-kuai"><span class="toc-number">5.3.</span> <span class="toc-text">冻结依赖模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#da-bao-yi-lai-mo-kuai"><span class="toc-number">5.4.</span> <span class="toc-text">打包依赖模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xin-fang-shi"><span class="toc-number">5.5.</span> <span class="toc-text">新方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zong-jie"><span class="toc-number">5.6.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法</h1>
+          <time datetime="2016-03-24T03:37:26.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2016 年 03 月 24 日</span>
+            <span style="margin-left: 10px;">最近更新于：2016 年 10 月 24 日</span>
+            <span style="margin-left: 10px;">本文共 3,235 字，读完约 12 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <h2 id="shi-jian-qi-yin">事件起因</h2>
+<p>事件原因是在23日凌晨，一个开发者因为对 NPM 不满，unpublish 了自己的所有模块。其中包括被广泛使用的<code>left-pad</code>，导致<code>Babel</code>、<code>ReactNative</code>、<code>Ember</code>等大量工具构建失败。</p>
+<p><a href="https://www.npmjs.com/package/left-pad" target="_blank" rel="external">left-pad</a> 是一个依赖度非常高的仓库，根据 NPM 的统计显示，<code>left-pad</code>在23日统计显示昨日的下载量是 10 万，上周的下载量为 57 万，上个月下载量达到了 255 万。</p>
+<p>之后 <code>left-pad</code> 作者 Azer 在 Medium 发布了一篇文章来阐述他删除自己模块的原因
+<a href="https://medium.com/@azerbike/i-ve-just-liberated-my-modules-9045c06be67c#.7unu9xvjk" target="_blank" rel="external">I’ve Just Liberated My Modules</a></p>
+<p>这里参考 justjavac 提供的<a href="http://mp.weixin.qq.com/s?__biz=MzI0NTAyNjE0NQ==&amp;mid=427175657&amp;idx=1&amp;sn=57c0cda917797198df18552f7d8f4eca&amp;scene=0#wechat_redirect" target="_blank" rel="external">翻译文章</a>如下：</p>
+<blockquote>
+<p>作者在《I've Just Liberated My Modules》文章中写道：</p>
+</blockquote>
+<blockquote>
+<p>几个星期前有位专利律师给我发了一封电子邮件，要求我取消发布 NPM 上的 “KIK” 模块。我的回答是“不”，于是他回复我说：“I don’t wanna be dick about it（这句就不翻译了，你只需要知道 dick 是什么意思就够了），但 “KIK” 是我们的注册品牌，并且我们的律师遍布世界各地。”</p>
+</blockquote>
+<blockquote>
+<p>当我开始编写 kik 时，并不知道有同名的公司。而我也不希望因为这个公司而被迫改变项目的名字。在遭到了我的拒绝后，他们联系了 NPM 的技术支持，为了强调他们的律师权力，每一个电子邮件都抄送给了我。在未经我允许的情况下，@izs 更改了此模块的所有权。</p>
+</blockquote>
+<blockquote>
+<p>鉴于此我才意识到，NPM 是某个人的私有地盘，他比其他人有更多的控制权，但是我是做开源的，因为权力属于人民。（Power To The People 是约翰·列侬的同名歌曲）</p>
+</blockquote>
+<blockquote>
+<p>概述一下就是; NPM 不再是我分享开源工作的地方，所以，我取消了曾经发布的所有模块。（一共取消了 273 个）</p>
+</blockquote>
+<blockquote>
+<p>这不是一个下意识的行为。我喜欢开源，相信开源社区将最终创造一个真正自由的 NPM。</p>
+</blockquote>
+<blockquote>
+<p>如果你的项目因此而构建失败，我向你道歉。你可以在仓库（azer/dependency）指出你的依赖，或者如果你自愿参加我的 Github 上的任何模块，我会高兴地转移所有权。</p>
+</blockquote>
+<blockquote>
+<p>干杯，再见。</p>
+</blockquote>
+<h2 id="npm-mo-kuai-yi-lai-de-sheng-tai-huan-jing">npm 模块依赖的生态环境</h2>
+<p>之后有人对 <a href="https://github.com/azer/left-pad" target="_blank" rel="external">left-pad 源码</a>进行查看，惊讶的发现其源码仅有 11 行：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+</pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = leftpad;</span>
+<span class="line"><span class="function"><span class="keyword">function</span> <span class="title">leftpad</span> (<span class="params">str, len, ch</span>) </span>&#123;</span>
+<span class="line">  str = <span class="built_in">String</span>(str);</span>
+<span class="line">  <span class="keyword">var</span> i = <span class="number">-1</span>;</span>
+<span class="line">  <span class="keyword">if</span> (!ch &amp;&amp; ch !== <span class="number">0</span>) ch = <span class="string">' '</span>;</span>
+<span class="line">  len = len - str.length;</span>
+<span class="line">  <span class="keyword">while</span> (++i &lt; len) &#123;</span>
+<span class="line">    str = ch + str;</span>
+<span class="line">  &#125;</span>
+<span class="line">  <span class="keyword">return</span> str;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>于是一部分的人产生了疑问：<strong>为什么这么短的代码，也能成为众多库比如 RN 的依赖？</strong></p>
+<p>之后 Haney 的一篇博文对类似这样的模块进行了更多的搜索，发现了相当多类似 <code>left-pad</code> 这样的模块。提出了疑问：我们都忘记了怎样去写程序了吗？原文在此 <a href="http://www.haneycodes.net/npm-left-pad-have-we-forgotten-how-to-program/" target="_blank" rel="external">NPM &amp; left-pad: Have We Forgotten How To Program?</a>
+这里简单翻译一下他列举的事实给大家：</p>
+<blockquote>
+<p>好的开发者们，接下来是一个比较严肃的讨论。正如你们可能已经知道的那样，这一周里 <code>babel</code>,<code>react</code> 以及类似一大堆高依赖的模块在 npm 无法被成功构建。他们宕机的原因是相当惊人的。</p>
+</blockquote>
+<blockquote>
+<p>因为他们共同依赖了一个简单的 NPM 包 <code>left-pad</code>，它的目的是实现左填充一个字符串，他的源码也总共只有 11 行。
+令人担心的是这里有这么多包选择去依赖一个这样简单的函数，而不是采取几分钟去写一个这样的基本功能。</p>
+</blockquote>
+<blockquote>
+<p>由于这次灾难，我开始调查整个 NPM 的生态系统。这里果然有一些类似的事情：</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>有一个叫 <a href="https://www.npmjs.com/package/isarray" target="_blank" rel="external">IsArray</a> 的包，每天达到 88 万的下载量，而它的源代码仅有一行：</li>
+</ul>
+</blockquote>
+<blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> toString.call(arr) == <span class="string">'[object Array]'</span>;</span>
+</pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<ul>
+<li>有一个判断是否为正数的函数 <a href="https://www.npmjs.com/package/is-positive-integer" target="_blank" rel="external">is-positive-integer</a>，源代码只有 4 行，截至昨日仍然有 3 个项目依赖使用。后来作者重构了它依赖才变为 0</li>
+<li>一个全新安装的 babel 包，包含了 41000 个文件</li>
+<li>一个空白的 jspm/npm-based 应用模板起始就包含了 28000 个文件
+<strong>这些都让我感到相当惊讶。难道我们都忘记了怎样编程了吗？</strong></li>
+</ul>
+</blockquote>
+<h2 id="kan-fa">看法</h2>
+<p>这次的危机算是一个潜在问题的大爆发,的确现在模块依赖是大势所趋，如果大量的基础函数可以通过外部依赖解决，那么自己的程序的代码行数就可以减少很多，程序员便可以专注于写一些新的不同的东西。这种思想肯定是没有问题的。
+而类似 Haney 所列举的这些简单依赖包能够产生的原因正是因为标准函数库存在不足。让任何人都必须在最开始得亲手写一个左填充字符串函数也是十分荒谬的。
+另外，其实 npm 对于解决这种包名纠纷也是有很明确的规则 <a href="https://docs.npmjs.com/misc/disputes" target="_blank" rel="external">npm-disputes</a>。我觉得其实 NPM 官方的处理也不能说有太大的问题。</p>
+<p>类似这样的事件我认为最需要解决的两件事是:</p>
+<ul>
+<li>语言应该能够提供一个足够健壮并且充分的标准库函数，这是解决这样的问题的一个重要关键。</li>
+<li>出现这种问题的原因也一部分在于 NPM 目前没有应对这种问题的机制，NPM 应该尽快补充类似这种危机的处理手段，如尝试修改 unpublish 包的规则、依赖项目如果缺失尝试寻找更多的替代品，防范其他人伪造同名库等。</li>
+</ul>
+<h2 id="hou-xu">后续</h2>
+<p>npm 今日在<a href="http://blog.npmjs.org/post/141577284765/kik-left-pad-and-npm" target="_blank" rel="external">官方宣布</a>，由于昨天的事件，今后将严格限制 unpublish 命令。并且，不再允许自由认领已经废弃的模块，必须向 npm 官方提出申请。</p>
+<h2 id="jing-yan-jiao-xun-a-href-https-segmentfault-com-a-1190000004700432-can-kao-a">经验教训(<a href="https://segmentfault.com/a/1190000004700432" target="_blank" rel="external">参考</a>)</h2>
+<h3 id="bu-yao-tai-yi-lai-ta-ren">不要太依赖他人</h3>
+<p>如果我们想构建稳定的应用，非常重要的一点就是“不要将自己的全部身家都拴在别人的裤腰带”上，你永远不知道那个别人什么时候会“扑街”。其实在代码实现中，我们一直都被教导要小心强依赖，依赖过强会导致我们不够灵动。“牵一发而动全身”是很可怕的一件事。</p>
+<p>具体到 Node 模块的依赖这件事上，太依赖他人会有些什么“可怕”的事情？</p>
+<ul>
+<li>模块全部要从 NPM 的 registry 拉取然后安装，每天的持续集成越来越慢、越来越慢。</li>
+<li>像 left-pad 这个模块一样，你依赖的模块被作者怒删了，应用挂掉。</li>
+<li>你在 package.json 里面指定依赖时使用了 <code>~a.b.c</code> 这种表示法（意思是小版本我都要），这表示每次 npm install 时其实获取到的模块依赖很可能是和你测试后发布的版本不一致的（模块发布了新的小版本），心里慌慌的。</li>
+<li>你依赖模块的作者是个傻逼，不小心将不兼容的改动当作小版本发布了一个新版。npm install 或者 npm update 以后你依赖了这个新版，应用挂掉了。
+<em>注：对 3、4 有疑问的可以查看：<a href="https://segmentfault.com/a/1190000004221514" target="_blank" rel="external">深入 Node 模块的安装和发布</a></em></li>
+</ul>
+<h3 id="po-jie-qiang-yi-lai">破解强依赖</h3>
+<p>先来列出我们需要些什么：</p>
+<ul>
+<li>在发布前“冻结”依赖模块的版本号。这让我们对安装的依赖有信心，依赖模块的版本都是我们验证、测试过的。</li>
+<li>在发布前“打包”依赖模块到自己项目。这让我们可以坦然面对我们依赖的某个模块“没有了”这样的囧境。</li>
+</ul>
+<h3 id="dong-jie-yi-lai-mo-kuai">冻结依赖模块</h3>
+<p>冻结依赖模块的版本号最简单的办法就是直接在<code>package.json</code>里面写死版本号，但是这解决不了深度依赖的问题。我们来看个例子。</p>
+<p>假设有下面这样的依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">A@0.1.0</span>
+<span class="line">|—B@0.0.1</span>
+<span class="line">   |—C@0.0.1</span>
+</pre></td></tr></table></figure>
+<p>A 模块依赖了 B 模块，B 模块又依赖了 C 模块。我们可以将 B 模块的依赖写死成 <code>0.0.1</code> 版本，但是如果 B 模块对 C 模块的依赖写的是 <code>C: ~0.0.1</code>，会怎样？</p>
+<p>这时候 C 模块更新到了 0.0.2 版本，虽然我们安装的 B 模块是 <code>B@0.0.1</code>，但是安装的 C 模块却是 <code>C@0.0.2</code>。如果不巧这个<code>C@0.0.2</code> 刚好有 bug，那我们的模块很有可能就不能正常工作了。</p>
+<p>实际上，NPM 提供了一个叫做 <code>npm shrinkwrap</code> 的命令来我们解决这个问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+</pre></td><td class="code"><pre><span class="line">NAME</span>
+<span class="line">  npm-shrinkwrap -- Lock down dependency versions</span>
+<span class="line"></span>
+<span class="line">SYNOPSIS</span>
+<span class="line">  npm shrinkwrap</span>
+<span class="line"></span>
+<span class="line">DESCRIPTION</span>
+<span class="line">  This  command  locks down the versions of a package&apos;s dependencies so that you can control exactly which versions of each  dependency  will be used when your package is installed.</span>
+</pre></td></tr></table></figure>
+<p>这条命令会根据目前我们 <code>node_modules</code> 目录下的模块来生成一份“冻结”住的模块依赖（npm-shrinkwrap.json）。</p>
+<p>还是上面的例子，我们在模块 A 的根目录执行 <code>npm shrinkwrap</code> 后，生成的 <code>npm-shrinkwrap.json</code> 文件内容大概是下面这样：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+</pre></td><td class="code"><pre><span class="line">&#123;</span>
+<span class="line">    <span class="attr">"name"</span>: <span class="string">"A"</span>,</span>
+<span class="line">    <span class="attr">"dependencies"</span>: &#123;</span>
+<span class="line">        <span class="attr">"B"</span>: &#123;</span>
+<span class="line">            <span class="attr">"version"</span>: <span class="string">"0.0.1"</span>,</span>
+<span class="line">            <span class="attr">"resolved"</span>: <span class="string">"http://registry.npmjs.com/B-0.0.1.tgz"</span>,</span>
+<span class="line">            <span class="attr">"dependencies"</span>: &#123;</span>
+<span class="line">                <span class="attr">"C"</span>: &#123;  </span>
+<span class="line">                    <span class="attr">"version"</span>: <span class="string">"0.0.1"</span>,</span>
+<span class="line">                    <span class="attr">"resolved"</span>: <span class="string">"http://registry.npmjs.com/C-0.0.1.tgz"</span></span>
+<span class="line">                &#125;</span>
+<span class="line">            &#125;</span>
+<span class="line">        &#125;</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>然后，当我们执行 <code>npm install</code> 时，依赖查找的“来源”不再是 <code>package.json</code>，而是我们生成的 <code>npm-shrinkwrap.json</code>，再也不会突然装上什么 <code>C@0.0.2</code> 了，依赖里面的模块版本都是我们验证、测试后的版本，让人安心。</p>
+<p>注：<code>npm shrinkwrap</code> 默认只会生成 <code>dependencies</code> 的依赖，不会生成 <code>devDependencies</code> 的依赖，如果你真的需要，可以加 <code>--dev</code> 参数。</p>
+<h3 id="da-bao-yi-lai-mo-kuai">打包依赖模块</h3>
+<p>我们解决了依赖模块版本号的问题，但是每次安装时其实还是会去 NPM 的 registry 获取模块的 tgz 包然后进行安装。我们需要将这些依赖都打包进我们的项目。这可能会带来一些问题（比如：项目体积的增大），但是好处也是显而易见的。</p>
+<p>上面生成的 <code>npm-shrinkwrap.json</code> 里面有个 <code>resolved</code> 字段，表示模块所在的位置，实际上这个字段完全可以写一个文件路径。所以，我们可以递归的遍历 <code>npm-shrinkwrap.json</code> 文件，将所有的 tgz 包先下载到我们项目的某个目录，然后改写 <code>resolved</code> 字段为对应的文件路径。这样的功能有开发者已经实现了，我们可以直接<a href="https://github.com/JamieMason/shrinkpack" target="_blank" rel="external">享用</a></p>
+<p>还是上面的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">A@0.1.0</span>
+<span class="line">|—B@0.0.1</span>
+<span class="line">   |—C@0.0.1</span>
+</pre></td></tr></table></figure>
+<p>执行 <code>shrinkpack</code> 后，会生成下面的打包目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">node_shrinkpack</span>
+<span class="line"> - B-0.0.1.tgz</span>
+<span class="line"> - C-0.0.1.tgz</span>
+</pre></td></tr></table></figure>
+<p>和 node-shrinkwrap.json 文件：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+</pre></td><td class="code"><pre><span class="line">&#123;</span>
+<span class="line">    <span class="attr">"name"</span>: <span class="string">"A"</span>,</span>
+<span class="line">    <span class="attr">"dependencies"</span>: &#123;</span>
+<span class="line">        <span class="attr">"B"</span>: &#123;</span>
+<span class="line">            <span class="attr">"version"</span>: <span class="string">"0.0.1"</span>,</span>
+<span class="line">            <span class="attr">"resolved"</span>: <span class="string">"./node_shrinkpack/B-0.0.1.tgz"</span>,</span>
+<span class="line">            <span class="attr">"dependencies"</span>: &#123;</span>
+<span class="line">                <span class="attr">"C"</span>: &#123;  </span>
+<span class="line">                    <span class="attr">"version"</span>: <span class="string">"0.0.1"</span>,</span>
+<span class="line">                    <span class="attr">"resolved"</span>: <span class="string">"./node_shrinkpack/C-0.0.1.tgz"</span></span>
+<span class="line">                &#125;</span>
+<span class="line">            &#125;</span>
+<span class="line">        &#125;</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>于是，我们以后再进行 <code>npm install --loglevel=http</code> 时会发现依赖模块的获取根本没有网络请求了（因为依赖都在我们自己的仓库里了嘛）。</p>
+<p>可能有人会说，为啥不直接把 node_modules 目录提交进仓库算了？原因主要是这样：</p>
+<p>有些模块需要编译，编译是和环境有关的，你当前的环境编译可用，其他环境直接使用该模块不一定能用。
+<code>node_modules</code> 目录里面啥东西都有，太凌乱，很容易把提交给搅乱。diff 时突然 diff 出 <code>node_modules</code> 下的源代码、README，你应该不想这样吧？
+只存储模块的 tgz 包，安装编译的过程交给 NPM 命令更明智。</p>
+<h3 id="xin-fang-shi">新方式</h3>
+<p>于是，现在我们使用 NPM 模块的正确姿势应该是这样了：</p>
+<p>本地安装、更新需要的模块，测试、验证
+执行 <code>npm shrinkwrap</code> 将依赖模块的版本冻结
+执行 <code>shrinkpack</code> . 将依赖模块打包进仓库
+提交代码（注意要将 <code>npm-shrinkwrap.json</code> 和 <code>node_shrinkpack</code> 一起提交哦）
+发布模块或者部署应用
+如果你觉得这样很繁琐，可以定义一个 NPM 命令：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span>
+<span class="line">  "pack": "npm shrinkwrap &amp; shrinkpack ."</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<h3 id="zong-jie">总结</h3>
+<p>拆分模块是必要的，我们应该坚持模块“小而美”
+不要太依赖他人，一定要有依赖方挂掉的应急方案
+推荐使用 <code>npm shrinkwrap</code>（冻结依赖模块的版本） 加 <code>shrinkpack</code>（打包依赖模块到自己项目） 来解决依赖模块的不确定性</p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/npm/">npm</a>
+                
+              
+                <a class="post-tags" href="/tags/模块化/">模块化</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2016/03/24/npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2016/03/24/npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法/index.html&amp;title=npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2016/03/24/npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法/index.html&amp;text=npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2016/03/24/npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2016/04/10/前端动画原理与实现/">
+      ← 前端动画原理与实现
+    </a>
+  
+  
+    <a class="pull-right" href="/2016/02/28/使用npm scripts构建项目/">
+      使用 npm scripts 构建项目 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2016/03/24/npm left-pad模块删除事件始末梳理及看法及应对依赖风险处理方法/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

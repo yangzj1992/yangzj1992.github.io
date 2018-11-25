@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>【译】对一行混淆 JS 代码的逆向分析过程 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#di-yi-bu-fen-shi-dai-ma-ke-du"><span class="toc-number">1.</span> <span class="toc-text">第一部分，使代码可读。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#di-er-bu-fen-li-jie-dai-ma"><span class="toc-number">2.</span> <span class="toc-text">第二部分，理解代码。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#zhe-xie-tu-biao-shi-shi-yao-yi-si"><span class="toc-number">2.1.</span> <span class="toc-text">这些图表是什么意思</span></a></li></ol></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">【译】对一行混淆 JS 代码的逆向分析过程</h1>
+          <time datetime="2017-08-10T16:43:02.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2017 年 08 月 11 日</span>
+            <span style="margin-left: 10px;">最近更新于：2017 年 08 月 11 日</span>
+            <span style="margin-left: 10px;">本文共 3,343 字，读完约 15 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <blockquote>
+<p>原文链接 : <a href="https://www.alexkras.com/reverse-engineering-one-line-of-javascript/" target="_blank" rel="external">Reverse Engineering One Line of JavaScript</a><br>
+原文作者 : <a href="https://www.alexkras.com/about/" target="_blank" rel="external">Alex</a><br>
+译文出自 : <a href="http://zcfy.cc/" target="_blank" rel="external">众成翻译</a><br>
+译者 : <a href="http://www.qcyoung.com" target="_blank" rel="external">yangzj1992</a><br>
+首发于: <a href="http://zcfy.cc/article/reverse-engineering-one-line-of-javascript-3615.html?t=new" target="_blank" rel="external">众成翻译</a></p>
+</blockquote>
+<p>不久前，我看到有人提了个问题，能否有人将下面这行 JS 代码进行逆向分析。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">&lt;pre id=p&gt;&lt;script&gt;n=setInterval(&quot;for(n+=7,i=k,P=&apos;p.\\n&apos;;i-=1/k;P+=P[i%2?(i%2*j-j+n/k^j)&amp;1:2])j=k/i;p.innerHTML=P&quot;,k=64)&lt;/script&gt;</span>
+</pre></td></tr></table></figure>
+<p>这行代码的效果如下所示，它是一个大小仅为 128b 的光线追踪挡板 Demo 。你也可以访问<a href="https://codepen.io/yangzj1992/pen/owOyjr" target="_blank" rel="external">这里</a>查看效果。这行代码的作者是<a href="http://www.p01.org/128b_raytraced_checkboard/" target="_blank" rel="external">p01</a>, 发布于<a href="http://www.pouet.net/prod.php?which=59204" target="_blank" rel="external">Pouet.net</a>。你可以访问<a href="http://www.p01.org/" target="_blank" rel="external">他的网站</a>看到更多有趣的 Demo。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="raytraced_checkboard" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/ray.gif"></p>
+<p>下面我们试着对这行代码进行一下逆向分析。</p>
+<h2 id="di-yi-bu-fen-shi-dai-ma-ke-du">第一部分，使代码可读。</h2>
+<p>首先，我们将 HTML 和 JS 代码分离。这里我们保留相关的 id 指向。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+</pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"code.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span>
+<span class="line"><span class="tag">&lt;<span class="name">pre</span> <span class="attr">id</span>=<span class="string">"p"</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span>
+</pre></td></tr></table></figure>
+<p>这里我们注意到有个变量 <code>k</code>。我们将它置顶申明，并重命名为 <code>delay</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> delay = <span class="number">64</span>;</span>
+<span class="line"><span class="keyword">var</span> draw = <span class="string">"for(n+=7,i=delay,P='p.\\n';i-=1/delay;P+=P[i%2?(i%2*j-j+n/delay^j)&amp;1:2])j=delay/i;p.innerHTML=P"</span>;</span>
+<span class="line"><span class="keyword">var</span> n = setInterval(draw, delay);</span>
+</pre></td></tr></table></figure>
+<p><code>var draw</code> 由于是一个字符串，它会被 setInterval 用 eval() 方法执行（setInterval 可以接受一个 function 或是 string 来执行）。所以这里我们将它重写成一个真实的 function。</p>
+<p>另外这里还对元素 p 进行了直接的 DOM 操作，这里我们用 JS 获取这个 id 来重新书写，让它更加易懂。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> delay = <span class="number">64</span>;</span>
+<span class="line"><span class="keyword">var</span> p = <span class="built_in">document</span>.getElementById(<span class="string">"p"</span>); <span class="comment">// &lt; ---------------</span></span>
+<span class="line"><span class="comment">// var draw = "for(n+=7,i=delay,P='p.\\n';i-=1/delay;P+=P[i%2?(i%2*j-j+n/delay^j)&amp;1:2])j=delay/i;p.innerHTML=P";</span></span>
+<span class="line"><span class="keyword">var</span> draw = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">for</span> (n += <span class="number">7</span>, i = delay, P = <span class="string">'p.\n'</span>; i -= <span class="number">1</span> / delay; P += P[i % <span class="number">2</span> ? (i % <span class="number">2</span> * j - j + n / delay ^ j) &amp; <span class="number">1</span> : <span class="number">2</span>]) &#123;</span>
+<span class="line">        j = delay / i; p.innerHTML = P;</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;;</span>
+<span class="line"><span class="keyword">var</span> n = setInterval(draw, delay);</span>
+</pre></td></tr></table></figure>
+<p>接下来，我们将变量 <code>i</code>，<code>p</code>, <code>j</code> 也作提前声明。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> delay = <span class="number">64</span>;</span>
+<span class="line"><span class="keyword">var</span> p = <span class="built_in">document</span>.getElementById(<span class="string">"p"</span>);</span>
+<span class="line"><span class="comment">// var draw = "for(n+=7,i=delay,P='p.\\n';i-=1/delay;P+=P[i%2?(i%2*j-j+n/delay^j)&amp;1:2])j=delay/i;p.innerHTML=P";</span></span>
+<span class="line"><span class="keyword">var</span> draw = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> i = delay; <span class="comment">// &lt; ---------------</span></span>
+<span class="line">    <span class="keyword">var</span> P =<span class="string">'p.\n'</span>;</span>
+<span class="line">    <span class="keyword">var</span> j;</span>
+<span class="line">    <span class="keyword">for</span> (n += <span class="number">7</span>; i &gt; <span class="number">0</span> ;P += P[i % <span class="number">2</span> ? (i % <span class="number">2</span> * j - j + n / delay ^ j) &amp; <span class="number">1</span> : <span class="number">2</span>]) &#123;</span>
+<span class="line">        j = delay / i; p.innerHTML = P;</span>
+<span class="line">        i -= <span class="number">1</span> / delay;</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;;</span>
+<span class="line"><span class="keyword">var</span> n = setInterval(draw, delay);</span>
+</pre></td></tr></table></figure>
+<p>然后，我们将 for 循环转为 while 循环，将 for 循环中间的条件语句作为条件，其他的语句放到 while 循环的内外部。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> delay = <span class="number">64</span>;</span>
+<span class="line"><span class="keyword">var</span> p = <span class="built_in">document</span>.getElementById(<span class="string">"p"</span>);</span>
+<span class="line"><span class="comment">// var draw = "for(n+=7,i=delay,P='p.\\n';i-=1/delay;P+=P[i%2?(i%2*j-j+n/delay^j)&amp;1:2])j=delay/i;p.innerHTML=P";</span></span>
+<span class="line"><span class="keyword">var</span> draw = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> i = delay;</span>
+<span class="line">    <span class="keyword">var</span> P =<span class="string">'p.\n'</span>;</span>
+<span class="line">    <span class="keyword">var</span> j;</span>
+<span class="line">    n += <span class="number">7</span>;</span>
+<span class="line">    <span class="keyword">while</span> (i &gt; <span class="number">0</span>) &#123; <span class="comment">// &lt;----------------------</span></span>
+<span class="line">        <span class="comment">//Update HTML</span></span>
+<span class="line">        p.innerHTML = P;</span>
+<span class="line"> </span>
+<span class="line">        j = delay / i;</span>
+<span class="line">        i -= <span class="number">1</span> / delay;</span>
+<span class="line">        P += P[i % <span class="number">2</span> ? (i % <span class="number">2</span> * j - j + n / delay ^ j) &amp; <span class="number">1</span> : <span class="number">2</span>];</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;;</span>
+<span class="line"><span class="keyword">var</span> n = setInterval(draw, delay);</span>
+</pre></td></tr></table></figure>
+<p>接下来我们展开三元表达式。</p>
+<p>这里 <code>i % 2</code> 的作用是判断 i 是否为偶数，如果是偶数，那么将会返回 2，否则返回 <code>(i % 2 * j - j + n / delay ^ j) &amp; 1</code>。</p>
+<p>而这一堆式子也将会作为 <code>P</code> 的 index 进行处理。 即 <code>P += P[index];</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> delay = <span class="number">64</span>;</span>
+<span class="line"><span class="keyword">var</span> p = <span class="built_in">document</span>.getElementById(<span class="string">"p"</span>);</span>
+<span class="line"><span class="comment">// var draw = "for(n+=7,i=delay,P='p.\\n';i-=1/delay;P+=P[i%2?(i%2*j-j+n/delay^j)&amp;1:2])j=delay/i;p.innerHTML=P";</span></span>
+<span class="line"><span class="keyword">var</span> draw = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> i = delay;</span>
+<span class="line">    <span class="keyword">var</span> P =<span class="string">'p.\n'</span>;</span>
+<span class="line">    <span class="keyword">var</span> j;</span>
+<span class="line">    n += <span class="number">7</span>;</span>
+<span class="line">    <span class="keyword">while</span> (i &gt; <span class="number">0</span>) &#123;</span>
+<span class="line">        <span class="comment">//Update HTML</span></span>
+<span class="line">        p.innerHTML = P;</span>
+<span class="line"> </span>
+<span class="line">        j = delay / i;</span>
+<span class="line">        i -= <span class="number">1</span> / delay;</span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">let</span> index;</span>
+<span class="line">        <span class="keyword">let</span> iIsOdd = (i % <span class="number">2</span> != <span class="number">0</span>); <span class="comment">// &lt;---------------</span></span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">if</span> (iIsOdd) &#123; <span class="comment">// &lt;---------------</span></span>
+<span class="line">            index = (i % <span class="number">2</span> * j - j + n / delay ^ j) &amp; <span class="number">1</span>;</span>
+<span class="line">        &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">            index = <span class="number">2</span>;</span>
+<span class="line">        &#125;</span>
+<span class="line"> </span>
+<span class="line">        P += P[index];</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;;</span>
+<span class="line"><span class="keyword">var</span> n = setInterval(draw, delay);</span>
+</pre></td></tr></table></figure>
+<p>这里我们接下来注意到与运算符 <code>&amp; 1</code>。</p>
+<p><code>(i % 2 * j - j + n / delay ^ j) &amp; 1</code>，这段代码可以巧妙地去比较一个数是否为奇偶，它的原理其实是数值转换为二进制进行与运算返回的十进制结果。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+</pre></td><td class="code"><pre><span class="line"><span class="number">0</span> &amp; <span class="number">1</span> <span class="comment">// 0</span></span>
+<span class="line"><span class="number">1</span> &amp; <span class="number">1</span> <span class="comment">// 1</span></span>
+<span class="line"><span class="number">2</span> &amp; <span class="number">1</span> <span class="comment">// 0</span></span>
+<span class="line"><span class="number">3</span> &amp; <span class="number">1</span> <span class="comment">// 1</span></span>
+<span class="line"><span class="number">3</span> &amp; <span class="number">2</span> <span class="comment">// 2</span></span>
+<span class="line"><span class="number">8</span> &amp; <span class="number">8</span> <span class="comment">// 8</span></span>
+</pre></td></tr></table></figure>
+<p>然后我们再次对变量进行重命名整合。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> delay = <span class="number">64</span>;</span>
+<span class="line"><span class="keyword">var</span> p = <span class="built_in">document</span>.getElementById(<span class="string">"p"</span>);</span>
+<span class="line"><span class="comment">// var draw = "for(n+=7,i=delay,P='p.\\n';i-=1/delay;P+=P[i%2?(i%2*j-j+n/delay^j)&amp;1:2])j=delay/i;p.innerHTML=P";</span></span>
+<span class="line"><span class="keyword">var</span> draw = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> i = delay;</span>
+<span class="line">    <span class="keyword">var</span> P =<span class="string">'p.\n'</span>;</span>
+<span class="line">    <span class="keyword">var</span> j;</span>
+<span class="line">    n += <span class="number">7</span>;</span>
+<span class="line">    <span class="keyword">while</span> (i &gt; <span class="number">0</span>) &#123;</span>
+<span class="line">        <span class="comment">//Update HTML</span></span>
+<span class="line">        p.innerHTML = P;</span>
+<span class="line"> </span>
+<span class="line">        j = delay / i;</span>
+<span class="line">        i -= <span class="number">1</span> / delay;</span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">let</span> index;</span>
+<span class="line">        <span class="keyword">let</span> iIsOdd = (i % <span class="number">2</span> != <span class="number">0</span>);</span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">if</span> (iIsOdd) &#123;</span>
+<span class="line">            <span class="keyword">let</span> magic = (i % <span class="number">2</span> * j - j + n / delay ^ j);</span>
+<span class="line">            <span class="keyword">let</span> magicIsOdd = (magic % <span class="number">2</span> != <span class="number">0</span>); <span class="comment">// &amp;1 &lt; --------------------------</span></span>
+<span class="line">            <span class="keyword">if</span> (magicIsOdd) &#123; <span class="comment">// &amp;1 &lt;--------------------------</span></span>
+<span class="line">                index = <span class="number">1</span>;</span>
+<span class="line">            &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">                index = <span class="number">0</span>;</span>
+<span class="line">            &#125;</span>
+<span class="line">        &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">            index = <span class="number">2</span>;</span>
+<span class="line">        &#125;</span>
+<span class="line"> </span>
+<span class="line">        P += P[index];</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;;</span>
+<span class="line"><span class="keyword">var</span> n = setInterval(draw, delay);</span>
+</pre></td></tr></table></figure>
+<p>由于这里 P ='p.\n'; 而我们的 index 的值为：0, 1, 2。对应即有：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">P[<span class="number">0</span>] = <span class="string">'p'</span></span>
+<span class="line">P[<span class="number">1</span>] = <span class="string">'.'</span></span>
+<span class="line">P[<span class="number">2</span>] = <span class="string">'\n'</span></span>
+</pre></td></tr></table></figure>
+<p>所以这里我们还可以用 switch 重写代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+<span class="line">44</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> delay = <span class="number">64</span>;</span>
+<span class="line"><span class="keyword">var</span> p = <span class="built_in">document</span>.getElementById(<span class="string">"p"</span>);</span>
+<span class="line"><span class="comment">// var draw = "for(n+=7,i=delay,P='p.\\n';i-=1/delay;P+=P[i%2?(i%2*j-j+n/delay^j)&amp;1:2])j=delay/i;p.innerHTML=P";</span></span>
+<span class="line"><span class="keyword">var</span> draw = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> i = delay;</span>
+<span class="line">    <span class="keyword">var</span> P =<span class="string">'p.\n'</span>;</span>
+<span class="line">    <span class="keyword">var</span> j;</span>
+<span class="line">    n += <span class="number">7</span>;</span>
+<span class="line">    <span class="keyword">while</span> (i &gt; <span class="number">0</span>) &#123;</span>
+<span class="line">        <span class="comment">//Update HTML</span></span>
+<span class="line">        p.innerHTML = P;</span>
+<span class="line"> </span>
+<span class="line">        j = delay / i;</span>
+<span class="line">        i -= <span class="number">1</span> / delay;</span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">let</span> index;</span>
+<span class="line">        <span class="keyword">let</span> iIsOdd = (i % <span class="number">2</span> != <span class="number">0</span>);</span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">if</span> (iIsOdd) &#123;</span>
+<span class="line">            <span class="keyword">let</span> magic = (i % <span class="number">2</span> * j - j + n / delay ^ j);</span>
+<span class="line">            <span class="keyword">let</span> magicIsOdd = (magic % <span class="number">2</span> != <span class="number">0</span>); <span class="comment">// &amp;1</span></span>
+<span class="line">            <span class="keyword">if</span> (magicIsOdd) &#123; <span class="comment">// &amp;1</span></span>
+<span class="line">                index = <span class="number">1</span>;</span>
+<span class="line">            &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">                index = <span class="number">0</span>;</span>
+<span class="line">            &#125;</span>
+<span class="line">        &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">            index = <span class="number">2</span>;</span>
+<span class="line">        &#125;</span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">switch</span> (index) &#123; <span class="comment">// P += P[index]; &lt;-----------------------</span></span>
+<span class="line">            <span class="keyword">case</span> <span class="number">0</span>:</span>
+<span class="line">                P += <span class="string">"p"</span>; <span class="comment">// aka P[0]</span></span>
+<span class="line">                <span class="keyword">break</span>;</span>
+<span class="line">            <span class="keyword">case</span> <span class="number">1</span>:</span>
+<span class="line">                P += <span class="string">"."</span>; <span class="comment">// aka P[1]</span></span>
+<span class="line">                <span class="keyword">break</span>;</span>
+<span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span>
+<span class="line">                P += <span class="string">"\n"</span>; <span class="comment">// aka P[2]</span></span>
+<span class="line">        &#125;</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;;</span>
+<span class="line"> </span>
+<span class="line"><span class="keyword">var</span> n = setInterval(draw, delay);</span>
+</pre></td></tr></table></figure>
+<p>现在我们来梳理 <code>var n = setInterval(draw, delay);</code>。因为 setInterval 返回一个从 1 开始的整数 ID 。并在每次 setInterval 方法被调用时依次递增。（这个 ID 可以被用于 clearInterval 等方法。）在我们的例子中，setInterval 只被调用了一次，所以 n 被设置为 1。</p>
+<p>此外，我们把 <code>delay</code> 重命名为 <code>DELAY</code> 以作为常量。</p>
+<p>最后，我们对 <code>i % 2 * j - j + n / DELAY ^ j</code> 进行排序，由于 <code>^</code> 位异或运算符的优先级较低。所以加上括号后整理如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+<span class="line">44</span>
+<span class="line">45</span>
+<span class="line">46</span>
+<span class="line">47</span>
+<span class="line">48</span>
+<span class="line">49</span>
+<span class="line">50</span>
+<span class="line">51</span>
+<span class="line">52</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> DELAY = <span class="number">64</span>; <span class="comment">// approximately 15 frames per second</span></span>
+<span class="line"><span class="keyword">var</span> n = <span class="number">1</span>;</span>
+<span class="line"><span class="keyword">var</span> p = <span class="built_in">document</span>.getElementById(<span class="string">"p"</span>);</span>
+<span class="line"><span class="comment">// var draw = "for(n+=7,i=delay,P='p.\\n';i-=1/delay;P+=P[i%2?(i%2*j-j+n/delay^j)&amp;1:2])j=delay/i;p.innerHTML=P";</span></span>
+<span class="line"> </span>
+<span class="line"><span class="comment">/**</span>
+<span class="line"> * Draws a picture</span>
+<span class="line"> * 128 chars by 32 chars = total 4096 chars</span>
+<span class="line"> */</span></span>
+<span class="line"><span class="keyword">var</span> draw = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span>
+<span class="line">    <span class="keyword">var</span> i = DELAY; <span class="comment">// 64</span></span>
+<span class="line">    <span class="keyword">var</span> P =<span class="string">'p.\n'</span>; <span class="comment">// First line, reference for chars to use</span></span>
+<span class="line">    <span class="keyword">var</span> j;</span>
+<span class="line"> </span>
+<span class="line">    n += <span class="number">7</span>;</span>
+<span class="line"> </span>
+<span class="line">    <span class="keyword">while</span> (i &gt; <span class="number">0</span>) &#123;</span>
+<span class="line"> </span>
+<span class="line">        j = DELAY / i;</span>
+<span class="line">        i -= <span class="number">1</span> / DELAY;</span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">let</span> index;</span>
+<span class="line">        <span class="keyword">let</span> iIsOdd = (i % <span class="number">2</span> != <span class="number">0</span>);</span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">if</span> (iIsOdd) &#123;</span>
+<span class="line">            <span class="keyword">let</span> magic = ((i % <span class="number">2</span> * j - j + n / DELAY) ^ j); <span class="comment">// &lt; ------------------</span></span>
+<span class="line">            <span class="keyword">let</span> magicIsOdd = (magic % <span class="number">2</span> != <span class="number">0</span>); <span class="comment">// &amp;1</span></span>
+<span class="line">            <span class="keyword">if</span> (magicIsOdd) &#123; <span class="comment">// &amp;1</span></span>
+<span class="line">                index = <span class="number">1</span>;</span>
+<span class="line">            &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">                index = <span class="number">0</span>;</span>
+<span class="line">            &#125;</span>
+<span class="line">        &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">            index = <span class="number">2</span>;</span>
+<span class="line">        &#125;</span>
+<span class="line"> </span>
+<span class="line">        <span class="keyword">switch</span> (index) &#123; <span class="comment">// P += P[index];</span></span>
+<span class="line">            <span class="keyword">case</span> <span class="number">0</span>:</span>
+<span class="line">                P += <span class="string">"p"</span>;</span>
+<span class="line">                <span class="keyword">break</span>;</span>
+<span class="line">            <span class="keyword">case</span> <span class="number">1</span>:</span>
+<span class="line">                P += <span class="string">"."</span>;</span>
+<span class="line">                <span class="keyword">break</span>;</span>
+<span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span>
+<span class="line">                P += <span class="string">"\n"</span>;</span>
+<span class="line">        &#125;</span>
+<span class="line">    &#125;</span>
+<span class="line">    <span class="comment">//Update HTML</span></span>
+<span class="line">    p.innerHTML = P;</span>
+<span class="line">&#125;;</span>
+<span class="line"> </span>
+<span class="line">setInterval(draw, <span class="number">64</span>);</span>
+</pre></td></tr></table></figure>
+<p>你可以在<a href="https://codepen.io/yangzj1992/pen/jLqNLY" target="_blank" rel="external">这里</a>看到最后的代码。</p>
+<h2 id="di-er-bu-fen-li-jie-dai-ma">第二部分，理解代码。</h2>
+<p>在 <code>draw()</code> 函数第一次执行时 i 被 <code>var i = DELAY;</code> 初始化为 64，并在每次循环中被 <code>i -= 1 / DELAY;</code> 进行逐次 1/64 的递减。直到 <code>i &gt; 0</code> 时结束（循环 64 * 64 次）</p>
+<p>而我们的图像则是由 32 行组成，每行包含了 128 个字符。这里我们可以注意到我们会对 i 进行奇偶判断：<code>let iIsOdd = (i % 2 != 0)</code> 当 i 为偶数时，总计会发生 32 次。（即 64、62、60...等)。此时 index 将被赋值为 2。此时通过 <code>P += &quot;\n&quot;;</code> 来添加新的一行。剩下的 127 次循环产生的字符即为 <code>p</code> 或 <code>.</code>。</p>
+<p>由代码可知，当 <code>((i % 2 * j - j + n / DELAY) ^ j);</code> 为奇数时。我们会添加 <code>.</code>，反之会添加 <code>p</code>。</p>
+<p>这里问题的关键来了，这串式子什么时候分别为奇偶呢？在我们研究前，我们可以做一个实验，让我们从 <code>let magic = ((i % 2 * j - j + n / DELAY) ^ j);</code> 中移除 <code>+ n/DELAY</code>。刷新页面后，我们获得了一份静止的图像输出。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/static.png"></p>
+<p>那么，我们就先在移除 <code>+ n/DELAY</code> 的情况下进行探讨。对于 <code>(i % 2 * j - j) ^ j</code> 因为在每次循环中有： <code>j = DELAY / i;</code> 所以我们可以将式子简化为一元式：<code>(i % 2 * 64/i - 64/i) ^ 64/i</code>。</p>
+<p>这里我们借助一个<a href="https://www.desmos.com/calculator" target="_blank" rel="external">在线的图表生成工具</a>来帮忙绘制函数。</p>
+<p>例如，首先我们要绘制的 <code>i % 2</code>，它的展示为下图所示的重复一次函数片段，y 值的范围在 0 到 2 之间。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/i-mod-2.png"></p>
+<p>如果我们绘制 <code>64/i</code> ，所对应的图表展示如下：</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/64-div-i.png"></p>
+<p>现在我们将式子结合起来，绘制图如下：</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/left-side.png"></p>
+<p>将两个函数绘制在一张图上，绘制图如下：</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/side-by-side.png"></p>
+<h3 id="zhe-xie-tu-biao-shi-shi-yao-yi-si">这些图表是什么意思</h3>
+<p>现在让我们着力观察图表的前16行，即 <code>i</code> 值的范围是从 64 到 32。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/zoom-in-1024x412.png"></p>
+<p>通过 JS 的 XOR (位异或）运算符的计算规则，当你的位运算两端都为 0 或 1 时，将返回 0 ，两端不同时为 1。同时如果你的数是小数的话，将会抛弃小数部分进行计算。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line">First     Second      Result</span>
+<span class="line">1              1              1</span>
+<span class="line">1              0              1</span>
+<span class="line">0              1              1</span>
+<span class="line">0              0              0</span>
+</pre></td></tr></table></figure>
+<blockquote>
+<p>异或运算的窍门：对两个数进行三次异或运算，可以互换他们的值，不需要引入临时变量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">var a=12;</span>
+<span class="line">var b=23;</span>
+<span class="line">a^=b,b^=a,a^=b;//a=23,b=12</span>
+</pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>异或运算也可以用来取整 <code>1.23^0 //1</code>，<code>3.5^0 //3</code>
+当负数与整数进行异或运算时。负数先进行补码，取反再加一。正数的原码和补码一致。</p>
+<p>如，对于 -2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">源码：1000 0000 0000 0010 （负数，最高为是 1）</span>
+<span class="line">反码：1111 1111 1111 1101 （按位取反）</span>
+<span class="line">补码：1111 1111 1111 1110 （加一）</span>
+</pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">-2 ^ 3 = </span>
+<span class="line">  1111 1111 1111 1110</span>
+<span class="line">^ 0000 0000 0000 0011</span>
+<span class="line">= 1111 1111 1111 1101</span>
+</pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>再转回原码（负数最高位不变，其他位取反，+1，正数不变） = - 3</p>
+</blockquote>
+<p>在 <code>i</code> 值的这个范围内 <code>j</code> 将从 1 开始慢慢的走向 2（即基本为 1.XXX)。这样在另一端也为 1 时，我们将会得到异或计算结果为 0（偶数），最后获得 <code>p</code> 字符输出。</p>
+<p>换句话说，每条蓝色的对角线代表着我们 Demo 图表中的一行。因为 <code>j</code> 在这 16 行里总是大于 1 而小于 2。我们得到奇数的唯一办法就是使式子 <code>(i % 2 * j - j)^ j</code> 即 <code>i % 2 * i/64 - i/64</code> 即蓝色的对角线应该处于大于 1 或小于 -1的范围。</p>
+<p>通过图我们可以看到，在最右侧的对角线上很少有到大于 1 和小于 -1 的地方。随着对角线往左的描绘，对角线逐渐开始变长。到第 16 行位置对角线到达 -2 到 2 的位置。在 16 行以后，我们从静态 Demo 图上也可以看到图的展示规律变成了另一种模式。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/zoom-in-2.png"></p>
+<p>在第 16 行后，<code>j</code> 的值开始大于 2 。这时我们的式子期望也发生了反转，在蓝色对角线大于 2 和小于 -2 时或是 -1 到 1 的范围时式子才能为偶数。这就是为什么在 17 行以后我们能看到更多组 <code>p</code> 的展示。此外如果你仔细观察 Demo 的底部几行，你会注意到它们也并没有遵循同样的展示规则，因为在后面图的波动也越来越大了。</p>
+<p>让我们回到 <code>+ n/DELAY</code>，通过代码我们可以知道 n 是从 8 开始（从 1 开始并在每次执行 setInterval 时加 7）。</p>
+<p>当 n 变成 64 时，此时绘图如下：</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/n-64.png"></p>
+<p>现在 <code>j</code> 的值趋近于 1，x 轴在 62 - 63 上的值为 0.x , 63 - 64 的值为 1.x。可推得在 63 - 64 时对角线的值是 (1 ^ 1 = 0 // even) 添加一串 <code>p</code>，62 - 63 时对角线的值是（1^0 = 1 // odd) 添加一串 <code>.</code>。</p>
+<p>此时呈现的 Demo 静态图像如下所示（在 codepen 的 demo 里你可以自行修改 <code>n</code> 值进行测试）。它的第一行正如我们所推测的那样。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/n-64-rendered.png"></p>
+<p>当 n 在下一次执行 setInterval，图表产生了如下的轻微变化。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/n-647.png"></p>
+<p>注意，第一行对角线此时增长了 7/64 ≈ 0.1 ，由于 Demo 中 1 行有 128 个字符(对应图表值范围为 2）。相应影响的字符数应该为 0.1 * (128 / 2) = 6.4。我们看一下对应静态图修改后的展示，在第一行中实际移动了 7 个字符，这与我们的猜想也吻合。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/n-647-rendered.png"></p>
+<p>再来最后一个例子，这是当 setInterval 被调用 7 次时，n = 64 + 9 * 7。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/n-6463.png"></p>
+<p>此时第一行 <code>j</code> 依然等于 1。而 63 -- 64 值为 2.x，62 -- 63 值为 1.x。由于 <code>1^2 = 3 // odd - .</code>，<code>1 ^ 1 = 0 //even - p</code>。所以展示效果为一串 <code>.</code> 后面跟随了一串 <code>p</code>。如图所示：</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="https://www.alexkras.com/wp-content/uploads/n-6463-rendered.png"></p>
+<p>之后 Demo 将会按类似的规则反复进行渲染。</p>
+<p>代码的原理大致如此，尽管亲手进行正向压缩简化代码到如此程度确实很难，但是去尝试着理解它也是很有趣的。希望这篇文章能对你有所帮助。</p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/【译】对一行混淆 JS 代码的逆向分析过程.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/JavaScript/">JavaScript</a>
+                
+              
+                <a class="post-tags" href="/tags/源码解读/">源码解读</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=【译】对一行混淆 JS 代码的逆向分析过程 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2017/08/11/【译】对一行混淆 JS 代码的逆向分析过程/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2017/08/11/【译】对一行混淆 JS 代码的逆向分析过程/index.html&amp;title=【译】对一行混淆 JS 代码的逆向分析过程 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2017/08/11/【译】对一行混淆 JS 代码的逆向分析过程/index.html&amp;text=【译】对一行混淆 JS 代码的逆向分析过程;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=【译】对一行混淆 JS 代码的逆向分析过程 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2017/08/11/【译】对一行混淆 JS 代码的逆向分析过程/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+  
+    <a class="pull-right" href="/2017/04/09/360 & 美团前端社招面经及部分面试题/">
+      360 & 美团前端社招面经及部分面试题 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2017/08/11/【译】对一行混淆 JS 代码的逆向分析过程/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

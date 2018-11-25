@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>【个人总结】正则表达式语法及常用正则 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#gai-shu"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ji-ben-yu-fa"><span class="toc-number">2.</span> <span class="toc-text">基本语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xiu-shi-fu"><span class="toc-number">2.1.</span> <span class="toc-text">修饰符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#yuan-zi-fu"><span class="toc-number">2.2.</span> <span class="toc-text">元字符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fang-gua-hao"><span class="toc-number">2.3.</span> <span class="toc-text">方括号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#liang-ci"><span class="toc-number">2.4.</span> <span class="toc-text">量词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#duan-yan"><span class="toc-number">2.5.</span> <span class="toc-text">断言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#chang-yong-shi-li"><span class="toc-number">3.</span> <span class="toc-text">常用实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xiao-yan-shu-zi-de-biao-da-shi"><span class="toc-number">3.1.</span> <span class="toc-text">校验数字的表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xiao-yan-zi-fu-de-biao-da-shi"><span class="toc-number">3.2.</span> <span class="toc-text">校验字符的表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#te-shu-xu-qiu-biao-da-shi"><span class="toc-number">3.3.</span> <span class="toc-text">特殊需求表达式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#can-kao-zi-liao"><span class="toc-number">4.</span> <span class="toc-text">参考资料</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">【个人总结】正则表达式语法及常用正则</h1>
+          <time datetime="2016-06-07T10:13:05.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2016 年 06 月 07 日</span>
+            <span style="margin-left: 10px;">最近更新于：2016 年 10 月 14 日</span>
+            <span style="margin-left: 10px;">本文共 2,441 字，读完约 11 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <p>项目中常用正则表达式来进行校验，然而确实总是遗忘一些相关的语法，需要谷歌搜索一些不太好想或写的正则规则。所以在此总结一份。争取依靠个人总结不断更新这篇日志，节约之后 90% 的查阅搜索时间。</p>
+<h2 id="gai-shu">概述</h2>
+<p>正则表达式就是事先声明一组规则，用于匹配字符串中的字符。</p>
+<h2 id="ji-ben-yu-fa">基本语法</h2>
+<h3 id="xiu-shi-fu">修饰符</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">修饰符</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">i</td>
+<td style="text-align:center">执行对大小写不敏感的匹配。</td>
+</tr>
+<tr>
+<td style="text-align:center">g</td>
+<td style="text-align:center">执行全局匹配（查找所有匹配而非在找到第一个匹配后停止）。</td>
+</tr>
+<tr>
+<td style="text-align:center">m</td>
+<td style="text-align:center">执行多行匹配。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="yuan-zi-fu">元字符</h3>
+<p>在正则表达式的模式中，有一些字符是有特殊含义的，被称为元字符。元字符都是针对单个字符匹配的。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">元字符</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">.</td>
+<td style="text-align:center">查找单个字符，除了换行和行结束符。</td>
+</tr>
+<tr>
+<td style="text-align:center">\w</td>
+<td style="text-align:center">匹配大小写英文字符及数字 0 到 9 之间的任意一个及下划线，相当于 [a-zA-Z0-9_]</td>
+</tr>
+<tr>
+<td style="text-align:center">\W</td>
+<td style="text-align:center">不匹配大小写英文字符及数字 0 到 9 之间的任意一个，相当于 [^a-zA-Z0-9_]</td>
+</tr>
+<tr>
+<td style="text-align:center">\s</td>
+<td style="text-align:center">匹配任何空白字符，相当于 [\f\n\r\t\v]</td>
+</tr>
+<tr>
+<td style="text-align:center">\S</td>
+<td style="text-align:center">匹配任何非空白字符，相当于 [^\s]</td>
+</tr>
+<tr>
+<td style="text-align:center">\d</td>
+<td style="text-align:center">匹配任何 0 到 9 之间的单个数字，相当于 [0-9]</td>
+</tr>
+<tr>
+<td style="text-align:center">\D</td>
+<td style="text-align:center">不匹配任何 0 到 9 之间的单个数字，相当于 [^0-9]</td>
+</tr>
+<tr>
+<td style="text-align:center">\b</td>
+<td style="text-align:center">匹配单词边界。</td>
+</tr>
+<tr>
+<td style="text-align:center">\B</td>
+<td style="text-align:center">匹配非单词边界。</td>
+</tr>
+<tr>
+<td style="text-align:center">\0</td>
+<td style="text-align:center">查找 NUL 字符。</td>
+</tr>
+<tr>
+<td style="text-align:center">\n</td>
+<td style="text-align:center">查找换行符。</td>
+</tr>
+<tr>
+<td style="text-align:center">\f</td>
+<td style="text-align:center">查找换页符。</td>
+</tr>
+<tr>
+<td style="text-align:center">\r</td>
+<td style="text-align:center">查找回车符。</td>
+</tr>
+<tr>
+<td style="text-align:center">\t</td>
+<td style="text-align:center">查找制表符。</td>
+</tr>
+<tr>
+<td style="text-align:center">\v</td>
+<td style="text-align:center">查找垂直制表符。</td>
+</tr>
+<tr>
+<td style="text-align:center">\xxx</td>
+<td style="text-align:center">查找以八进制数 xxx 规定的字符。</td>
+</tr>
+<tr>
+<td style="text-align:center">\xdd</td>
+<td style="text-align:center">查找以十六进制数 dd 规定的字符。</td>
+</tr>
+<tr>
+<td style="text-align:center">[\u4e00-\u9fa5]</td>
+<td style="text-align:center">匹配任意单个汉字（这里用的是 Unicode 编码表示汉字的 )</td>
+</tr>
+<tr>
+<td style="text-align:center">^</td>
+<td style="text-align:center">匹配字符串的开头</td>
+</tr>
+<tr>
+<td style="text-align:center">$</td>
+<td style="text-align:center">匹配字符串的结尾</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fang-gua-hao">方括号</h3>
+<p>方括号用于查找某个范围内的字符</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">表达式</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">[...]</td>
+<td style="text-align:center">匹配方括号中的所有字符</td>
+</tr>
+<tr>
+<td style="text-align:center">[^...]</td>
+<td style="text-align:center">匹配非方括号中的所有字符</td>
+</tr>
+</tbody>
+</table>
+<h3 id="liang-ci">量词</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">表达式</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">n*</td>
+<td style="text-align:center">匹配任何包含零个或多个 n 的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">n+</td>
+<td style="text-align:center">匹配任何包含至少一个 n 的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">n?</td>
+<td style="text-align:center">匹配任何包含零个或一个 n 的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">n{X}</td>
+<td style="text-align:center">匹配包含 X 个 n 的序列的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">n{X,Y}</td>
+<td style="text-align:center">匹配包含 X 或 Y 个 n 的序列的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">n{X,}</td>
+<td style="text-align:center">匹配包含至少 X 个 n 的序列的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">n$</td>
+<td style="text-align:center">匹配任何结尾为 n 的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">^n</td>
+<td style="text-align:center">匹配任何开头为 n 的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">?=n</td>
+<td style="text-align:center">匹配任何其后紧接指定字符串 n 的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">?!n</td>
+<td style="text-align:center">匹配任何其后没有紧接指定字符串 n 的字符串。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="duan-yan">断言</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">表达式</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(exp)</td>
+<td style="text-align:center">匹配 exp,并捕获文本到自动命名的组里</td>
+</tr>
+<tr>
+<td style="text-align:center">(?<name>exp)</name></td>
+<td style="text-align:center">匹配 exp,并捕获文本到名称为 name 的组里，也可以写成(?'name'exp)</td>
+</tr>
+<tr>
+<td style="text-align:center">(?:exp)</td>
+<td style="text-align:center">匹配 exp,不捕获匹配的文本，也不给此分组分配组号</td>
+</tr>
+<tr>
+<td style="text-align:center">(?=exp)</td>
+<td style="text-align:center">正向先行断言——代表字符串中的一个位置，紧接该位置之后的字符序列能够匹配 exp。</td>
+</tr>
+<tr>
+<td style="text-align:center">(?!exp)</td>
+<td style="text-align:center">负向先行断言——代表字符串中的一个位置，紧接该位置之后的字符序列不能匹配 exp</td>
+</tr>
+<tr>
+<td style="text-align:center">(?&lt;=exp)</td>
+<td style="text-align:center">正向后行断言,代表字符串中的一个位置，紧接该位置之前的字符序列能够匹配 exp。</td>
+</tr>
+<tr>
+<td style="text-align:center">(?&lt;!exp)</td>
+<td style="text-align:center">负向后行断言,代表字符串中的一个位置，紧接该位置之前的字符序列不能匹配 exp。</td>
+</tr>
+<tr>
+<td style="text-align:center">(?#comment)</td>
+<td style="text-align:center">这种类型的分组不对正则表达式的处理产生任何影响，用于提供注释让人阅读</td>
+</tr>
+</tbody>
+</table>
+<h2 id="chang-yong-shi-li">常用实例</h2>
+<h3 id="xiao-yan-shu-zi-de-biao-da-shi">校验数字的表达式</h3>
+<ul>
+<li>
+<p>数字：<code>^[0-9]*$</code></p>
+</li>
+<li>
+<p>n 位的数字：<code>^\d{n}$</code></p>
+</li>
+<li>
+<p>至少 n 位的数字：<code>^\d{n,}$</code></p>
+</li>
+<li>
+<p>m-n 位的数字：<code>^\d{m,n}$</code></p>
+</li>
+<li>
+<p>零和非零开头的数字：<code>^(0|[1-9][0-9]*)$</code></p>
+</li>
+<li>
+<p>非零开头的最多带两位小数的数字：<code>^([1-9][0-9]*)+(.[0-9]{1,2})?$</code></p>
+</li>
+<li>
+<p>带 1-2 位小数的正数或负数：<code>^(\-)?\d+(\.\d{1,2})?$</code></p>
+</li>
+<li>
+<p>正数、负数、和小数：<code>^(\-|\+)?\d+(\.\d+)?$</code></p>
+</li>
+<li>
+<p>有两位小数的正实数：<code>^[0-9]+(.[0-9]{2})?$</code></p>
+</li>
+<li>
+<p>有 1~3 位小数的正实数：<code>^[0-9]+(.[0-9]{1,3})?$</code></p>
+</li>
+<li>
+<p>非零的正整数：<code>^[1-9]\d*$</code> 或 <code>^([1-9][0-9]*){1,3}$</code> 或 <code>^\+?[1-9][0-9]*$</code></p>
+</li>
+<li>
+<p>非零的负整数：<code>^\-[1-9][]0-9&quot;*$</code> 或 <code>^-[1-9]\d*$</code></p>
+</li>
+<li>
+<p>非负整数：<code>^\d+$</code> 或 <code>^[1-9]\d*|0$</code></p>
+</li>
+<li>
+<p>非正整数：<code>^-[1-9]\d*|0$</code> 或 <code>^((-\d+)|(0+))$</code></p>
+</li>
+<li>
+<p>非负浮点数：<code>^\d+(\.\d+)?$</code> 或 <code>^[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0$</code></p>
+</li>
+<li>
+<p>非正浮点数：<code>^((-\d+(\.\d+)?)|(0+(\.0+)?))$</code> 或 <code>^(-([1-9]\d*\.\d*|0\.\d*[1-9]\d*))|0?\.0+|0$</code></p>
+</li>
+<li>
+<p>正浮点数：<code>^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$</code> 或 <code>^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$</code></p>
+</li>
+<li>
+<p>负浮点数：<code>^-([1-9]\d*\.\d*|0\.\d*[1-9]\d*)$</code> 或 <code>^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$</code></p>
+</li>
+<li>
+<p>浮点数：<code>^(-?\d+)(\.\d+)?$</code> 或 <code>^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$</code></p>
+</li>
+</ul>
+<h3 id="xiao-yan-zi-fu-de-biao-da-shi">校验字符的表达式</h3>
+<ul>
+<li>
+<p>汉字：<code>^[\u4e00-\u9fa5]{0,}$</code></p>
+</li>
+<li>
+<p>英文和数字：<code>^[A-Za-z0-9]+$</code> 或 <code>^[A-Za-z0-9]{4,40}$</code></p>
+</li>
+<li>
+<p>长度为 3-20 的所有字符：<code>^.{3,20}$</code></p>
+</li>
+<li>
+<p>由 26 个英文字母组成的字符串：<code>^[A-Za-z]+$</code></p>
+</li>
+<li>
+<p>由 26 个大写英文字母组成的字符串：<code>^[A-Z]+$</code></p>
+</li>
+<li>
+<p>由 26 个小写英文字母组成的字符串：<code>^[a-z]+$</code></p>
+</li>
+<li>
+<p>由数字和 26 个英文字母组成的字符串：<code>^[A-Za-z0-9]+$</code></p>
+</li>
+<li>
+<p>由数字、26 个英文字母或者下划线组成的字符串：<code>^\w+$ 或 ^\w{3,20}$</code></p>
+</li>
+<li>
+<p>中文、英文、数字包括下划线：<code>^[\u4E00-\u9FA5A-Za-z0-9_]+$</code></p>
+</li>
+<li>
+<p>中文、英文、数字但不包括下划线等符号：<code>^[\u4E00-\u9FA5A-Za-z0-9]+$</code> 或 <code>^[\u4E00-\u9FA5A-Za-z0-9]{2,20}$</code></p>
+</li>
+<li>
+<p>可以输入含有 ^%&amp;',;=?$&quot; 等字符：<code>[^%&amp;',;=?$\x22]+</code></p>
+</li>
+<li>
+<p>禁止输入含有 ~ 的字符：<code>[^~\x22]+</code></p>
+</li>
+</ul>
+<h3 id="te-shu-xu-qiu-biao-da-shi">特殊需求表达式</h3>
+<ul>
+<li>
+<p>Email 地址：<code>^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$</code></p>
+</li>
+<li>
+<p>域名：<code>[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(/.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/.?</code></p>
+</li>
+<li>
+<p>InternetURL：<code>[a-zA-z]+://[^\s]* 或 ^http://([\w-]+\.)+[\w-]+(/[\w-./?%&amp;=]*)?$</code></p>
+</li>
+<li>
+<p>手机号码：<code>^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$</code></p>
+</li>
+<li>
+<p>电话号码（&quot;XXX-XXXXXXX&quot;、&quot;XXXX-XXXXXXXX&quot;、&quot;XXX-XXXXXXX&quot;、&quot;XXX-XXXXXXXX&quot;、&quot;XXXXXXX&quot;和&quot;XXXXXXXX）：<code>^(\(\d{3,4}-)|\d{3.4}-)?\d{7,8}$</code></p>
+</li>
+<li>
+<p>国内电话号码（0511-4405222、021-87888822）：<code>\d{3}-\d{8}|\d{4}-\d{7}</code></p>
+</li>
+<li>
+<p>身份证号（15 位、18 位数字）：
+15 位： <code>^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$</code>
+18 位： <code>^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$</code></p>
+</li>
+<li>
+<p>短身份证号码（数字、字母 x 结尾）：<code>^([0-9]){7,18}(x|X)?$</code> 或 <code>^\d{8,18}|[0-9x]{8,18}|[0-9X]{8,18}?$</code></p>
+</li>
+<li>
+<p>帐号是否合法（字母开头，允许 5-16 字节，允许字母数字下划线）：<code>^[a-zA-Z][a-zA-Z0-9_]{4,15}$</code></p>
+</li>
+<li>
+<p>密码（以字母开头，长度在 6~18 之间，只能包含字母、数字和下划线）：<code>^[a-zA-Z]\w{5,17}$</code></p>
+</li>
+<li>
+<p>强密码（必须包含大小写字母和数字的组合，不能使用特殊字符，长度在 8-10 之间）：<code>^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,10}$</code></p>
+</li>
+<li>
+<p>日期格式：<code>^\d{4}-\d{1,2}-\d{1,2}</code></p>
+</li>
+<li>
+<p>一年的 12 个月（01～09 和 1～12）：<code>^(0?[1-9]|1[0-2])$</code></p>
+</li>
+<li>
+<p>一个月的 31 天（01～09 和 1～31）：<code>^((0?[1-9])|((1|2)[0-9])|30|31)$</code></p>
+</li>
+<li>
+<p>xml 文件：<code>^([a-zA-Z]+-?)+[a-zA-Z0-9]+\\.[x|X][m|M][l|L]$</code></p>
+</li>
+<li>
+<p>双字节字符：<code>[^\x00-\xff]</code> （包括汉字在内，可以用来计算字符串的长度（一个双字节字符长度计 2，ASCII字符计 1））</p>
+</li>
+<li>
+<p>空白行的正则表达式：<code>\n\s*\r</code> （可以用来删除空白行）</p>
+</li>
+<li>
+<p>HTML 标记的正则表达式：<code>&lt;(\S*?)[^&gt;]*&gt;.*?&lt;/\1&gt;|&lt;.*? /&gt;</code> （网上流传的版本太糟糕，上面这个也仅仅能部分，对于复杂的嵌套标记依旧无能为力）</p>
+</li>
+<li>
+<p>首尾空白字符的正则表达式：<code>^\s*|\s*$或(^\s*)|(\s*$)</code> （可以用来删除行首行尾的空白字符(包括空格、制表符、换页符等等），非常有用的表达式）</p>
+</li>
+<li>
+<p>校验金额（2位小数）： <code>^[0-9]+(.[0-9]{2})?$</code></p>
+</li>
+<li>
+<p>腾讯 QQ 号：<code>[1-9][0-9]{4,}</code> （腾讯 QQ 号从 10000 开始）</p>
+</li>
+<li>
+<p>中国邮政编码：<code>[1-9]\d{5}(?!\d)</code> （中国邮政编码为 6 位数字）</p>
+</li>
+<li>
+<p>IP 地址：<code>\d+\.\d+\.\d+\.\d+</code> （提取IP地址时有用）</p>
+</li>
+<li>
+<p>IP 地址：<code>((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))</code></p>
+</li>
+<li>
+<p>IPV6 地址： <code>(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))</code></p>
+</li>
+<li>
+<p>URL 链接： <code>((http|ftp|https)://)(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\&amp;%_\./-~-]*)?</code></p>
+</li>
+<li>
+<p>EMOJI 表情: <code>([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])</code></p>
+</li>
+<li>
+<p>检查 IE 版本 <code>^.*MSIE [5-8](?:\\.[0-9]+)?(?!.*Trident\\/[5-9]\\.0).*$</code></p>
+</li>
+</ul>
+<h2 id="can-kao-zi-liao">参考资料</h2>
+<p>这里的一篇图灵文章可以帮助你了解正则表达式的更深层原理:<a href="http://www.ituring.com.cn/tupubarticle/5512" target="_blank" rel="external">模式、自动机和正则表达式</a></p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/【个人总结】正则表达式语法及常用正则.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/JavaScript/">JavaScript</a>
+                
+              
+                <a class="post-tags" href="/tags/工具资源/">工具资源</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=【个人总结】正则表达式语法及常用正则 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2016/06/07/【个人总结】正则表达式语法及常用正则/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2016/06/07/【个人总结】正则表达式语法及常用正则/index.html&amp;title=【个人总结】正则表达式语法及常用正则 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2016/06/07/【个人总结】正则表达式语法及常用正则/index.html&amp;text=【个人总结】正则表达式语法及常用正则;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=【个人总结】正则表达式语法及常用正则 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2016/06/07/【个人总结】正则表达式语法及常用正则/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2016/06/12/【译】如何编写避免垃圾开销的实时 Javascript 代码/">
+      ← 【译】如何编写避免垃圾开销的实时 JavaScript 代码
+    </a>
+  
+  
+    <a class="pull-right" href="/2016/05/11/【译】基于 Meteor1.3 和 React 创建简单 App/">
+      【译】基于 Meteor1.3 和 React 创建简单 App →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2016/06/07/【个人总结】正则表达式语法及常用正则/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

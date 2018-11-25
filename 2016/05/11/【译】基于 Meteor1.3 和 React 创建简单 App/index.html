@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>【译】基于 Meteor1.3 和 React 创建简单 App | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#liao-jie-meteor-1-3"><span class="toc-number">1.</span> <span class="toc-text">了解 Meteor 1.3</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#di-yi-bu-xiang-mu-she-zhi"><span class="toc-number">2.</span> <span class="toc-text">第一步 — 项目设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#di-er-bu-yuan-xing-zhi-zuo"><span class="toc-number">3.</span> <span class="toc-text">第二步 — 原型制作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#di-san-bu-tian-jia-tiao-mu-mo-kuai"><span class="toc-number">4.</span> <span class="toc-text">第三步 — 添加条目模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#zui-hou-yun-xing-cheng-gong"><span class="toc-number">5.</span> <span class="toc-text">最后 — 运行成功</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">【译】基于 Meteor1.3 和 React 创建简单 App</h1>
+          <time datetime="2016-05-11T10:13:05.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2016 年 05 月 11 日</span>
+            <span style="margin-left: 10px;">最近更新于：2016 年 10 月 24 日</span>
+            <span style="margin-left: 10px;">本文共 5,017 字，读完约 22 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <blockquote>
+<p>原文链接 : <a href="https://medium.com/@kenrogers/build-a-journaling-app-with-meteor-1-3-beta-react-react-bootstrap-and-mantra-7965d9e9fc23#.bjcr4yhbf" target="_blank" rel="external">Build A Journaling App with Meteor 1.3 (Beta), React, React-Bootstrap, and Mantra</a><br>
+原文作者 : <a href="https://medium.com/@kenrogers" target="_blank" rel="external">Ken Rogers</a><br>
+译文出自 : <a href="https://github.com/xitu/gold-miner" target="_blank" rel="external">掘金翻译计划</a><br>
+译者 : <a href="http://qcyoung.com">yangzj1992</a><br>
+校对者: <a href="https://github.com/geeeeeeeeek" target="_blank" rel="external">Zhongyi Tong</a>, <a href="https://github.com/lx7575000" target="_blank" rel="external">刘鑫</a><br>
+首发于: <a href="http://gold.xitu.io/#/entry/5732a5af79df540060df2e53" target="_blank" rel="external">掘金</a></p>
+</blockquote>
+<p>由于目前 Meteor 1.3 正式版仍在开发中，在这份 Meteor 指南里我们采用了目前可以获取到的 Meteor 1.3 beta 版本进行开发。尽管 Meteor 1.3 版本很棒并有着许多精彩的改进，但部分人对于到底应该如何使用它来进行开发仍有一些困惑。 MDG(Meteor Development Group) 目前正在编写 Meteor 1.3 版指南，随着 1.3 正式版的发布，我们将会获得 Meteor 1.3 最佳开发实践的确切信息。</p>
+<p><strong>旁注：我写了一本关于使用 Meteor 1.3 ，React ，React-Bootstrap 遵循 Mantra 框架规范进行应用开发的书，点击<a href="http://kenrogers.co/meteor-react" target="_blank" rel="external">这里</a>可以了解更多并免费获取前三章的内容</strong>。</p>
+<p>我写这份指南的目的是让开发者现在就能用上 Meteor 1.3。当你阅读本指南时，需要留意 1.3 版本目前仍处于 beta 阶段，因此内容可能发生任何变化。我会尽我所能的更新这份指南来适应最新版本。如果你发现了什么过期的内容，希望能指出来让我知道。</p>
+<p>在这份指南中，我们将要构建一个简单的任务清单，开个玩笑，不会再是任务清单了。我们将用 Meteor 1.3 ，React 和 React-Bootstrap 构建一个基本的日志应用。</p>
+<p>我们将采用 Arunoda 的 Mantra 规范。如果你对 Mantra 不够熟悉，你可以访问<a href="https://github.com/kadirahq/mantra" target="_blank" rel="external">这里</a>了解更多。 基本来说， Mantra 应用程序架构规范向我们提供了一个宜于维护的方式去构建 Meteor 应用。</p>
+<p>在我们开始前，你需要安装好 Meteor 并需要对 Meteor 的原理及使用方法具备一定的理解。如果你并不熟悉，可以看看<a href="https://www.meteor.com/tutorials/react/creating-an-app" target="_blank" rel="external">官方 Meteor 向导</a>。</p>
+<p>首先我们将通过一些资源来熟悉 Meteor 1.3 和 Mantra ，然后运用它们创建一个简单的日志应用。</p>
+<h4 id="liao-jie-meteor-1-3">了解 Meteor 1.3</h4>
+<p>首先我们要介绍 Meteor 1.3 并且了解它的主要改动包含什么。在 1.3 版本中它最大的改动是完全支持 ES2015 并提供了模块功能。</p>
+<p>一开始你会发现这和我们以往开发 Meteor 应用很不一样，但一旦你习惯了你会发现体验是相当不错的，尤其是你要使用 Mantra 的架构的话。</p>
+<p>这里有一篇关于 Meteor 1.3 的模块机制是怎样工作的精彩介绍：<a href="https://github.com/meteor/meteor/blob/release-1.3/packages/modules/README.md" target="_blank" rel="external">https://github.com/meteor/meteor/blob/release-1.3/packages/modules/README.md</a></p>
+<p>使用模块可以让我们更容易的去写更多的代码，更加模块化。这样我们可以更好地组织我们的应用，由于 Meteor 1.3 也添加了对 npm 包的支持，我们不必再像过去那样只有 Meteor 包支持的情况下进行开发了。</p>
+<p>接下来，你可以看看这三篇文章来了解如何在 Meteor 1.3 中配置 React ，并用它来处理数据。第二篇会向你介绍容器组件，这是使用 Mantra 开发的一个重要部分。</p>
+<ol>
+<li><a href="https://voice.kadira.io/getting-started-with-meteor-1-3-and-react-15e071e41cd1#.qn4zj3420" target="_blank" rel="external">https://voice.kadira.io/getting-started-with-meteor-1-3-and-react-15e071e41cd1#.qn4zj3420</a></li>
+<li><a href="https://voice.kadira.io/let-s-compose-some-react-containers-3b91b6d9b7c8#.pd37xdmpn" target="_blank" rel="external">https://voice.kadira.io/let-s-compose-some-react-containers-3b91b6d9b7c8#.pd37xdmpn</a></li>
+<li><a href="https://voice.kadira.io/using-meteor-data-and-react-with-meteor-1-3-13cb0935dedb#.3oe66g4ye" target="_blank" rel="external">https://voice.kadira.io/using-meteor-data-and-react-with-meteor-1-3-13cb0935dedb#.3oe66g4ye</a></li>
+</ol>
+<h4 id="di-yi-bu-xiang-mu-she-zhi">第一步 — 项目设置</h4>
+<p>通常来说，我们需要做的第一件事就是通过 Meteor 1.3 来创建我们的 Meteor 项目，像下面这样。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">meteor create journal --release <span class="number">1.3</span>-modules-beta<span class="number">.8</span></span>
+</pre></td></tr></table></figure>
+<p><strong>但是稍等一下</strong>，构建一个 Mantra 应用需要非常多的项目设置
+，为了加快开发速度，我已经使用 Meteor 1.3，React，Mantra 创建创建了一个样板项目。我们就用它来代替初始方案直接开始。</p>
+<p>如果你想知道这些具体做了什么，查看 <a href="https://kadirahq.github.io/mantra/" target="_blank" rel="external">Mantra 规范</a>和 <a href="https://github.com/mantrajs/mantra-sample-blog-app" target="_blank" rel="external">Mantra 博客应用实例</a>。</p>
+<p>现在我们安装完样板项目，它完全包含了遵循 Mantra 规范的 Meteor 项目中所有你需要的核心文件和目录。</p>
+<p>你可以通过以下命令 clone 项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git@github.com:kenrogers/mantraplate.git</span>
+</pre></td></tr></table></figure>
+<p>然后切换到刚创建的目录中运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm install</span>
+</pre></td></tr></table></figure>
+<p>这样会安装本应用依赖的所有的包。你可以查看示例项目来熟悉整个目录结构。</p>
+<p>它包含完整的布局，路由系统以及具有注册，登录登出功能的用户系统。</p>
+<p>在这份指南中，我们将要讨论这些内容是如何组合在一起的，以及如何使用户在应用中添加日志记录的功能。</p>
+<p>在我们添加内容前我们来看看样例项目的目录结构，你可以发现，在客户端文件夹中我们将整个应用分成一个个模块，这些模块是你的应用的主要组成部分。</p>
+<p>我们总是需要一个核心模块，如果你的 APP 比较简单，这个核心模块就是你所唯一需要的。在我们的 APP 中包含了核心模块和用户模块，这里还要加入一个条目模块来添加我们的日志记录。</p>
+<p>这样的模块结构让我们可以轻松地组织我们的代码。</p>
+<p>在用户模块中，看看 containers 和 components 文件夹中的 NewUser 文件，。container 文件夹如下所示。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> NewUser <span class="keyword">from</span> <span class="string">'../components/NewUser.jsx'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;useDeps, composeWithTracker, composeAll&#125; <span class="keyword">from</span> <span class="string">'mantra-core'</span>;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">const</span> composer = <span class="function">(<span class="params">&#123;context, clearErrors&#125;, onData</span>) =&gt;</span> &#123;</span>
+<span class="line"> <span class="keyword">const</span> &#123;LocalState&#125; = context();</span>
+<span class="line"> <span class="keyword">const</span> error = LocalState.get(<span class="string">'CREATE_USER_ERROR'</span>);</span>
+<span class="line"> onData(<span class="literal">null</span>, &#123;error&#125;);</span>
+<span class="line"> <span class="keyword">return</span> clearErrors;</span>
+<span class="line">&#125;;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">const</span> depsMapper = <span class="function">(<span class="params">context, actions</span>) =&gt;</span> (&#123;</span>
+<span class="line"> <span class="attr">create</span>: actions.users.create,</span>
+<span class="line"> <span class="attr">clearErrors</span>: actions.users.clearErrors,</span>
+<span class="line"> <span class="attr">context</span>: <span class="function"><span class="params">()</span> =&gt;</span> context</span>
+<span class="line">&#125;);</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> composeAll(</span>
+<span class="line"> composeWithTracker(composer),</span>
+<span class="line"> useDeps(depsMapper)</span>
+<span class="line">)(NewUser);</span>
+</pre></td></tr></table></figure>
+<p>你可以看到我们在这里实际上并没有进行任何渲染，我们只是做一些设置和清理的工作，然后在 NewUser 组件中我们才实际上渲染了视图。</p>
+<p>如果你运行应用并访问 /register 路由，打开 React 开发者工具，你可以看到 react-komposer 正在后台执行。它会创建一个容器组件负责处理底层子组件的数据或是 UI 组件。</p>
+<p>当我们获取数据时容器组件的用途将会得到具体的展现，但是这里我们不这样处理。</p>
+<h4 id="di-er-bu-yuan-xing-zhi-zuo">第二步 — 原型制作</h4>
+<p>对于这个日志程序我们准备使用 React-Bootstrap 。它可以很方便地使用 Bootstrap 来创建 React 应用。这种方式易于上手，并且保持了模块化，正如我们所愿。</p>
+<p>让我们设置好并添加一个简单的表单。</p>
+<p>首先让我们为项目添加 <code>react-bootstrap</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">npm install react-bootstrap</span>
+</pre></td></tr></table></figure>
+<p>因为 React-Bootstrap 并不依赖任何特定的 Bootstrap 库，所以我们需要自行添加，现在让我们添加 Twitter 的官方 Meteor 包。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">meteor add twbs:bootstrap</span>
+</pre></td></tr></table></figure>
+<p>首先我们用 React-Bootstrap 来修改 MainLayout.jsx 文件的内容如下：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;Grid, Row&#125; <span class="keyword">from</span> <span class="string">'react-bootstrap'</span>;</span>
+<span class="line"><span class="keyword">const</span> Layout = <span class="function">(<span class="params">&#123;content = (</span>) =&gt;</span> <span class="literal">null</span> &#125;) =&gt; (</span>
+<span class="line"> <span class="xml"><span class="tag">&lt;<span class="name">grid</span>&gt;</span></span>
+<span class="line">  <span class="tag">&lt;<span class="name">row</span>&gt;</span></span>
+<span class="line">   <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Journal<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>
+<span class="line">   &#123;content()&#125;</span>
+<span class="line">  <span class="tag">&lt;/<span class="name">row</span>&gt;</span></span>
+<span class="line"> <span class="tag">&lt;/<span class="name">grid</span>&gt;</span></span></span>
+<span class="line">);</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Layout;</span>
+</pre></td></tr></table></figure>
+<p>在这里，我们从 react-boostrap 包中引入 Grid 和 Row 组件，并且像使用 div 一样为它们添加合适的 bootstrap 类。想要了解更多关于这个优秀的包的工作原理，可以在<a href="https://react-bootstrap.github.io/components.html" target="_blank" rel="external">这里</a>查看组件列表。</p>
+<p>现在让我们修改 NewUser 和 Login UI 的组件让他们更友好地贴近 Bootstrap 。打开 NewUser.jsx 文件进行如下修改：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123; Col, Panel, Input, ButtonInput, Glyphicon &#125; <span class="keyword">from</span> <span class="string">'react-bootstrap'</span>;</span>
+<span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NewUser</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span>
+<span class="line"> render() &#123;</span>
+<span class="line"> <span class="keyword">const</span> &#123;error&#125; = <span class="keyword">this</span>.props;</span>
+<span class="line"> <span class="keyword">return</span> (</span>
+<span class="line">   &lt;col xs="&#123;12&#125;" sm="&#123;6&#125;" smoffset="&#123;3&#125;"&gt;</span>
+<span class="line">    &lt;panel&gt;</span>
+<span class="line">     &lt;h1&gt;Register&lt;/h1&gt;</span>
+<span class="line">     &#123;error ? &lt;p style="&#123;&#123;color:" 'red'&#125;&#125;=""&gt;&#123;error&#125;&lt;/p&gt; : null&#125;</span>
+<span class="line">     &lt;form&gt;</span>
+<span class="line">      &lt;input ref="”email”" type="”email”" placeholder="”Email”"&gt;</span>
+<span class="line">      &lt;input ref="”password”" type="”password”" placeholder="”Password”"&gt;</span>
+<span class="line">      &lt;buttoninput onclick="&#123;this.createUser.bind(this)&#125;" bsstyle="”primary”" type="”submit”" value="”Sign" up”=""&gt;</span>
+<span class="line">     &lt;/buttoninput&gt;&lt;/form&gt;</span>
+<span class="line">    &lt;/panel&gt;</span>
+<span class="line"></span>
+<span class="line">  )</span>
+<span class="line"> &#125;</span>
+<span class="line">createUser(e) &#123;</span>
+<span class="line"> e.preventDefault();</span>
+<span class="line"> const &#123;create&#125; = this.props;</span>
+<span class="line"> const &#123;email, password&#125; = this.refs;</span>
+<span class="line"> create(email.getValue(), password.getValue());</span>
+<span class="line"> email.getInputDOMNode().value = '';</span>
+<span class="line"> password.getInputDOMNode().value = '';</span>
+<span class="line"> &#125;</span>
+<span class="line">&#125;</span>
+<span class="line">export default NewUser;</span>
+</pre></td></tr></table></figure>
+<p>这个表单十分简单，它仅仅负责显示自身并调用 create 方法。这里我们简单介绍一下。</p>
+<p>在我们的 actions 文件夹中，它们负责处理我们应用的逻辑，下面这一行</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">create(email.getValue(), password.getValue());</span>
+</pre></td></tr></table></figure>
+<p>将调用该方法并创建实际用户。 Mantra 重点强调了希望把一切分离成单独的文件。因此，我们将文件分为展示、逻辑、以及这个应用程序的每个组件。</p>
+<p>现在让我们修改登录表单如下：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123; Col, Panel, Input, ButtonInput, Glyphicon &#125; <span class="keyword">from</span> <span class="string">'react-bootstrap'</span>;</span>
+<span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Login</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span>
+<span class="line"> render() &#123;</span>
+<span class="line">  <span class="keyword">const</span> &#123;error&#125; = <span class="keyword">this</span>.props;</span>
+<span class="line">  <span class="keyword">return</span> (</span>
+<span class="line">   &lt;col xs="&#123;12&#125;" sm="&#123;6&#125;" smoffset="&#123;3&#125;"&gt;</span>
+<span class="line">    &lt;panel&gt;</span>
+<span class="line">     &lt;h1&gt;Login&lt;/h1&gt;</span>
+<span class="line">     &#123;error ? &lt;p style="&#123;&#123;color:" 'red'&#125;&#125;=""&gt;&#123;error&#125;&lt;/p&gt; : null&#125;</span>
+<span class="line">     &lt;form&gt;</span>
+<span class="line">      &lt;input ref="”email”" type="”email”" placeholder="”Email”"&gt;</span>
+<span class="line">      &lt;input ref="”password”" type="”password”" placeholder="”Password”"&gt;</span>
+<span class="line">      &lt;buttoninput onclick="&#123;this.login.bind(this)&#125;" bsstyle="”primary”" type="”submit”" value="”Login”/"&gt;</span>
+<span class="line">     &lt;/buttoninput&gt;&lt;/form&gt;</span>
+<span class="line">    &lt;/panel&gt;</span>
+<span class="line"></span>
+<span class="line">  )</span>
+<span class="line"> &#125;</span>
+<span class="line">login(e) &#123;</span>
+<span class="line"> e.preventDefault();</span>
+<span class="line"> const &#123;loginUser&#125; = this.props;</span>
+<span class="line"> const &#123;email, password&#125; = this.refs;</span>
+<span class="line"> loginUser(email.getValue(), password.getValue());</span>
+<span class="line"> email.getInputDOMNode().value = '';</span>
+<span class="line"> password.getInputDOMNode().value = '';</span>
+<span class="line"> &#125;</span>
+<span class="line">&#125;</span>
+<span class="line">export default Login;</span>
+</pre></td></tr></table></figure>
+<p>这基本上是一个相同的表单，但我们将用登录方法来代替它的逻辑。</p>
+<p>React-Boostrap 非常易于使用，我们只需要安装好项目，使用 import 函数引入每个我们想要引用的组件，就像其他类型一样渲染这些组件。</p>
+<p>我们处理使用数据的方法则有一些不同，因为它是组件，而不是我们实际需要处理的输入内容，我们需要使用特殊的 React-Bootstrap 函数 getValue() 来帮我们轻松地取值。</p>
+<h4 id="di-san-bu-tian-jia-tiao-mu-mo-kuai">第三步 — 添加条目模块</h4>
+<p>现在，我们将添加新的模块来管理我们的日志条目，首先让我们设置目录和文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+</pre></td><td class="code"><pre><span class="line">mkdir client/modules/entries</span>
+<span class="line"><span class="built_in">cd</span> client/modules/entries</span>
+<span class="line">mkdir actions components containers</span>
+<span class="line">touch index.js</span>
+<span class="line">touch actions/index.js actions/entries.js</span>
+<span class="line">touch components/NewEntry.jsx components/Entry.jsx components/EntryList.jsx</span>
+<span class="line">touch containers/NewEntry.js containers/Entry.js containers/EntryList.js</span>
+</pre></td></tr></table></figure>
+<p>好了，现在我们有了应用中所需要的所有文件和文件夹。让我们来做一些真正的开发工作吧。</p>
+<p>首先，让我们再来看一下我们创建的应用结构。这里我们制造了一个简单的 Mantra 模块。我们通过这些目录文件来看看他们是怎么做到交互的。通过这些将会让你很好地理解如何使用 Meteor 1.3 和 Mantra 。</p>
+<p><strong>索引</strong></p>
+<p>Mantra 有一个庞大的单一入口。这个索引文件负责导入内容随后导出路由和动作，这样在我们导入模块时即可使用。通过这种方式我们不用担心再单独导入每个文件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> actions <span class="keyword">from</span> <span class="string">'./actions'</span>;</span>
+<span class="line"><span class="keyword">import</span> routes <span class="keyword">from</span> <span class="string">'../core/routes.jsx'</span>;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span>
+<span class="line"> routes,</span>
+<span class="line"> actions</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p><strong>动作</strong></p>
+<p>动作文件夹负责我们应用的所有逻辑。你可以看到我们在这里创建了两个文件。首先是一个索引文件。这是一个类似目的模块的索引文件。我们向里面添加下面的内容。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> entries <span class="keyword">from</span> <span class="string">'./entries'</span>;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span>
+<span class="line"> entries</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>上面所做的就是导入条目文件，在条目文件中有我们的动作逻辑。这只是为了更容易地从其他文件导入我们的逻辑。</p>
+<p>接下来我们要添加实际逻辑，这些包含了我们的应用逻辑。这里我们要添加一个创建条目的函数方法。</p>
+<p>你可以通过查看例子中 users 模块的方法文件来了解这是怎么工作的。</p>
+<p>在 actions.js 中添加下面的内容来补全条目模块。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span>
+<span class="line"> create(&#123;Meteor, LocalState, FlowRouter&#125;, text) &#123;</span>
+<span class="line">  <span class="keyword">if</span> (!text) &#123;</span>
+<span class="line">   <span class="keyword">return</span> LocalState.set(<span class="string">'CREATE_ENTRY_ERROR'</span>, <span class="string">'Text is required.'</span>);</span>
+<span class="line">  &#125;</span>
+<span class="line">  LocalState.set(<span class="string">'CREATE_ENTRY_ERROR'</span>, <span class="literal">null</span>);</span>
+<span class="line">  Meteor.call(<span class="string">'entries.create'</span>, text, (err) =&gt; &#123;</span>
+<span class="line">   <span class="keyword">if</span> (err) &#123;</span>
+<span class="line">    <span class="keyword">return</span> LocalState.set(<span class="string">'CREATE_ENTRY_ERROR'</span>, err.message);</span>
+<span class="line">   &#125;</span>
+<span class="line">  &#125;);</span>
+<span class="line"> &#125;</span>
+<span class="line">&#125;;</span>
+</pre></td></tr></table></figure>
+<p>当我们填写表格来创建一个新条目时，这就是会被执行的方法，我们就快设置好这些组件了，让我们先别管服务端的东西，为我们的条目创建集合和方法。</p>
+<p>在 lib 目录中打开 collections.js 文件然后添加条目集合。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> Entries = <span class="keyword">new</span> Mongo.Collection(<span class="string">'entries'</span>);</span>
+</pre></td></tr></table></figure>
+<p>现在在 server 目录下的 methods 目录中添加 entries.js 文件，并添加以下内容来创建一个创建新条目的方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;Entries&#125; <span class="keyword">from</span> <span class="string">'/lib/collections'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;Meteor&#125; <span class="keyword">from</span> <span class="string">'meteor/meteor'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;check&#125; <span class="keyword">from</span> <span class="string">'meteor/check'</span>;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line"> Meteor.methods(&#123;</span>
+<span class="line">  <span class="string">'entries.create'</span>(text) &#123;</span>
+<span class="line">   check(text, <span class="built_in">String</span>);</span>
+<span class="line">   <span class="keyword">const</span> createdAt = <span class="keyword">new</span> <span class="built_in">Date</span>();</span>
+<span class="line">   <span class="keyword">const</span> entry = &#123;text, createdAt&#125;;</span>
+<span class="line">   Entries.insert(entry);</span>
+<span class="line">  &#125;</span>
+<span class="line"> &#125;);</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>这是一个我们刚创建的将要被调用的方法。</p>
+<p>我们还需要将下面代码添加到 methods 文件夹中的 index.js 文件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> entries <span class="keyword">from</span> <span class="string">'./entries'</span>;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line"> entries();</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p><strong>组件</strong></p>
+<p>组件目录存放着我们的 UI 组件。这里的组件只负责显示我们的接口内容，他们不操作任何数据，这些是容器组件需要做的。</p>
+<p>让我们创建 UI 组件，然后我们将建立相应的容器组件。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;Grid, Row, Col&#125; <span class="keyword">from</span> <span class="string">'react-bootstrap'</span>;</span>
+<span class="line"><span class="keyword">const</span> Entry = <span class="function">(<span class="params">&#123;entry&#125;</span>) =&gt;</span> (</span>
+<span class="line"> <span class="xml"><span class="tag">&lt;<span class="name">grid</span>&gt;</span></span>
+<span class="line">  <span class="tag">&lt;<span class="name">row</span>&gt;</span></span>
+<span class="line">   <span class="tag">&lt;<span class="name">col</span> <span class="attr">xs</span>=<span class="string">"&#123;6&#125;"</span> <span class="attr">xsoffset</span>=<span class="string">"&#123;3&#125;"</span>&gt;</span></span>
+<span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span>
+<span class="line">     &#123;entry.text&#125;</span>
+<span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span> </span>
+<span class="line"></span>
+<span class="line">  <span class="tag">&lt;/<span class="name">row</span>&gt;</span></span>
+<span class="line"> <span class="tag">&lt;/<span class="name">grid</span>&gt;</span></span>
+<span class="line">);</span>
+<span class="line">export default Entry;</span></span>
+</pre></td></tr></table></figure>
+<p>这里获取到的 {entry} 对象是我们容器组件要传递给它属性。它包含了我们的数据。</p>
+<p>接下来我们创建 NewEntry 组件。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123; Col, Panel, Input, ButtonInput, Glyphicon &#125; <span class="keyword">from</span> <span class="string">'react-bootstrap'</span>;</span>
+<span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NewEntry</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span>
+<span class="line"> render() &#123;</span>
+<span class="line">  <span class="keyword">const</span> &#123;error&#125; = <span class="keyword">this</span>.props;</span>
+<span class="line">  <span class="keyword">return</span> (</span>
+<span class="line">   &lt;col xs="&#123;12&#125;" sm="&#123;6&#125;" smoffset="&#123;3&#125;"&gt;</span>
+<span class="line">    &lt;panel&gt;</span>
+<span class="line">     &lt;h1&gt;Add a New Entry&lt;/h1&gt;</span>
+<span class="line">     &#123;error ? &lt;p style="&#123;&#123;color:" 'red'&#125;&#125;=""&gt;&#123;error&#125;&lt;/p&gt; : null&#125;</span>
+<span class="line">     &lt;form&gt;</span>
+<span class="line">      &lt;input ref="”text”" type="”textarea”" placeholder="”Add" your="" entry”=""&gt;</span>
+<span class="line">      &lt;buttoninput onclick="&#123;this.newEntry.bind(this)&#125;" bsstyle="”primary”" type="”submit”" value="”Create”/"&gt;</span>
+<span class="line">     &lt;/buttoninput&gt;&lt;/form&gt;</span>
+<span class="line">    &lt;/panel&gt;</span>
+<span class="line"></span>
+<span class="line">  )</span>
+<span class="line"> &#125;</span>
+<span class="line"> newEntry(e) &#123;</span>
+<span class="line">  e.preventDefault();</span>
+<span class="line">  const &#123;create&#125; = this.props;</span>
+<span class="line">  const &#123;text&#125; = this.refs;</span>
+<span class="line">  create(text.getValue());</span>
+<span class="line">  text.getInputDOMNode().value = '';</span>
+<span class="line"> &#125;</span>
+<span class="line">&#125;</span>
+<span class="line">export default NewEntry;</span>
+</pre></td></tr></table></figure>
+<p>这里我们使用了更多的 React-Bootstrap 组件，你会留意到为了获取输入的值，我们用了一个特别的 getValue() 方法。这是因为我们的渲染组件实际上并不是输入框，输入框是在这些组件的内部。所以我们需要使用这个函数来访问它。</p>
+<p>最后，我们创建一个 EntryList 组件。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;Grid, Row, Col, Panel&#125; <span class="keyword">from</span> <span class="string">'react-bootstrap'</span>;</span>
+<span class="line"><span class="keyword">const</span> EntryList = <span class="function">(<span class="params">&#123;entries&#125;</span>) =&gt;</span> (</span>
+<span class="line"> <span class="xml"><span class="tag">&lt;<span class="name">grid</span>&gt;</span></span>
+<span class="line">  <span class="tag">&lt;<span class="name">row</span>&gt;</span></span>
+<span class="line">   &#123;entries.map(entry =&gt; (</span>
+<span class="line">    <span class="tag">&lt;<span class="name">col</span> <span class="attr">xs</span>=<span class="string">"&#123;3&#125;"</span> <span class="attr">key</span>=<span class="string">"&#123;entry._id&#125;"</span>&gt;</span></span>
+<span class="line">     <span class="tag">&lt;<span class="name">panel</span>&gt;</span></span>
+<span class="line">      <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;entry.title&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span>
+<span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"&#123;`/entry/$&#123;entry._id&#125;`&#125;"</span>&gt;</span>View Entry<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span>
+<span class="line">     <span class="tag">&lt;/<span class="name">panel</span>&gt;</span></span>
+<span class="line"></span>
+<span class="line">   ))&#125;</span>
+<span class="line">  <span class="tag">&lt;/<span class="name">row</span>&gt;</span></span>
+<span class="line"> <span class="tag">&lt;/<span class="name">grid</span>&gt;</span></span>
+<span class="line">);</span>
+<span class="line">export default EntryList;</span></span>
+</pre></td></tr></table></figure>
+<p>接下来，我们通过属性来获取数据，设置一些 React-Bootstrap 组件，并为每个入口映射一个对应专属的面板。</p>
+<p>现在，让我们来设置这些容器组件，首先从最简单的 NewEntry 容器组件开始。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> NewEntry <span class="keyword">from</span> <span class="string">'../components/NewEntry.jsx'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;useDeps, composeWithTracker, composeAll&#125; <span class="keyword">from</span> <span class="string">'mantra-core'</span>;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">const</span> composer = <span class="function">(<span class="params">&#123;context, clearErrors&#125;, onData</span>) =&gt;</span> &#123;</span>
+<span class="line"> <span class="keyword">const</span> &#123;LocalState&#125; = context();</span>
+<span class="line"> <span class="keyword">const</span> error = LocalState.get(<span class="string">'CREATE_ENTRY_ERROR'</span>);</span>
+<span class="line"> onData(<span class="literal">null</span>, &#123;error&#125;);</span>
+<span class="line"> <span class="keyword">return</span> clearErrors;</span>
+<span class="line">&#125;;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">const</span> depsMapper = <span class="function">(<span class="params">context, actions</span>) =&gt;</span> (&#123;</span>
+<span class="line"> <span class="attr">create</span>: actions.entries.create,</span>
+<span class="line"> <span class="attr">clearErrors</span>: actions.entries.clearErrors,</span>
+<span class="line"> <span class="attr">context</span>: <span class="function"><span class="params">()</span> =&gt;</span> context</span>
+<span class="line">&#125;);</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> composeAll(</span>
+<span class="line"> composeWithTracker(composer),</span>
+<span class="line"> useDeps(depsMapper)</span>
+<span class="line">)(NewEntry);</span>
+</pre></td></tr></table></figure>
+<p>这里你应该已经对 react-komposer 较为熟悉了，我们将用它来创建这一容器组件。它负责创建一个容器组件，用于处理错误、调用合适的动作。在大多数情况下，它还将获取数据并通过属性传给 UI 组件。</p>
+<p>depsMapper 通过 react-komposer 中的 useDeps 函数检索动作及上下文内容并将它们传递给 UI 组件。</p>
+<p>clearErrors 方法负责清除组件卸载时发生的所有错误。</p>
+<p>让我们在创建条目方法时创建这一方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">clearErrors(&#123;LocalState&#125;) &#123;</span>
+<span class="line"> <span class="keyword">return</span> LocalState.set(<span class="string">'SAVING_ERROR'</span>, <span class="literal">null</span>);</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>现在我们将要创建 EntryList 组件的容器。这个稍许有些复杂，因为我们会实际上获取一些数据。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> EntryList <span class="keyword">from</span> <span class="string">'../components/EntryList.jsx'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;useDeps, composeWithTracker, composeAll&#125; <span class="keyword">from</span> <span class="string">'mantra-core'</span>;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">const</span> composer = <span class="function">(<span class="params">&#123;context&#125;, onData</span>) =&gt;</span> &#123;</span>
+<span class="line"> <span class="keyword">const</span> &#123;Meteor, Collections&#125; = context();</span>
+<span class="line"> <span class="keyword">if</span> (Meteor.subscribe(<span class="string">'entries.list'</span>).ready()) &#123;</span>
+<span class="line">  <span class="keyword">const</span> entries = Collections.Entries.find().fetch();</span>
+<span class="line">  onData(<span class="literal">null</span>, &#123;entries&#125;);</span>
+<span class="line"> &#125;</span>
+<span class="line">&#125;;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> composeAll(</span>
+<span class="line"> composeWithTracker(composer),</span>
+<span class="line"> useDeps()</span>
+<span class="line">)(EntryList);</span>
+</pre></td></tr></table></figure>
+<p>这也确实与其他容器组件较为相似，但一个重要的区别在于，我们会检查我们的入口集合条目结合，并将它们分配给一个变量。最终我们通过 onData 函数将这个变量传给 UI 组件。</p>
+<p>让我们在 publications 目录下的 entries.js 文件中设置发布</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;Entries&#125; <span class="keyword">from</span> <span class="string">'/lib/collections'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;Meteor&#125; <span class="keyword">from</span> <span class="string">'meteor/meteor'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;check&#125; <span class="keyword">from</span> <span class="string">'meteor/check'</span>;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line"> Meteor.publish(<span class="string">'entries.list'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line">  <span class="keyword">const</span> selector = &#123;&#125;;</span>
+<span class="line">  <span class="keyword">const</span> options = &#123;</span>
+<span class="line">   <span class="attr">fields</span>: &#123;<span class="attr">_id</span>: <span class="number">1</span>, <span class="attr">text</span>: <span class="number">1</span>&#125;,</span>
+<span class="line">   <span class="attr">sort</span>: &#123;<span class="attr">createdAt</span>: <span class="number">-1</span>&#125;</span>
+<span class="line">  &#125;;</span>
+<span class="line">  <span class="keyword">return</span> Entries.find(selector, options);</span>
+<span class="line"> &#125;);</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>同时我们将要为此发布创建一个 index 文件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> entries <span class="keyword">from</span> <span class="string">'./entries'</span>;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span>
+<span class="line"> entries();</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>我们需要在 server 目录中打开 main.js 文件，取消注释行，导入 publications 和 methods ，所以文件就像这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> publications <span class="keyword">from</span> <span class="string">'./publications'</span>;</span>
+<span class="line"><span class="keyword">import</span> methods <span class="keyword">from</span> <span class="string">'./methods'</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="comment">// publications();</span></span>
+<span class="line"><span class="comment">// methods();</span></span>
+</pre></td></tr></table></figure>
+<p>最后我们将要为独立的 Entry 组件创建容器组件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Entry <span class="keyword">from</span> <span class="string">'../components/Entry.jsx'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;useDeps, composeWithTracker, composeAll&#125; <span class="keyword">from</span> <span class="string">'mantra-core'</span>;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">const</span> composer = <span class="function">(<span class="params">&#123;context, entryId&#125;, onData</span>) =&gt;</span> &#123;</span>
+<span class="line"> <span class="keyword">const</span> &#123;Meteor, Collections&#125; = context();</span>
+<span class="line"> <span class="keyword">if</span> (Meteor.subscribe(<span class="string">'entries.single'</span>, entryId).ready()) &#123;</span>
+<span class="line">  <span class="keyword">const</span> entry = Collections.Entries.findOne(entryId);</span>
+<span class="line">  onData(<span class="literal">null</span>, &#123;entry&#125;);</span>
+<span class="line"> &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">  <span class="keyword">const</span> entry = Collections.Entries.findOne(entryId);</span>
+<span class="line">  <span class="keyword">if</span> (entry) &#123;</span>
+<span class="line">   onData(<span class="literal">null</span>, &#123;entry&#125;);</span>
+<span class="line">  &#125; <span class="keyword">else</span> &#123;</span>
+<span class="line">   onData();</span>
+<span class="line">  &#125;</span>
+<span class="line"> &#125;</span>
+<span class="line">&#125;;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> composeAll(</span>
+<span class="line"> composeWithTracker(composer),</span>
+<span class="line"> useDeps()</span>
+<span class="line">)(Entry);</span>
+</pre></td></tr></table></figure>
+<p>此容器使用了一个 entryId （将通过我们之后设立的一个路由进行传递）并且找到一个合适的入口，来通过属性传递它给UI组件。</p>
+<p>让我们在之前设置的发布列表中快速设置发布来展示发布条目。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line">Meteor.publish(<span class="string">'entries.single'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">entryId</span>) </span>&#123;</span>
+<span class="line"> check(entryId, <span class="built_in">String</span>);</span>
+<span class="line"> <span class="keyword">const</span> selector = &#123;<span class="attr">_id</span>: entryId&#125;;</span>
+<span class="line"> <span class="keyword">return</span> Entries.find(selector);</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p>现在让我们设置我们的路由吧。</p>
+<p><strong>路由</strong></p>
+<p>打开 routes 文件来添加一些新的路由，修改 routes 文件类似如下所示。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+<span class="line">44</span>
+<span class="line">45</span>
+<span class="line">46</span>
+<span class="line">47</span>
+<span class="line">48</span>
+<span class="line">49</span>
+<span class="line">50</span>
+<span class="line">51</span>
+<span class="line">52</span>
+<span class="line">53</span>
+<span class="line">54</span>
+<span class="line">55</span>
+<span class="line">56</span>
+<span class="line">57</span>
+<span class="line">58</span>
+<span class="line">59</span>
+<span class="line">60</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span>
+<span class="line"><span class="keyword">import</span> &#123;mount&#125; <span class="keyword">from</span> <span class="string">'react-mounter'</span>;</span>
+<span class="line"><span class="keyword">import</span> Layout <span class="keyword">from</span> <span class="string">'./components/MainLayout.jsx'</span>;</span>
+<span class="line"><span class="keyword">import</span> Home <span class="keyword">from</span> <span class="string">'./components/Home.jsx'</span>;</span>
+<span class="line"><span class="keyword">import</span> NewUser <span class="keyword">from</span> <span class="string">'../users/containers/NewUser.js'</span>;</span>
+<span class="line"><span class="keyword">import</span> Login <span class="keyword">from</span> <span class="string">'../users/containers/Login.js'</span>;</span>
+<span class="line"><span class="keyword">import</span> EntryList <span class="keyword">from</span> <span class="string">'../entries/containers/EntryList.js'</span>;</span>
+<span class="line"><span class="keyword">import</span> Entry <span class="keyword">from</span> <span class="string">'../entries/containers/Entry.js'</span>;</span>
+<span class="line"><span class="keyword">import</span> NewEntry <span class="keyword">from</span> <span class="string">'../entries/containers/NewEntry.js'</span>;</span>
+<span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> (<span class="params">injectDeps, &#123;FlowRouter&#125;</span>) </span>&#123;</span>
+<span class="line"> <span class="keyword">const</span> MainLayoutCtx = injectDeps(Layout);</span>
+<span class="line"> FlowRouter.route(<span class="string">'/'</span>, &#123;</span>
+<span class="line">  <span class="attr">name</span>: <span class="string">'items.list'</span>,</span>
+<span class="line">  action() &#123;</span>
+<span class="line">   mount(MainLayoutCtx, &#123;</span>
+<span class="line">    <span class="attr">content</span>: <span class="function"><span class="params">()</span> =&gt;</span> (<span class="xml"><span class="tag">&lt;<span class="name">entrylist</span>&gt;</span>)</span>
+<span class="line">   &#125;);</span>
+<span class="line">  &#125;</span>
+<span class="line"> &#125;);</span>
+<span class="line"> FlowRouter.route('/entry/:entryId', &#123;</span>
+<span class="line">  name: 'entries.single',</span>
+<span class="line">  action(&#123;entryId&#125;) &#123;</span>
+<span class="line">   mount(MainLayoutCtx, &#123;</span>
+<span class="line">    content: () =&gt; (<span class="tag">&lt;<span class="name">entry</span> <span class="attr">entryid</span>=<span class="string">"&#123;entryId&#125;/"</span>&gt;</span>)</span>
+<span class="line">   &#125;);</span>
+<span class="line">  &#125;</span>
+<span class="line"> &#125;);</span>
+<span class="line">FlowRouter.route('/new-entry', &#123;</span>
+<span class="line">  name: 'newEntry',</span>
+<span class="line">  action() &#123;</span>
+<span class="line">   mount(MainLayoutCtx, &#123;</span>
+<span class="line">    content: () =&gt; (<span class="tag">&lt;<span class="name">newentry</span>&gt;</span>)</span>
+<span class="line">   &#125;);</span>
+<span class="line">  &#125;</span>
+<span class="line"> &#125;);</span>
+<span class="line"></span>
+<span class="line"> FlowRouter.route('/register', &#123;</span>
+<span class="line">  name: 'users.new',</span>
+<span class="line">  action() &#123;</span>
+<span class="line">   mount(MainLayoutCtx, &#123;</span>
+<span class="line">    content: () =&gt; (<span class="tag">&lt;<span class="name">newuser</span>&gt;</span>)</span>
+<span class="line">   &#125;);</span>
+<span class="line">  &#125;</span>
+<span class="line"> &#125;);</span>
+<span class="line">FlowRouter.route('/login', &#123;</span>
+<span class="line">  name: 'users.login',</span>
+<span class="line">  action() &#123;</span>
+<span class="line">   mount(MainLayoutCtx, &#123;</span>
+<span class="line">    content: () =&gt; (<span class="tag">&lt;<span class="name">login</span>&gt;</span>)</span>
+<span class="line">   &#125;);</span>
+<span class="line">  &#125;</span>
+<span class="line"> &#125;);</span>
+<span class="line">FlowRouter.route('/logout', &#123;</span>
+<span class="line">  name: 'users.logout',</span>
+<span class="line">  action() &#123;</span>
+<span class="line">   Meteor.logout();</span>
+<span class="line">   FlowRouter.go('/');</span>
+<span class="line">  &#125;</span>
+<span class="line"> &#125;); </span>
+<span class="line">&#125;<span class="tag">&lt;/<span class="name">login</span>&gt;</span><span class="tag">&lt;/<span class="name">newuser</span>&gt;</span><span class="tag">&lt;/<span class="name">newentry</span>&gt;</span><span class="tag">&lt;/<span class="name">entry</span>&gt;</span><span class="tag">&lt;/<span class="name">entrylist</span>&gt;</span></span></span>
+</pre></td></tr></table></figure>
+<p>在运行我们的应用之前我们还需要做最后一件事，打开 main.js 文件并导入我们的 entries 模块，修改内容如下。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;createApp&#125; <span class="keyword">from</span> <span class="string">'mantra-core'</span>;</span>
+<span class="line"><span class="keyword">import</span> initContext <span class="keyword">from</span> <span class="string">'./configs/context'</span>;</span>
+<span class="line"><span class="comment">// modules</span></span>
+<span class="line"><span class="keyword">import</span> coreModule <span class="keyword">from</span> <span class="string">'./modules/core'</span>;</span>
+<span class="line"><span class="keyword">import</span> usersModule <span class="keyword">from</span> <span class="string">'./modules/users'</span>;</span>
+<span class="line"><span class="keyword">import</span> entriesModule <span class="keyword">from</span> <span class="string">'./modules/entries'</span>;</span>
+<span class="line"><span class="comment">// init context</span></span>
+<span class="line"><span class="keyword">const</span> context = initContext();</span>
+<span class="line"><span class="comment">// create app</span></span>
+<span class="line"><span class="keyword">const</span> app = createApp(context);</span>
+<span class="line">app.loadModule(coreModule);</span>
+<span class="line">app.loadModule(usersModule);</span>
+<span class="line">app.loadModule(entriesModule);</span>
+<span class="line">app.init();</span>
+</pre></td></tr></table></figure>
+<h4 id="zui-hou-yun-xing-cheng-gong">最后 — 运行成功</h4>
+<p>现在我们设置了我们的所有路由并且应用已经准备好运行，让我们切换目录到根目录并运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">meteor</span>
+</pre></td></tr></table></figure>
+<p>你可以看到应用程序在 Mantra 提供的默认加载效果中启动，让我们添加一个条目，这样我们应该可以在屏幕上看到效果了。</p>
+<p>访问 <code>localhost:3000/new-entry</code> ，填写并提交表单来添加一个条目。</p>
+<p>然后访问根目录，你应该可以看到一个可以逐个查看链接的的条目列表。</p>
+<p>希望这个简单的 Mantra 引导以及目前的 Meteor 1.3 beta 版本有助于让你更加了解如何运用它们来构建一个应用。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="" class="hx_lazyimg" data-src="http://ww3.sinaimg.cn/large/a490147fjw1f391r94o1nj20go0lgq5b.jpg"></p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/【译】基于 Meteor1.3 和 React 创建简单 App.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/原创翻译/">原创翻译</a>
+                
+              
+                <a class="post-tags" href="/tags/Meteor/">Meteor</a>
+                
+              
+                <a class="post-tags" href="/tags/React/">React</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=【译】基于 Meteor1.3 和 React 创建简单 App | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2016/05/11/【译】基于 Meteor1.3 和 React 创建简单 App/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2016/05/11/【译】基于 Meteor1.3 和 React 创建简单 App/index.html&amp;title=【译】基于 Meteor1.3 和 React 创建简单 App | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2016/05/11/【译】基于 Meteor1.3 和 React 创建简单 App/index.html&amp;text=【译】基于 Meteor1.3 和 React 创建简单 App;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=【译】基于 Meteor1.3 和 React 创建简单 App | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2016/05/11/【译】基于 Meteor1.3 和 React 创建简单 App/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2016/06/07/【个人总结】正则表达式语法及常用正则/">
+      ← 【个人总结】正则表达式语法及常用正则
+    </a>
+  
+  
+    <a class="pull-right" href="/2016/04/10/前端动画原理与实现/">
+      前端动画原理与实现 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2016/05/11/【译】基于 Meteor1.3 和 React 创建简单 App/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

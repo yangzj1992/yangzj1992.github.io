@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>Git日常使用提交信息参考规范及总结梳理 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#commit-message-he-change-log-bian-xie-zhi-nan-zhuan-zai-nei-rong"><span class="toc-number">1.</span> <span class="toc-text">Commit message 和 Change log 编写指南（转载内容）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#yi-commit-message-de-zuo-yong"><span class="toc-number">1.1.</span> <span class="toc-text">一、Commit message 的作用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-ti-gong-geng-duo-de-li-shi-xin-xi-fang-bian-kuai-su-liu-lan"><span class="toc-number">1.1.1.</span> <span class="toc-text">（1）提供更多的历史信息，方便快速浏览。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ke-yi-guo-lu-mou-xie-commit-bi-ru-wen-dang-gai-dong-bian-yu-kuai-su-cha-zhao-xin-xi"><span class="toc-number">1.1.2.</span> <span class="toc-text">（2）可以过滤某些 commit（比如文档改动），便于快速查找信息。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-ke-yi-zhi-jie-cong-commit-sheng-cheng-change-log"><span class="toc-number">1.1.3.</span> <span class="toc-text">（3）可以直接从 commit 生成 Change log。</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#er-commit-message-de-ge-shi"><span class="toc-number">1.2.</span> <span class="toc-text">二、Commit message 的格式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-header"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 Header</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-type"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">（1）type</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-scope"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">（2）scope</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-subject"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">（3）subject</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-body"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 Body</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-footer"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 Footer</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-bu-jian-rong-bian-dong"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">（1）不兼容变动</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-guan-bi-issue"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">（2）关闭 Issue</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-revert"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 Revert</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#san-commitizen"><span class="toc-number">1.3.</span> <span class="toc-text">三、Commitizen</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#si-validate-commit-msg"><span class="toc-number">1.4.</span> <span class="toc-text">四、validate-commit-msg</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wu-sheng-cheng-change-log"><span class="toc-number">1.5.</span> <span class="toc-text">五、生成 Change log</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git-log-tong-ji-chang-yong-fang-fa"><span class="toc-number">2.</span> <span class="toc-text">git log 统计常用方法</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">Git日常使用提交信息参考规范及总结梳理</h1>
+          <time datetime="2016-01-14T02:46:11.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2016 年 01 月 14 日</span>
+            <span style="margin-left: 10px;">最近更新于：2018 年 11 月 25 日</span>
+            <span style="margin-left: 10px;">本文共 2,116 字，读完约 9 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <p>本篇大多数内容参考自阮一峰博文 <a href="http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html" target="_blank" rel="external">Commit message 和 Change log 编写指南</a>
+并总结了 Git 的一些命令来协助各位程序员们可以在年终时依靠Git总结代码提交的方法。</p>
+<h2 id="commit-message-he-change-log-bian-xie-zhi-nan-zhuan-zai-nei-rong">Commit message 和 Change log 编写指南（转载内容）</h2>
+<p>作者： <a href="http://www.ruanyifeng.com" target="_blank" rel="external">阮一峰</a>
+日期： <a href="http://www.ruanyifeng.com/blog/2016/01/" target="_blank" rel="external"><abbr class="published" title="2016-01-06T21:23:23+08:00">2016年1月 6日</abbr></a>
+Git 每次提交代码，都要写 Commit message（提交说明），否则就不允许提交。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">$ git commit -m <span class="string">"hello world"</span></span>
+</pre></td></tr></table></figure>
+<p>上面代码的 <code>-m</code> 参数，就是用来指定 commit message 的。
+如果一行不够，可以只执行 <code>git commit</code>，就会跳出文本编辑器，让你写多行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">$ git commit</span>
+</pre></td></tr></table></figure>
+<p>但是，一般来说，commit message 应该清晰明了，说明本次提交的目的。
+<img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="commit-message-example" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/Git%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF%E5%8F%82%E8%80%83%E8%A7%84%E8%8C%83%E5%8F%8A%E6%80%BB%E7%BB%93%E6%A2%B3%E7%90%86/commit-message-example.png"></p>
+<p>目前，社区有多种 Commit message 的<a href="https://github.com/ajoslin/conventional-changelog/tree/master/conventions" target="_blank" rel="external">写法规范</a>。本文介绍 <a href="https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.greljkmo14y0" target="_blank" rel="external">Angular 规范</a>（如上图），这是目前使用最广的写法，比较合理和系统化，并且有配套的工具。</p>
+<h3 id="yi-commit-message-de-zuo-yong">一、Commit message 的作用</h3>
+<p>格式化的 Commit message，有几个好处。</p>
+<h4 id="1-ti-gong-geng-duo-de-li-shi-xin-xi-fang-bian-kuai-su-liu-lan">（1）提供更多的历史信息，方便快速浏览。</h4>
+<p>比如，下面的命令显示上次发布后的变动，每个 commit 占据一行。你只看行首，就知道某次 commit 的目的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> &lt;last tag&gt; HEAD --pretty=format:%s</span>
+</pre></td></tr></table></figure>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="git-log-pretty" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/Git%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF%E5%8F%82%E8%80%83%E8%A7%84%E8%8C%83%E5%8F%8A%E6%80%BB%E7%BB%93%E6%A2%B3%E7%90%86/git-log-pretty.png"></p>
+<h4 id="2-ke-yi-guo-lu-mou-xie-commit-bi-ru-wen-dang-gai-dong-bian-yu-kuai-su-cha-zhao-xin-xi">（2）可以过滤某些 commit（比如文档改动），便于快速查找信息。</h4>
+<p>比如，下面的命令仅仅显示本次发布新增加的功能。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> &lt;last release&gt; HEAD --grep feature</span>
+</pre></td></tr></table></figure>
+<h4 id="3-ke-yi-zhi-jie-cong-commit-sheng-cheng-change-log">（3）可以直接从 commit 生成 Change log。</h4>
+<p>Change Log 是发布新版本时，用来说明与上一个版本差异的文档，详见后文。
+<img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="git-change-log-example" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/Git%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF%E5%8F%82%E8%80%83%E8%A7%84%E8%8C%83%E5%8F%8A%E6%80%BB%E7%BB%93%E6%A2%B3%E7%90%86/git-change-log-example.png"></p>
+<h3 id="er-commit-message-de-ge-shi">二、Commit message 的格式</h3>
+<p>每次提交，Commit message 都包括三个部分：Header，Body 和 Footer。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">type</span>&gt;</span>(<span class="tag">&lt;<span class="name">scope</span>&gt;</span>): <span class="tag">&lt;<span class="name">subject</span>&gt;</span></span>
+<span class="line">// 空一行</span>
+<span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span>
+<span class="line">// 空一行</span>
+<span class="line"><span class="tag">&lt;<span class="name">footer</span>&gt;</span></span>
+</pre></td></tr></table></figure>
+<p>其中，Header 是必需的，Body 和 Footer 可以省略。
+不管是哪一个部分，任何一行都不得超过72个字符（或100个字符）。这是为了避免自动换行影响美观。</p>
+<h4 id="2-1-header">2.1 Header</h4>
+<p>Header部分只有一行，包括三个字段：<code>type</code>（必需）、<code>scope</code>（可选）和<code>subject</code>（必需）。</p>
+<h5 id="1-type">（1）type</h5>
+<p><code>type</code> 用于说明 commit 的类别，只允许使用下面7个标识。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+</pre></td><td class="code"><pre><span class="line">feat：新功能（feature）</span>
+<span class="line">fix：修补bug</span>
+<span class="line">docs：文档（documentation）</span>
+<span class="line">style： 格式（不影响代码运行的变动）</span>
+<span class="line">refactor：重构（即不是新增功能，也不是修改bug的代码变动）</span>
+<span class="line">test：增加测试</span>
+<span class="line">chore：构建过程或辅助工具的变动</span>
+</pre></td></tr></table></figure>
+<p>如果 <code>type</code> 为 <code>feat</code> 和 <code>fix</code>，则该 commit 将肯定出现在 Change log 之中。其他情况（<code>docs</code>、<code>chore</code>、<code>style</code>、<code>refactor</code>、<code>test</code>）由你决定，要不要放入 Change log，建议是不要。</p>
+<h5 id="2-scope">（2）scope</h5>
+<p><code>scope</code> 用于说明 commit 影响的范围，比如数据层、控制层、视图层等等，视项目不同而不同。</p>
+<h5 id="3-subject">（3）subject</h5>
+<p><code>subject</code> 是 commit 目的的简短描述，不超过50个字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">以动词开头，使用第一人称现在时，比如 change，而不是 changed 或 changes</span>
+<span class="line">第一个字母小写</span>
+<span class="line">结尾不加句号（.）</span>
+</pre></td></tr></table></figure>
+<h4 id="2-2-body">2.2 Body</h4>
+<p>Body 部分是对本次 commit 的详细描述，可以分成多行。下面是一个范例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+</pre></td><td class="code"><pre><span class="line">More detailed explanatory text, if necessary.  Wrap it to </span>
+<span class="line">about 72 characters or so. </span>
+<span class="line"></span>
+<span class="line">Further paragraphs come after blank lines.</span>
+<span class="line"></span>
+<span class="line">- Bullet points are okay, too</span>
+<span class="line">- Use a hanging indent</span>
+</pre></td></tr></table></figure>
+<p>有两个注意点。</p>
+<p>（1）使用第一人称现在时，比如使用 <code>change</code> 而不是 <code>changed</code> 或 <code>changes</code>。</p>
+<p>（2）应该说明代码变动的动机，以及与以前行为的对比。</p>
+<h4 id="2-3-footer">2.3 Footer</h4>
+<p>Footer 部分只用于两种情况。</p>
+<h5 id="1-bu-jian-rong-bian-dong">（1）不兼容变动</h5>
+<p>如果当前代码与上一个版本不兼容，则 Footer 部分以 <code>BREAKING CHANGE</code> 开头，后面是对变动的描述、以及变动理由和迁移方法。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+</pre></td><td class="code"><pre><span class="line">BREAKING CHANGE: isolate scope bindings definition has changed.</span>
+<span class="line"></span>
+<span class="line">    To migrate the code follow the example below:</span>
+<span class="line"></span>
+<span class="line">    Before:</span>
+<span class="line"></span>
+<span class="line">    scope: &#123;</span>
+<span class="line">      myAttr: 'attribute',</span>
+<span class="line">    &#125;</span>
+<span class="line"></span>
+<span class="line">    After:</span>
+<span class="line"></span>
+<span class="line">    scope: &#123;</span>
+<span class="line">      myAttr: '@',</span>
+<span class="line">    &#125;</span>
+<span class="line"></span>
+<span class="line">    The removed `inject` wasn't generaly useful for directives so there should be no code using it.</span>
+</pre></td></tr></table></figure>
+<h5 id="2-guan-bi-issue">（2）关闭 Issue</h5>
+<p>如果当前 commit 针对某个 issue，那么可以在 Footer 部分关闭这个 issue 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">Closes <span class="comment">#234</span></span>
+</pre></td></tr></table></figure>
+<p>也可以一次关闭多个 issue 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">Closes <span class="comment">#123, #245, #992</span></span>
+</pre></td></tr></table></figure>
+<h4 id="2-4-revert">2.4 Revert</h4>
+<p>还有一种特殊情况，如果当前 commit 用于撤销以前的 commit，则必须以 <code>revert:</code> 开头，后面跟着被撤销 Commit 的 Header。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">revert: feat(pencil): add <span class="string">'graphiteWidth'</span> option</span>
+<span class="line"></span>
+<span class="line">This reverts commit 667ecc1654a317a13331b17617d973392f415f02.</span>
+</pre></td></tr></table></figure>
+<p>Body 部分的格式是固定的，必须写成 <code>This reverts commit &amp;lt;hash&gt;</code>.，其中的 <code>hash</code> 是被撤销 commit 的 SHA 标识符。
+如果当前 commit 与被撤销的 commit，在同一个发布（release）里面，那么它们都不会出现在 Change log 里面。如果两者在不同的发布，那么当前 commit，会出现在 Change log 的 <code>Reverts</code> 小标题下面。</p>
+<h3 id="san-commitizen">三、Commitizen</h3>
+<p><a href="https://github.com/commitizen/cz-cli" target="_blank" rel="external">Commitizen</a>是一个撰写合格 Commit message 的工具。
+安装命令如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">$ npm install -g commitizen</span>
+</pre></td></tr></table></figure>
+<p>然后，在项目目录里，运行下面的命令，使其支持 Angular 的 Commit message 格式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">$ commitizen init cz-conventional-changelog --save --save-exact</span>
+</pre></td></tr></table></figure>
+<p>以后，凡是用到 <code>git commit</code> 命令，一律改为使用 <code>git cz</code>。这时，就会出现选项，用来生成符合格式的 Commit message。
+<img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="angular-commit-log-style" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/Git%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF%E5%8F%82%E8%80%83%E8%A7%84%E8%8C%83%E5%8F%8A%E6%80%BB%E7%BB%93%E6%A2%B3%E7%90%86/angular-commit-log-style.png"></p>
+<h3 id="si-validate-commit-msg">四、validate-commit-msg</h3>
+<p><a href="https://github.com/kentcdodds/validate-commit-msg" target="_blank" rel="external">validate-commit-msg</a> 用于检查 Node 项目的 Commit message 是否符合格式。
+它的安装是手动的。首先，拷贝下面这个<a href="https://github.com/kentcdodds/validate-commit-msg/blob/master/index.js" target="_blank" rel="external">JS文件</a>，放入你的代码库。文件名可以取为 <code>validate-commit-msg.js</code>。
+接着，把这个脚本加入 Git 的 hook。下面是在 <code>package.json</code> 里面使用<a href="https://www.npmjs.com/package/ghooks" target="_blank" rel="external">ghooks</a>，把这个脚本加为 <code>commit-msg</code> 时运行。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line">"config": &#123;</span>
+<span class="line">  "ghooks": &#123;</span>
+<span class="line">    "commit-msg": "./validate-commit-msg.js"</span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>然后，每次 <code>git commit</code> 的时候，这个脚本就会自动检查 Commit message 是否合格。如果不合格，就会报错。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">$ git add -A </span>
+<span class="line">$ git commit -m <span class="string">"edit markdown"</span> </span>
+<span class="line">INVALID COMMIT MSG: does not match <span class="string">"&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;"</span> ! was: edit markdown</span>
+</pre></td></tr></table></figure>
+<h3 id="wu-sheng-cheng-change-log">五、生成 Change log</h3>
+<p>如果你的所有 Commit 都符合 Angular 格式，那么发布新版本时， Change log 就可以用脚本自动生成（<a href="https://github.com/ajoslin/conventional-changelog/blob/master/CHANGELOG.md" target="_blank" rel="external">例1</a>，<a href="https://github.com/karma-runner/karma/blob/master/CHANGELOG.md" target="_blank" rel="external">例2</a>，<a href="https://github.com/btford/grunt-conventional-changelog/blob/master/CHANGELOG.md" target="_blank" rel="external">例3</a>）。
+生成的文档包括以下三个部分。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">New features</span>
+<span class="line">Bug fixes</span>
+<span class="line">Breaking changes.</span>
+</pre></td></tr></table></figure>
+<p>每个部分都会罗列相关的 commit ，并且有指向这些 commit 的链接。当然，生成的文档允许手动修改，所以发布前，你还可以添加其他内容。
+<a href="https://github.com/ajoslin/conventional-changelog" target="_blank" rel="external">conventional-changelog</a> 就是生成 Change log 的工具，运行下面的命令即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">$ npm install -g conventional-changelog</span>
+<span class="line">$ <span class="built_in">cd</span> my-project</span>
+<span class="line">$ conventional-changelog -p angular -i CHANGELOG.md -w</span>
+</pre></td></tr></table></figure>
+<p>上面命令不会覆盖以前的 Change log，只会在 <code>CHANGELOG.md</code> 的头部加上自从上次发布以来的变动。
+如果你想生成所有发布的 Change log，要改为运行下面的命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">$ conventional-changelog -p angular -i CHANGELOG.md -w -r 0</span>
+</pre></td></tr></table></figure>
+<p>为了方便使用，可以将其写入 <code>package.json</code> 的 <code>scripts</code> 字段。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+</pre></td><td class="code"><pre><span class="line">&#123;</span>
+<span class="line">  <span class="string">"scripts"</span>: &#123;</span>
+<span class="line">    <span class="string">"changelog"</span>: <span class="string">"conventional-changelog -p angular -i CHANGELOG.md -w -r 0"</span></span>
+<span class="line">  &#125;</span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>以后，直接运行下面的命令即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+</pre></td><td class="code"><pre><span class="line">$ npm run changelog</span>
+<span class="line">（完）</span>
+</pre></td></tr></table></figure>
+<h2 id="git-log-tong-ji-chang-yong-fang-fa">git log 统计常用方法</h2>
+<p>另外通过 <code>git log</code> 的很多特性我们也可以在例如年终的时候通过 git 总结一下自己的记录。</p>
+<ul>
+<li>例如我们想取得版本库中所有人 commit 统计记录。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+</pre></td><td class="code"><pre><span class="line">$ git shortlog -sne （n为次数排序，e为显示邮箱）</span>
+<span class="line">得到结果如下</span>
+<span class="line">537  yangzj1992 &lt;yangzj1992@qq.com&gt;</span>
+<span class="line">451  杨忠璟 &lt;yangzhongjing@sprucetec.com&gt;</span>
+<span class="line">299  lizhenfa &lt;lizhenfa@meicai.cn&gt;</span>
+<span class="line">......</span>
+</pre></td></tr></table></figure>
+<p>自 8 月 18 日起到 1 月 13 日今日我在公司项目的提交次数达到 988 次。感觉有点多了。提交 commit 的质量可能需要控制一下。</p>
+<ul>
+<li>统计自己的代码提交量，包括增加，删除：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> --author=<span class="string">"<span class="variable">$(git config --get user.name)</span>"</span> --pretty=tformat: --numstat | gawk <span class="string">'&#123; add += $1 ; subs += $2 ; loc += $1 - $2 &#125; END &#123; printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc &#125;'</span> -</span>
+<span class="line">得到结果如下</span>
+<span class="line">added lines: 15490 removed lines : 57870 total lines: -42380</span>
+</pre></td></tr></table></figure>
+<p>上面这个情况确实只能说明我重(shan)构(chu)了不少冗余东西=. =。不过马上这个项目又要基于 ES6 + Vue 重写一下。只能说可能发展快速、人员更迭迅速的创业公司的项目可能或多或少都存在这种代码质量难以保证的情况吧？</p>
+<ul>
+<li>统计仓库提交者排名前 5</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+</pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> --pretty=<span class="string">'%aN'</span> | sort | uniq -c | sort -k1 -n -r | head -n 5</span>
+<span class="line">与shortlog -sne显示的内容差不多</span>
+</pre></td></tr></table></figure>
+<ul>
+<li>贡献者数量统计</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> --pretty=<span class="string">'%aN'</span> | sort -u | wc <span class="_">-l</span></span>
+<span class="line"></span>
+<span class="line">39</span>
+</pre></td></tr></table></figure>
+<p>这个项目前后有 39 个人曾参与过,创业公司..大家应该都懂..</p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/Git日常使用提交信息参考规范及总结梳理.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/Git/">Git</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=Git日常使用提交信息参考规范及总结梳理 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2016/01/14/Git日常使用提交信息参考规范及总结梳理/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2016/01/14/Git日常使用提交信息参考规范及总结梳理/index.html&amp;title=Git日常使用提交信息参考规范及总结梳理 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2016/01/14/Git日常使用提交信息参考规范及总结梳理/index.html&amp;text=Git日常使用提交信息参考规范及总结梳理;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=Git日常使用提交信息参考规范及总结梳理 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2016/01/14/Git日常使用提交信息参考规范及总结梳理/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2016/02/28/使用npm scripts构建项目/">
+      ← 使用 npm scripts 构建项目
+    </a>
+  
+  
+    <a class="pull-right" href="/2016/01/11/【原创翻译】有哪些信号能让我知道我在一家『没落的』公司工作/">
+      【原创翻译】有哪些信号能让我知道我在一家『没落的』公司工作 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2016/01/14/Git日常使用提交信息参考规范及总结梳理/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

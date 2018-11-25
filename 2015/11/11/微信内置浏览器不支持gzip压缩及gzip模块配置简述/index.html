@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>微信内置浏览器不支持 gzip 压缩方式及 gzip 模块配置简述 | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#qing-kuang"><span class="toc-number">1.</span> <span class="toc-text">情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#w-3-biao-zhun"><span class="toc-number">2.</span> <span class="toc-text">w3标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qi-yu-wang-zhan-yan-zheng"><span class="toc-number">3.</span> <span class="toc-text">其余网站验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gzip-pei-zhi-shuo-ming"><span class="toc-number">4.</span> <span class="toc-text">gzip 配置说明</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">微信内置浏览器不支持 gzip 压缩方式及 gzip 模块配置简述</h1>
+          <time datetime="2015-11-11T09:50:02.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2015 年 11 月 11 日</span>
+            <span style="margin-left: 10px;">最近更新于：2018 年 11 月 25 日</span>
+            <span style="margin-left: 10px;">本文共 1,788 字，读完约 7 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <h3 id="qing-kuang">情况</h3>
+<p>今天在做微信项目用 ajax 传值时发现了一些异常的现象。使用微信版本：6.3.7</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="异常 ajax 列表" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8D%E6%94%AF%E6%8C%81gzip%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F%E5%8F%8Agzip%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E7%AE%80%E8%BF%B0/yichang1.png"></p>
+<p>1 个 ajax 请求请求了 120kb?!打开此请求详情看了一下发现了一个关键点。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="微信请求头" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8D%E6%94%AF%E6%8C%81gzip%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F%E5%8F%8Agzip%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E7%AE%80%E8%BF%B0/weixin_requestheader.png"></p>
+<p>这个微信请求，在请求头中没有接受编码头(<code>Accept-Encoding</code>),而在正常的电脑 Chrome 中 <code>Accept-Encoding</code> 是正常的。</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="Chrome 请求头" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8D%E6%94%AF%E6%8C%81gzip%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F%E5%8F%8Agzip%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E7%AE%80%E8%BF%B0/chrome_requestheader.png"></p>
+<p>难道是微信浏览器不支持 gzip 的压缩方式？这里我抓包做了实验，首先我在电脑端 Chrome 下把 <code>Accept-Encoding</code> 中的 gzip 值干掉进行请求。果然，请求的大小一下子飙升到微信上请求的相应大小</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="请求列表" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8D%E6%94%AF%E6%8C%81gzip%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F%E5%8F%8Agzip%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E7%AE%80%E8%BF%B0/chrome_kill_gzip_list.png"></p>
+<p>此请求报表头如下：</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="清理头" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8D%E6%94%AF%E6%8C%81gzip%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F%E5%8F%8Agzip%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E7%AE%80%E8%BF%B0/chrome_kill_gzip_header.png"></p>
+<h3 id="w-3-biao-zhun">w3标准</h3>
+<p>由于在 w3.org 中关于 <a href="http://www.w3.org/TR/XMLHttpRequest/" target="_blank" rel="external">XMLHttpRequest</a> 的描述中指出</p>
+<blockquote>
+<p>4.6.2 The setRequestHeader() method</p>
+<p>Terminate these steps if header is a case-insensitive match for one of the following headers:</p>
+<ul>
+<li>Accept-Charset</li>
+<li>Accept-Encoding</li>
+<li>Access-Control-Request-Headers</li>
+<li>Access-Control-Request-Method</li>
+<li>Connection</li>
+<li>Content-Length</li>
+<li>Cookie</li>
+<li>Cookie2</li>
+<li>Date</li>
+<li>DNT</li>
+<li>Expect</li>
+<li>Host</li>
+<li>Keep-Alive</li>
+<li>Origin</li>
+<li>Referer</li>
+<li>TE</li>
+<li>Trailer</li>
+<li>Transfer-Encoding</li>
+<li>Upgrade</li>
+<li>User-Agent</li>
+<li>Via</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>The above headers are controlled by the user agent to let it control those aspects of transport. This guarantees data integrity to some extent. Header names starting with Sec- are not allowed to be set to allow new headers to be minted that are guaranteed not to come from XMLHttpRequest.</p>
+</blockquote>
+<p>上面的消息头被认为是应当由浏览器控制，而不能用 XMLHttpRequest 对象来修改，即不能通过 JavaScript 修改。但是这也只是 W3 建议的标准而已，至于浏览器遵不遵循标准，那就得看开发人员了。</p>
+<p>这里为了测试，可以试着写一个 PHP,回显 <code>User-Agent</code>：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span>
+<span class="line"><span class="keyword">echo</span> $_SERVER[<span class="string">'HTTP_USER_AGENT'</span>];</span>
+<span class="line"><span class="meta">?&gt;</span></span>
+</pre></td></tr></table></figure>
+<p>然后再次发送 ajax 请求，并在发送之前用 XMLHttpRequest 对象的 <code>setRequestHeader</code> 方法修改 <code>User-Agent</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+</pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span>
+<span class="line">    <span class="attr">type</span>: <span class="string">"GET"</span>,</span>
+<span class="line">    <span class="attr">url</span>: <span class="string">"ua.php"</span>,</span>
+<span class="line">    <span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span>
+<span class="line">        alert(data);</span>
+<span class="line">    &#125;,</span>
+<span class="line">    <span class="attr">beforeSend</span>: <span class="function"><span class="keyword">function</span>(<span class="params">xhr</span>) </span>&#123;</span>
+<span class="line">        xhr.setRequestHeader(<span class="string">"User-Agent"</span>, <span class="string">"uTorrent"</span>);</span>
+<span class="line">    &#125;</span>
+<span class="line">&#125;);</span>
+</pre></td></tr></table></figure>
+<p>通过测试最后得到结论：IE 还是跟往常一样无视标准的存在，可以用 JavaScript 在 ajax 请求中设置 <code>User-Agent</code>，而 FireFox 和 Chrome 都无法修改 <code>User-Agent</code>。</p>
+<h3 id="qi-yu-wang-zhan-yan-zheng">其余网站验证</h3>
+<p>之后我测试了一米鲜和京东的相关页面，也发现了类似的情况。这里拿 JD 举例。</p>
+<p>在微信中未压缩请求，大小 17.53kb。
+<img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="jd" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8D%E6%94%AF%E6%8C%81gzip%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F%E5%8F%8Agzip%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E7%AE%80%E8%BF%B0/weixinjd.png"></p>
+<p>请求头如下</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="jd" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8D%E6%94%AF%E6%8C%81gzip%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F%E5%8F%8Agzip%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E7%AE%80%E8%BF%B0/chrome_jd_header%E5%89%AF%E6%9C%AC.png"></p>
+<p>在手机 Chrome 下启用 gzip 大小为 5.2kb:</p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="jd" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8D%E6%94%AF%E6%8C%81gzip%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F%E5%8F%8Agzip%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E7%AE%80%E8%BF%B0/mobile_chrome_jd_list.png"></p>
+<p><img src="https://sf-static.b0.upaiyun.com/v-577df1f7/global/img/squares.svg" alt="jd" class="hx_lazyimg" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8D%E6%94%AF%E6%8C%81gzip%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F%E5%8F%8Agzip%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E7%AE%80%E8%BF%B0/mobile_chrome_jd_header.png"></p>
+<h3 id="gzip-pei-zhi-shuo-ming">gzip 配置说明</h3>
+<p>另外在这个过程中还核对了 nginx 的 gzip 模块配置，这里顺便一路贴出来吧：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+<span class="line">24</span>
+<span class="line">25</span>
+<span class="line">26</span>
+<span class="line">27</span>
+<span class="line">28</span>
+<span class="line">29</span>
+<span class="line">30</span>
+<span class="line">31</span>
+<span class="line">32</span>
+<span class="line">33</span>
+<span class="line">34</span>
+<span class="line">35</span>
+<span class="line">36</span>
+<span class="line">37</span>
+<span class="line">38</span>
+<span class="line">39</span>
+<span class="line">40</span>
+<span class="line">41</span>
+<span class="line">42</span>
+<span class="line">43</span>
+<span class="line">44</span>
+<span class="line">45</span>
+<span class="line">46</span>
+<span class="line">47</span>
+<span class="line">48</span>
+<span class="line">49</span>
+<span class="line">50</span>
+<span class="line">51</span>
+<span class="line">52</span>
+<span class="line">53</span>
+<span class="line">54</span>
+<span class="line">55</span>
+<span class="line">56</span>
+<span class="line">57</span>
+<span class="line">58</span>
+<span class="line">59</span>
+<span class="line">60</span>
+<span class="line">61</span>
+<span class="line">62</span>
+<span class="line">63</span>
+<span class="line">64</span>
+<span class="line">65</span>
+<span class="line">66</span>
+<span class="line">67</span>
+<span class="line">68</span>
+</pre></td><td class="code"><pre><span class="line">&gt; Gzip 模块的各项配置</span>
+<span class="line"></span>
+<span class="line">&gt; gzip on|off;</span>
+<span class="line">&gt; <span class="comment"># 默认值: gzip off </span></span>
+<span class="line">&gt; <span class="comment"># 开启或者关闭gzip模块</span></span>
+<span class="line">&gt;  </span>
+<span class="line">&gt; gzip_static on|off;</span>
+<span class="line">&gt; <span class="comment"># nginx对于静态文件的处理模块</span></span>
+<span class="line">&gt; <span class="comment"># 该模块可以读取预先压缩的gz文件，这样可以减少每次请求进行gzip压缩的CPU资源消耗。该模块启用后，</span></span>
+<span class="line">nginx首先检查是否存在请求静态文件的gz结尾的文件，如果有则直接返回该gz文件内容。为了要兼容不支持</span>
+<span class="line">gzip的浏览器，启&gt; 用gzip_static模块就必须同时保留原始静态文件和gz文件。这样的话，在有大量静态</span>
+<span class="line">文件的情况下，将会大大增加磁盘空间。我们可以利用nginx的反向代理功能实现只保留gz文件。</span>
+<span class="line">&gt; <span class="comment"># 可以google"nginx gzip_static"了解更多</span></span>
+<span class="line">&gt;  </span>
+<span class="line">&gt; gzip_comp_level 4;</span>
+<span class="line">&gt; <span class="comment"># 默认值：1（建议选择为4）</span></span>
+<span class="line">&gt; <span class="comment"># gzip压缩比/压缩级别，压缩级别 1-9，级别越高压缩率越大，当然压缩时间也就越长（传输快但比较消耗cpu）。</span></span>
+<span class="line">&gt;  </span>
+<span class="line">&gt; gzip_buffers 4 16k;</span>
+<span class="line">&gt; <span class="comment"># 默认值: gzip_buffers 4 4k/8k </span></span>
+<span class="line">&gt; <span class="comment"># 设置系统获取几个单位的缓存用于存储gzip的压缩结果数据流。 例如 4 4k 代表以4k为单位，按照原</span></span>
+<span class="line">始数据大小以4k为单位的4倍申请内存。 4 8k 代表以8k为单位，按照原始数据大小以8k为单位的4倍申请内存。</span>
+<span class="line">&gt; <span class="comment"># 如果没有设置，默认值是申请跟原始数据相同大小的内存空间去存储gzip压缩结果。</span></span>
+<span class="line">&gt;  </span>
+<span class="line">&gt; gzip_types mime-type [mime-type ...];</span>
+<span class="line">&gt; <span class="comment"># 默认值: gzip_types text/html （默认不对js/css文件进行压缩）</span></span>
+<span class="line">&gt; <span class="comment"># 压缩类型，匹配MIME类型进行压缩</span></span>
+<span class="line">&gt; <span class="comment"># 不能用通配符 text/*</span></span>
+<span class="line">&gt; <span class="comment"># （无论是否指定）text/html默认已经压缩 </span></span>
+<span class="line">&gt; <span class="comment"># 设置哪压缩种文本文件可参考 conf/mime.types</span></span>
+<span class="line">&gt;  </span>
+<span class="line">&gt; gzip_min_length  1k;</span>
+<span class="line">&gt; <span class="comment"># 默认值: 0 ，不管页面多大都压缩</span></span>
+<span class="line">&gt; <span class="comment"># 设置允许压缩的页面最小字节数，页面字节数从header头中的Content-Length中进行获取。</span></span>
+<span class="line">&gt; <span class="comment"># 建议设置成大于1k的字节数，小于1k可能会越压越大。 即: gzip_min_length 1024</span></span>
+<span class="line">&gt;  </span>
+<span class="line">&gt; gzip_http_version 1.0|1.1;</span>
+<span class="line">&gt; <span class="comment"># 默认值: gzip_http_version 1.1（就是说对HTTP/1.1协议的请求才会进行gzip压缩）</span></span>
+<span class="line">&gt; <span class="comment"># 识别http的协议版本。由于早期的一些浏览器或者http客户端，可能不支持gzip自解压，用户就会看到乱码，</span></span>
+<span class="line">所以做一些判断还是有必要的。 </span>
+<span class="line">&gt; <span class="comment"># 注：99.99%的浏览器基本上都支持gzip解压了，所以可以不用设这个值,保持系统默认即可。</span></span>
+<span class="line">&gt; <span class="comment"># 假设我们使用的是默认值1.1，如果我们使用了proxy_pass进行反向代理，那么nginx和后端的upstream server</span></span>
+<span class="line">之间是用HTTP/1.0协议通信的，如果我们使用nginx通过反向代理做Cache &gt; Server，而且前端的nginx没有开启gzip，</span>
+<span class="line">同时，我们后端的nginx上没有设置gzip_http_version为1.0，那么Cache的url将不会进行gzip压缩</span>
+<span class="line">&gt;  </span>
+<span class="line">&gt; gzip_proxied [off|expired|no-cache|no-store|private|no_last_modified|no_etag|auth|any] ...;</span>
+<span class="line">&gt; <span class="comment"># 默认值：off</span></span>
+<span class="line">&gt; <span class="comment"># Nginx作为反向代理的时候启用，开启或者关闭后端服务器返回的结果，匹配的前提是后端服务器必须要返回</span></span>
+<span class="line">包含<span class="string">"Via"</span>的 header头。</span>
+<span class="line">&gt; <span class="comment"># off - 关闭所有的代理结果数据的压缩</span></span>
+<span class="line">&gt; <span class="comment"># expired - 启用压缩，如果header头中包含 "Expires" 头信息</span></span>
+<span class="line">&gt; <span class="comment"># no-cache - 启用压缩，如果header头中包含 "Cache-Control:no-cache" 头信息</span></span>
+<span class="line">&gt; <span class="comment"># no-store - 启用压缩，如果header头中包含 "Cache-Control:no-store" 头信息</span></span>
+<span class="line">&gt; <span class="comment"># private - 启用压缩，如果header头中包含 "Cache-Control:private" 头信息</span></span>
+<span class="line">&gt; <span class="comment"># no_last_modified - 启用压缩,如果header头中不包含 "Last-Modified" 头信息</span></span>
+<span class="line">&gt; <span class="comment"># no_etag - 启用压缩 ,如果header头中不包含 "ETag" 头信息</span></span>
+<span class="line">&gt; <span class="comment"># auth - 启用压缩 , 如果header头中包含 "Authorization" 头信息</span></span>
+<span class="line">&gt; <span class="comment"># any - 无条件启用压缩</span></span>
+<span class="line">&gt;  </span>
+<span class="line">&gt; gzip_vary on;</span>
+<span class="line">&gt; <span class="comment"># 和http头有关系，加个vary头，给代理服务器用的，有的浏览器支持压缩，有的不支持，所以避免浪费不支持</span></span>
+<span class="line">的也压缩，</span>
+<span class="line">所以根据客户端的HTTP头来判断，是否需要压缩</span>
+<span class="line">&gt;  </span>
+<span class="line">&gt; gzip_disable <span class="string">"MSIE [1-6]."</span>;</span>
+<span class="line">&gt; <span class="comment"># 禁用IE6的gzip压缩，又是因为杯具的IE6。当然，IE6目前依然广泛的存在，所以这里你也可以设置为“MSIE [1-5].”</span></span>
+<span class="line">&gt; <span class="comment"># IE6的某些版本对gzip的压缩支持很不好，会造成页面的假死，为了确保其它的IE6版本不出问题，所以建议加上</span></span>
+<span class="line">gzip_disable的设置</span>
+</pre></td></tr></table></figure>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/微信内置浏览器不支持gzip压缩及gzip模块配置简述.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/性能优化/">性能优化</a>
+                
+              
+                <a class="post-tags" href="/tags/微信浏览器/">微信浏览器</a>
+                
+              
+                <a class="post-tags" href="/tags/AJAX/">AJAX</a>
+                
+              
+                <a class="post-tags" href="/tags/gzip/">gzip</a>
+                
+              
+                <a class="post-tags" href="/tags/HTTP/">HTTP</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=微信内置浏览器不支持 gzip 压缩方式及 gzip 模块配置简述 | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2015/11/11/微信内置浏览器不支持gzip压缩及gzip模块配置简述/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2015/11/11/微信内置浏览器不支持gzip压缩及gzip模块配置简述/index.html&amp;title=微信内置浏览器不支持 gzip 压缩方式及 gzip 模块配置简述 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2015/11/11/微信内置浏览器不支持gzip压缩及gzip模块配置简述/index.html&amp;text=微信内置浏览器不支持 gzip 压缩方式及 gzip 模块配置简述;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=微信内置浏览器不支持 gzip 压缩方式及 gzip 模块配置简述 | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2015/11/11/微信内置浏览器不支持gzip压缩及gzip模块配置简述/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2015/11/18/使用clip-path制作简单的动画效果/">
+      ← 使用 clip-path 制作简单的动画效果
+    </a>
+  
+  
+    <a class="pull-right" href="/2015/10/30/某前端群题目答案参考/">
+      某前端群题目答案参考 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2015/11/11/微信内置浏览器不支持gzip压缩及gzip模块配置简述/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>

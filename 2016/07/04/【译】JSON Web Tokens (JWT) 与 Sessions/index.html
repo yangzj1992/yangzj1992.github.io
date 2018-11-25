@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>【译】JSON Web Tokens (JWT) 与 Sessions | 青春样 | yangzj1992&#39;s blog</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="青春样 | yangzj1992's blog">
+  <meta name="author" content="yangzj1992">
+  <meta name="description" content="yangzj1992's blog | 前端 | 青春样 | 程序员 | 90后 |">
+  <meta name="keywords" content="yangzj1992,青春样,前端,程序员,90后">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta name="Copyright" content="yangzj1992">
+  <meta name="Contact" content="yangzj1992@qq.com">
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="青春样 | yangzj1992&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico"> 
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.9da78b46.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+      
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/about">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/avatar.jpg">
+              <div class="site-author-name">yangzj1992</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">36</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">108.4k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/categories">
+                <span class="sb-item-count">24</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+        
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/yangzj1992" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.qcyoung.com/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.qcyoung.com/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links"> 
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+                  <a href="http://zcfy.cc/@yangzj1992/article" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">众成翻译</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/logo.png" alt="Logo" width="25px;"><img id="brown-logo" src="https://yangzj1992-1251901721.cos.ap-beijing.myqcloud.com/images/TKL/oursbrun.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">青春样 | yangzj1992's blog</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/categories" class="animsition-link" title="archive">目录</a></li>
+            <li><a href="/tags" class="animsition-link" title="archive">标签</a></li>
+            <li class="mobile-li"><a href="/about" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/messageboard" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+            
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO YANGZJ1992 &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shi-yao-shi-jwt"><span class="toc-number">1.</span> <span class="toc-text">什么是 JWT?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kan-a-mei-you-session"><span class="toc-number">2.</span> <span class="toc-text">看啊！没有 session!</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mei-you-hui-hua-cun-chu"><span class="toc-number">2.1.</span> <span class="toc-text">没有会话存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mei-you-dui-sessions-de-la-ji-shou-ji"><span class="toc-number">2.2.</span> <span class="toc-text">没有对 sessions 的垃圾收集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zhen-zheng-de-res-tful-fu-wu"><span class="toc-number">2.3.</span> <span class="toc-text">真正的 RESTful 服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zhen-shi-de-jwt-dao-di-shi-shi-yao-yang-de"><span class="toc-number">3.</span> <span class="toc-text">真实的 JWT 到底是什么样的?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#na-yao-jwt-jws-shi-you-shi-yao-gou-cheng-de"><span class="toc-number">3.1.</span> <span class="toc-text">那么 JWT/JWS 是由什么构成的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jwt-tou-bu-zhong-ke-yi-cun-fang-shi-yao"><span class="toc-number">3.2.</span> <span class="toc-text">JWT 头部中可以存放什么？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#code-alg-code-suan-fa"><span class="toc-number">3.2.1.</span> <span class="toc-text">alg （算法）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#code-typ-code-lei-xing"><span class="toc-number">3.2.2.</span> <span class="toc-text">typ （类型）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#code-kid-code-mi-yao-id"><span class="toc-number">3.2.3.</span> <span class="toc-text">kid （密钥 id）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#code-cty-code-nei-rong-lei-xing"><span class="toc-number">3.2.4.</span> <span class="toc-text">cty （内容类型）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zai-jwt-sheng-ming-zhong-ke-yi-you-shi-yao"><span class="toc-number">3.3.</span> <span class="toc-text">在 JWT 声明中可以有什么？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#code-exp-code-guo-qi-shi-jian"><span class="toc-number">3.3.1.</span> <span class="toc-text">exp （过期时间）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#code-nbf-code-you-xiao-qi-shi-shi-jian"><span class="toc-number">3.3.2.</span> <span class="toc-text">nbf （有效起始时间）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#code-iat-code-fa-xing-shi-jian"><span class="toc-number">3.3.3.</span> <span class="toc-text">iat （发行时间）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#code-sub-code-zhu-ti"><span class="toc-number">3.3.4.</span> <span class="toc-text">sub （主题）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#code-iss-code-fa-xing-zhe"><span class="toc-number">3.3.5.</span> <span class="toc-text">iss （发行者）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#code-aud-code-shou-zhong"><span class="toc-number">3.3.6.</span> <span class="toc-text">aud （受众）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#code-jti-code-jwt-id"><span class="toc-number">3.3.7.</span> <span class="toc-text">jti (JWT id)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ru-he-zai-wo-de-ying-yong-zhong-shi-yong-jwt"><span class="toc-number">4.</span> <span class="toc-text">如何在我的应用中使用 JWT ?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ru-he-tong-guo-jwt-deng-chu"><span class="toc-number">4.1.</span> <span class="toc-text">如何通过 JWT 登出?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zong-jie"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">【译】JSON Web Tokens (JWT) 与 Sessions</h1>
+          <time datetime="2016-07-04T15:21:10.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2016 年 07 月 04 日</span>
+            <span style="margin-left: 10px;">最近更新于：2016 年 10 月 24 日</span>
+            <span style="margin-left: 10px;">本文共 4,252 字，读完约 16 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <blockquote>
+<p>原文链接 : <a href="https://float-middle.com/json-web-tokens-jwt-vs-sessions/" target="_blank" rel="external">JSON Web Tokens (JWT) vs Sessions</a><br>
+原文作者 : <a href="https://float-middle.com/author/jacek-ciolek/" target="_blank" rel="external">Jacek Ciolek</a><br>
+译文出自 : <a href="http://zcfy.cc/" target="_blank" rel="external">众成翻译</a><br>
+译者 : <a href="http://qcyoung.com">yangzj1992</a><br>
+校对者: <a href="https://www.zhihu.com/people/ha-ha-qiu-52" target="_blank" rel="external">lisa</a><br>
+首发于: <a href="http://zcfy.cc/article/json-web-tokens-jwt-vs-sessions-685.html" target="_blank" rel="external">众成翻译</a></p>
+</blockquote>
+<h2 id="shi-yao-shi-jwt">什么是 JWT?</h2>
+<blockquote>
+<p>本质上它是一段签名的 JSON 格式的数据。由于它是带有签名的，因此接收者便可以验证它的真实性。同时由于它是 JSON 格式的因此它的体积也很小。如果你想了解有关它的正式定义，可以在 <a href="https://tools.ietf.org/html/rfc7519" target="_blank" rel="external">RFC 7519</a> 中找到。</p>
+</blockquote>
+<p><em>这篇文章发布于<a href="https://news.ycombinator.com/item?id=11929267" target="_blank" rel="external">黑客新闻</a>上。在这里也可以看一下关于这篇文章的<a href="https://float-middle.com/i-got-featured-on-hacker-news-case-study/" target="_blank" rel="external">案例分析</a>，它主要包含了文章内容的公开分析、SEO 影响、性能影响以及更多其他的内容。</em></p>
+<p>数据签名已经不是什么新事物了 - 令人值得兴奋的是如何在不依靠 sessions 的情况下使用 JWT 创建真正的 RESTful 服务，目前这个想法已经被事实证明有一段时间了。下面是介绍它在现实中具体实现的工作原理 - 首先在这里我来做一个类比：</p>
+<p>想象一下你刚从国外度完假回来，你在边境上说 - 你可以让我通过，我是这里的公民。这样的回答很好也没有问题，但是你要如何去支持你的说法呢？最有可能的方案是你携带了护照来证明你的身份。这里我们假设边境工作人员也都被要求去核实护照是真正由你的国家的护照办签发的。那么护照就会被核实，这样他们也才会放你回国。</p>
+<p>现在，让我们从 JWT 的角度看一下这个故事，它们各自又都扮演着什么样的角色：</p>
+<ul>
+<li>
+<p><strong>护照办</strong> - 发布 JWT 的身份验证服务。</p>
+</li>
+<li>
+<p><strong>护照</strong> - 你通过&quot;护照办&quot;获得的 JWT 签名。你的身份对于任何人都是可读的，但是只有它是真实的时候相关方才会对其核实。</p>
+</li>
+<li>
+<p><strong>公民资格</strong> - 在 JWT 中包含的你的声明（你的护照）。</p>
+</li>
+<li>
+<p><strong>边境</strong> - 你的应用程序的安全层，在被允许访问受保护的资源之前由它来核实你的 JWT 令牌身份，在这种情况下指的是 - 国家。</p>
+</li>
+<li>
+<p><strong>国家</strong> - 你想要获取的资源（例如 API）。</p>
+</li>
+</ul>
+<h2 id="kan-a-mei-you-session">看啊！没有 session!</h2>
+<p>简单来说，JWT 非常的酷，因为你不用再为了鉴别用户而在你的服务器上去保留你的 session 数据。这个工作流将会变得像下面这样：</p>
+<ul>
+<li>
+<p>用户调用身份验证服务，通常是发送了用户名及密码。</p>
+</li>
+<li>
+<p>身份验证服务响应并返回了签名的 JWT，上面包含了用户是谁的内容。</p>
+</li>
+<li>
+<p>用户向安全服务发送请求收到安全服务返回的令牌。</p>
+</li>
+<li>
+<p>安全层检验令牌上的签名并且在签名为真实的时候授权予以通过。</p>
+</li>
+</ul>
+<p>让我们考虑一下这样做的结果。</p>
+<h3 id="mei-you-hui-hua-cun-chu">没有会话存储</h3>
+<p>没有 sessions 意味着你没有会话存储。但除非您的应用程序需要横向扩展，否则这也不太重要，如果你的应用程序是运行在多个服务器上的，那么共享 session 数据将会成为一个负担。你需要一个专门的服务器来只存储会话数据或是共享磁盘空间或是在负载均衡上粘滞会话。当你不使用 sessions 时上面的这些也就自然不再需要了。</p>
+<h3 id="mei-you-dui-sessions-de-la-ji-shou-ji">没有对 sessions 的垃圾收集</h3>
+<p>通常来讲 sessions 需要留意过期和垃圾收集的情况。JWT 可以在用户数据中包含自己的过期日期。因此安全层在检验 JWT 的授权时可以同时核对它的过期时间来拒绝访问。</p>
+<h3 id="zhen-zheng-de-res-tful-fu-wu">真正的 RESTful 服务</h3>
+<p>只有在无 sessions 的情况下你可以创建真正的 RESTful 服务，因为它被认为是<a href="https://en.wikipedia.org/wiki/Representational_state_transfer#Stateless" target="_blank" rel="external">无状态的</a>。 JWT 很小所以它可以在每一个请求中被一起发出去，就像一个 session cookie一样。然而与 session cookie 不同的是，它并不指向服务器上的任何存储数据， JWT 本身包含了这些数据。</p>
+<h2 id="zhen-shi-de-jwt-dao-di-shi-shi-yao-yang-de">真实的 JWT 到底是什么样的?</h2>
+<p>在我们更深入讨论之前，有一件事需要了解。JWT 自身并不是一个东西。它是 <a href="https://tools.ietf.org/html/rfc7515" target="_blank" rel="external">JSON 网络签名（JWS)</a>或 <a href="https://tools.ietf.org/html/rfc7516" target="_blank" rel="external">JSON 网络加密 (JWE)</a>中的一种类型。它的定义如下：</p>
+<blockquote>
+<p>一个 JWT 的声明内容会被编码为一个 JSON 对象，它被作为 JSON 网络签名结构的有效载荷或是作为 JSON 网络加密结构的明文信息。</p>
+</blockquote>
+<p>前者给我们的只是一个签名并且它包含的数据（或是平时所称呼的 <code>claims</code> 的命名）是对任何人都可读的。后者则提供了加密的内容，所以只有拥有密钥的人可以解密它。JWS 在实现上更加容易并且基本用法上是不需要加密的 - 毕竟如果你在客户端上有密钥的话，你还不如把所有的东西不加密的好。因此 JWS 在大多数情况下都是适用的，也因此在之后我将主要关注 JWS。</p>
+<h3 id="na-yao-jwt-jws-shi-you-shi-yao-gou-cheng-de">那么 JWT/JWS 是由什么构成的？</h3>
+<ul>
+<li>
+<p><strong>头部</strong> - 关于签名算法的信息，以 JSON 格式的负载类型(JWT)等等。</p>
+</li>
+<li>
+<p><strong>负载</strong> - JSON 格式的实际的数据（或是声明）。</p>
+</li>
+<li>
+<p><strong>签名</strong> - 额... 就是签名。</p>
+</li>
+</ul>
+<p>我将在之后具体解释这些细节。现在让我们先来分析下基础要素。</p>
+<p>上述所提到的每一部分（头部，负载和签名）是基于 base64url 编码的，然后他们用 <code>.</code> 作为分隔符粘连起来组成 JWT。 下面是这个实现方式可能看上去的样子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+<span class="line">8</span>
+<span class="line">9</span>
+<span class="line">10</span>
+<span class="line">11</span>
+<span class="line">12</span>
+<span class="line">13</span>
+<span class="line">14</span>
+<span class="line">15</span>
+<span class="line">16</span>
+<span class="line">17</span>
+<span class="line">18</span>
+<span class="line">19</span>
+<span class="line">20</span>
+<span class="line">21</span>
+<span class="line">22</span>
+<span class="line">23</span>
+</pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> header = &#123;  </span>
+<span class="line">        <span class="comment">// The signing algorithm.</span></span>
+<span class="line">        <span class="string">"alg"</span>: <span class="string">"HS256"</span>,</span>
+<span class="line">        <span class="comment">// The type (typ) property says it's "JWT",</span></span>
+<span class="line">        <span class="comment">// because with JWS you can sign any type of data.</span></span>
+<span class="line">        <span class="string">"typ"</span>: <span class="string">"JWT"</span></span>
+<span class="line">    &#125;,</span>
+<span class="line">    <span class="comment">// Base64 representation of the header object.</span></span>
+<span class="line">    headerB64 = btoa(<span class="built_in">JSON</span>.stringify(header)),</span>
+<span class="line">    <span class="comment">// The payload here is our JWT claims.</span></span>
+<span class="line">    payload = &#123;</span>
+<span class="line">        <span class="string">"name"</span>: <span class="string">"John Doe"</span>,</span>
+<span class="line">        <span class="string">"admin"</span>: <span class="literal">true</span></span>
+<span class="line">    &#125;,</span>
+<span class="line">    <span class="comment">// Base64 representation of the payload object.</span></span>
+<span class="line">    payloadB64 = btoa(<span class="built_in">JSON</span>.stringify(payload)),</span>
+<span class="line">    <span class="comment">// The signature is calculated on the base64 representation</span></span>
+<span class="line">    <span class="comment">// of the header and the payload.</span></span>
+<span class="line">    signature = signatureCreatingFunction(headerB64 + <span class="string">'.'</span> + payloadB64),</span>
+<span class="line">    <span class="comment">// Base64 representation of the signature.</span></span>
+<span class="line">    signatureB64 = btoa(signature),</span>
+<span class="line">    <span class="comment">// Finally, the whole JWS - all base64 parts glued together with a '.'</span></span>
+<span class="line">    jwt = headerB64 + <span class="string">'.'</span> + payloadB64 + <span class="string">'.'</span> + signatureB64;</span>
+</pre></td></tr></table></figure>
+<p>由此得到的 JWS 结果看上去整洁而优雅，有点像这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+</pre></td><td class="code"><pre><span class="line">`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJhZG1pbiI6dHJ1ZX0.OLvs36KmqB9cmsUrMpUutfhV52_iSz4bQMYJjkI_TLQ`</span>
+</pre></td></tr></table></figure>
+<p>你也可以试着在 <a href="https://jwt.io/#debugger" target="_blank" rel="external">jwt.io</a> 这个网站上来创建令牌试试。</p>
+<p>有一点相当重要，那就是签名是依据头部和负载计算出来的。因此头部和负载的授权也很容易同样被检验：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+<span class="line">5</span>
+<span class="line">6</span>
+<span class="line">7</span>
+</pre></td><td class="code"><pre><span class="line">[headerB64, payloadB64, signatureB64] = jwt.split(<span class="string">'.'</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">if</span> (atob(signatureB64) === signatureCreatingFunction(headerB64 + <span class="string">'.'</span> + payloadB64) &#123;</span>
+<span class="line">    <span class="comment">// good</span></span>
+<span class="line">&#125; <span class="keyword">else</span></span>
+<span class="line">    <span class="comment">// no good</span></span>
+<span class="line">&#125;)</span>
+</pre></td></tr></table></figure>
+<h3 id="jwt-tou-bu-zhong-ke-yi-cun-fang-shi-yao">JWT 头部中可以存放什么？</h3>
+<p>事实上，JWT 头部被称为 JOSE 头部。JOSE 表示的是 JSON 对象的签名和加密。也正如你期望的那样，JWS 和 JWE 都是这样的一个头部，然而它们各自之间存在着一套稍微不同的注册参数。下面是在 JWS 中使用的头部注册参数列表。所有的参数除了第一个参数（alg）以外，其他参数都是可选的：</p>
+<ul>
+<li>
+<p><strong>alg</strong> 算法 （必选项）</p>
+</li>
+<li>
+<p><strong>typ</strong> 类型 （如果是 JWT 那么就带有一个值 <code>JWT</code>，如果存在的话）</p>
+</li>
+<li>
+<p><strong>kid</strong> 密钥 ID</p>
+</li>
+<li>
+<p><strong>cty</strong> 内容类型</p>
+</li>
+<li>
+<p><strong>jku</strong> JWK 指定 URL</p>
+</li>
+<li>
+<p><strong>jwk</strong> JSON 网络值</p>
+</li>
+<li>
+<p><strong>x5u</strong> X.509 URL</p>
+</li>
+<li>
+<p><strong>x5c</strong> X.509 证书链</p>
+</li>
+<li>
+<p><strong>x5t</strong> X.509 证书 SHA-1 指纹</p>
+</li>
+<li>
+<p><strong>x5t#S256</strong> X.509 证书 SHA-256 指纹</p>
+</li>
+<li>
+<p><strong>crit</strong> 临界值</p>
+</li>
+</ul>
+<p>前两个参数是最常用的，所以典型的头部看起来有点类似下面这样：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+<span class="line">4</span>
+</pre></td><td class="code"><pre><span class="line">&#123;</span>
+<span class="line">    <span class="attr">"alg"</span>: <span class="string">"HS256"</span>,</span>
+<span class="line">    <span class="attr">"typ"</span>: <span class="string">"JWT"</span></span>
+<span class="line">&#125;</span>
+</pre></td></tr></table></figure>
+<p>上面列出的第三个参数 <code>kid</code> 是基于安全原因使用的。<code>cty</code> 参数在另一方面应该只被用于处理嵌套的 JWT。剩下的参数你可以在<a href="https://tools.ietf.org/html/rfc7515#section-4.1" target="_blank" rel="external">规范文档</a>中阅读了解，我认为它们不适合在这篇文章中被提及。</p>
+<h4 id="code-alg-code-suan-fa"><code>alg</code> （算法）</h4>
+<p><code>alg</code> 参数的值可以是 <a href="https://tools.ietf.org/html/rfc7518#section-3.1" target="_blank" rel="external">JSON 网络算法(JWA)</a>中的任意指定值 - 这是我所知道的另一个规范。下面是 JWS 的注册列表：</p>
+<ul>
+<li>
+<p><strong>HS256</strong> - HMAC 使用 SHA-256 算法</p>
+</li>
+<li>
+<p><strong>HS384</strong> - HMAC 使用 SHA-384 算法</p>
+</li>
+<li>
+<p><strong>HS512</strong> - HMAC 使用 SHA-512 算法</p>
+</li>
+<li>
+<p><strong>RS256</strong> - RSASSA-PKCS1-v1_5 使用 SHA-256 算法</p>
+</li>
+<li>
+<p><strong>RS384</strong> - RSASSA-PKCS1-v1_5 使用 SHA-384 算法</p>
+</li>
+<li>
+<p><strong>RS512</strong> - RSASSA-PKCS1-v1_5 使用 SHA-512 算法</p>
+</li>
+<li>
+<p><strong>ES256</strong> - ECDSA 使用 P-256 和 SHA-256 算法</p>
+</li>
+<li>
+<p><strong>ES384</strong> - ECDSA 使用 P-384 和 SHA-384 算法</p>
+</li>
+<li>
+<p><strong>ES512</strong> - ECDSA 使用 P-521 和 SHA-512 算法</p>
+</li>
+<li>
+<p><strong>PS256</strong> - RSASSA-PSS 使用 SHA-256 和基于 SHA-256 算法的 MGF1</p>
+</li>
+<li>
+<p><strong>PS384</strong> - RSASSA-PSS 使用 SHA-384 和基于 SHA-384 算法的 MGF1</p>
+</li>
+<li>
+<p><strong>PS512</strong> - RSASSA-PSS 使用 SHA-512 和基于 SHA-512 算法的 MGF1</p>
+</li>
+<li>
+<p><strong>none</strong> - 没有数字签名或 MAC 执行</p>
+</li>
+</ul>
+<p>请注意最后一个值 <code>none</code>，从安全性的角度来看这是最有趣的。<a href="https://auth0.com/blog/2015/03/31/critical-vulnerabilities-in-json-web-token-libraries/" target="_blank" rel="external">这是已知的被用来进行降级防御攻击的方法</a>。它是如何工作的呢？想象一个客户端生成的带有一些声明的 JWT 。它在头部指定 <code>none</code> 值的签名算法并进行发送验证。如果攻击者比较单纯，那么它会使 <code>alg</code> 参数为真来确保被授权通过，然而实际上则是不会被允许的。</p>
+<p>底线是，你的应用的安全层应该总是对头部的 <code>alg</code> 参数进行校验。那里就是 <code>kid</code> 参数用的上的地方。</p>
+<h4 id="code-typ-code-lei-xing"><code>typ</code> （类型）</h4>
+<p>这一个参数非常简单。如果它是已知的，那么它就是 JWT，因为应用不会去索取其他的值，如果这个参数没有值就会被忽视掉。因此它是可选的。如果需要被指定值，它应该按大写字母拼写 - <code>JWT</code> 。</p>
+<p>在某些情况下，当应用程序接受到没有 JWT 类型的请求却又包含了 JWT 时，去重新指定它是很重要的，因为这样应用程序才不会崩溃。</p>
+<h4 id="code-kid-code-mi-yao-id"><code>kid</code> （密钥 id）</h4>
+<p>如果你的应用程序中的安全层只使用了一个算法来签名 JWTs，你不用太担心 <code>alg</code> 参数，因为你会总是使用相同的密钥和算法来校验令牌的完整性。但是，如果你的应用程序使用了一堆不同的算法和密钥，你就需要能够分辨出是由谁签署的令牌。</p>
+<p>正如我们之前看到的，单独依靠 <code>alg</code> 参数可能会导致一些...不便。然而，如果你的应用维护了一个密钥/算法的列表，并且每一对都有一个名称(id)，你可以添加这个密钥 id 到头部，这样在之后验证 JWT 时你会有更多的信心去选择算法。这就是头部参数 <code>kid</code> - 你的应用中用来签名令牌所使用的密钥 id 。这个 id 是由你来任意指定的。最重要的是 - 这是你给的 id ，所以你可以验证。</p>
+<h4 id="code-cty-code-nei-rong-lei-xing"><code>cty</code> （内容类型）</h4>
+<p>这里把<a href="https://tools.ietf.org/html/rfc7519#section-5.2" target="_blank" rel="external">规范</a>介绍的很清楚，所以这里我就只是引用了：</p>
+<blockquote>
+<p>在通常情况下，在不使用嵌套签名或是加密操作时，是不推荐使用这个头部参数的。而在使用嵌套签名或加密时，这个头部参数必须存在；在这种情况下，它的值必须是 &quot;JWT&quot;，来表明这是一个在 JWT 中嵌套的 JWT。虽然媒体类型名字对大小写并不敏感，但这里为了与现有遗留实现兼容还是推荐始终用 <code>JWT</code> 大写字母来拼写。</p>
+</blockquote>
+<h3 id="zai-jwt-sheng-ming-zhong-ke-yi-you-shi-yao">在 JWT 声明中可以有什么？</h3>
+<p><code>claims</code> 这个名称是否让你感到困惑？在最初它也确实让我很困惑。我相信你需要重复读几次来尝试适应它。简而言之，<code>claims</code> 是 JWT 的主要内容 - 是我们十分关心的签名的数据。它被叫做 <code>claims</code> 是因为通常它就是声明这个意思 - 客户端声明了用户名，用户角色或者其他什么的来让它可以获得对资源的访问。</p>
+<p>还记得我在最开始提到的那个可爱的故事吗？你的公民资格就是你的声明而你的护照则就是 - JWT</p>
+<p>你可以在声明中放置任何你想要的参数，这儿有一个<a href="https://tools.ietf.org/html/rfc7519#section-4.1" target="_blank" rel="external">注册表</a>应当被视为公认的参考实现方法。请注意这里的每一个参数都是可选的并且大多数是应用程序特定的，下面就是这个列表：</p>
+<ul>
+<li>
+<p><strong>exp</strong> - 过期时间</p>
+</li>
+<li>
+<p><strong>nbf</strong> - 有效起始日期</p>
+</li>
+<li>
+<p><strong>iat</strong> - 发行时间</p>
+</li>
+<li>
+<p><strong>sub</strong> - 主题</p>
+</li>
+<li>
+<p><strong>iss</strong> - 发行者</p>
+</li>
+<li>
+<p><strong>aud</strong> - 受众</p>
+</li>
+<li>
+<p><strong>jti</strong> - JWT ID</p>
+</li>
+</ul>
+<p>值得注意的是，除了最后三个(issuer ，audience 和 JWT ID)参数通常是在更复杂的情况下（例如包含多个发行者时）才被使用。下面让我们来讨论一下它们吧。</p>
+<h4 id="code-exp-code-guo-qi-shi-jian"><code>exp</code> （过期时间）</h4>
+<p><code>exp</code> 是时间戳值表示着在什么时候令牌会失效。规范上要求&quot;当前日期/时间&quot;必须在指定的 <code>exp</code> 值之前，从而保证令牌可以得到处理。这里也表明了存在一些余地（几分钟）来应对时间差。</p>
+<h4 id="code-nbf-code-you-xiao-qi-shi-shi-jian"><code>nbf</code> （有效起始时间）</h4>
+<p><code>nbf</code> 是时间戳值表示着在什么时候令牌开始生效。规范上要求&quot;当前日期/时间&quot;必须与指定的 <code>nbf</code> 值相等或在其之后，从而保证令牌可以得到处理。这里也表明了存在一些余地（几分钟）来应对时间差。</p>
+<h4 id="code-iat-code-fa-xing-shi-jian"><code>iat</code> （发行时间）</h4>
+<p><code>iat</code> 是时间戳值表示什么时候令牌被发行。</p>
+<h4 id="code-sub-code-zhu-ti"><code>sub</code> （主题）</h4>
+<p><code>sub</code> 在规范上被要求&quot;是JWT 中的声明中通常用于陈述主题的值&quot;。这里主题必须是内容中唯一的发行者或全局上的唯一值。<code>sub</code> 声明可以用来鉴别用户，例如 <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#token-structure-claims" target="_blank" rel="external">JIRA</a> 文档上那样。</p>
+<h4 id="code-iss-code-fa-xing-zhe"><code>iss</code> （发行者）</h4>
+<p><code>iss</code> 是被用来确认令牌的发行者的字符串值。如果值中包含 <code>:</code> 那么它就是一个 URI。如果有很多的发行者而在一个安全层中应用程序需要去识别发行人时，它将会是有用的。例如 <a href="https://help.salesforce.com/HTViewHelpDoc?id=remoteaccess_oauth_jwt_flow.htm" target="_blank" rel="external">Salesforce</a> 要求了去使用 OAuth client_id 来作为 <code>iss</code> 的值。</p>
+<h4 id="code-aud-code-shou-zhong"><code>aud</code> （受众）</h4>
+<p><code>aud</code> 是被用来确认令牌的可能接受者的字符串值或数组。如果值中包含 <code>:</code> 那么它就是一个 URI。
+通常使用 URI 资源的声明是有效的。例如，在 <a href="https://tools.ietf.org/html/rfc7523#section-3" target="_blank" rel="external">OAuth</a> 中，接受者是授权服务器。应用程序处理令牌时，在针对不同的接受者的情况下，必须验证接受者是否是正确的或者拒绝令牌。</p>
+<h4 id="code-jti-code-jwt-id"><code>jti</code> (JWT id)</h4>
+<p>令牌的唯一标识符。每个发布的令牌的 <code>jti</code> 必须是唯一的，即使有很多发行人也是一样。<code>jti</code> 声明可以用于一次性的不能重放的令牌。</p>
+<h2 id="ru-he-zai-wo-de-ying-yong-zhong-shi-yong-jwt">如何在我的应用中使用 JWT ?</h2>
+<p>在最常见的场景中，客户端的浏览器将在认证服务中认证并接受返回的 JWT。然后客户端用某种方式（如内存，localStorage)存储这个令牌并与受保护的资源一起发送返回。通常令牌发送时是作为 cookie 或是 HTTP 请求中 <code>Authorization</code> 头部。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span>
+<span class="line">2</span>
+<span class="line">3</span>
+</pre></td><td class="code"><pre><span class="line">GET /api/secured-resource HTTP/1.1  </span>
+<span class="line">Host: example.com  </span>
+<span class="line">Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJhZG1pbiI6dHJ1ZX0.OLvs36KmqB9cmsUrMpUutfhV52_iSz4bQMYJjkI_TLQ</span>
+</pre></td></tr></table></figure>
+<p>首选头部方法是出于安全的原因 - cookies 会很容易受 <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery" target="_blank" rel="external">CSRF</a>（跨站请求伪造）的影响，除非 CSRF 令牌是使用过的。</p>
+<p>其次，cookies 只能发送返回到被发出的相同的域下（或者最多二级域下）。如果身份验证服务驻留在不同的域下，那么 cookies 得需要更强烈的创造性才行。</p>
+<h3 id="ru-he-tong-guo-jwt-deng-chu">如何通过 JWT 登出?</h3>
+<p>因为没有 session 数据存储在服务端了，所以不能再通过破坏 session 来注销了。因此登出成为了客户端的职责 - 一旦客户丢失了令牌不能再被授权，就可以被认为是登出了。</p>
+<h2 id="zong-jie">总结</h2>
+<p>我认为 JWTs 是一个在脱离 sessions 的情况下非常聪明的授权方式。它允许创建真正的服务端无状态的基于 RESTful 的服务，这也意味着不需要 session 存储。</p>
+<p>与浏览器自动发送 session cookie 到任意匹配域/路径组合（老实说，在大多数情况下这里只有域的情况）的 URL 不一样的是，JWTs 可以选择性的只向需要身份授权的资源来发送。</p>
+<p>对于客户端和服务端来说，它的实现非常简单，特别是已经有<a href="https://jwt.io/#libraries-io" target="_blank" rel="external">专门的库</a>来制造签名和验证令牌了。</p>
+<p>感谢阅读！</p>
+<p>如果你喜欢这篇文章的话，欢迎分享它。同样也十分欢迎你对它进行评论！</p>
+
+        </div>
+        <p class="post-copyright">本文版权归 yangzj1992 所有。来源青春样博客(qcyoung.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <a class="code-article" href="https://github.com/yangzj1992/articles/blob/master/【译】JSON Web Tokens (JWT) 与 Sessions.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a>
+          <i class="fa fa-tags"></i> 
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/JWT/">JWT</a>
+                
+              
+                <a class="post-tags" href="/tags/RESTful/">RESTful</a>
+                
+              
+                <a class="post-tags" href="/tags/session/">session</a>
+                
+              
+                <a class="post-tags" href="/tags/web安全/">web安全</a>
+                
+              
+                <a class="post-tags" href="/tags/token/">token</a>
+                
+              
+                <a class="post-tags" href="/tags/JSON/">JSON</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i> 
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span>
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="undefined" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=【译】JSON Web Tokens (JWT) 与 Sessions | 青春样 | yangzj1992&#39;s blog &amp;url=http://www.qcyoung.com/2016/07/04/【译】JSON Web Tokens (JWT) 与 Sessions/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.qcyoung.com/2016/07/04/【译】JSON Web Tokens (JWT) 与 Sessions/index.html&amp;title=【译】JSON Web Tokens (JWT) 与 Sessions | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.qcyoung.com/2016/07/04/【译】JSON Web Tokens (JWT) 与 Sessions/index.html&amp;text=【译】JSON Web Tokens (JWT) 与 Sessions;via=yangzj1992| 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=undefined&amp;t=【译】JSON Web Tokens (JWT) 与 Sessions | 青春样 | yangzj1992&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.qcyoung.com/2016/07/04/【译】JSON Web Tokens (JWT) 与 Sessions/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2016/07/06/【译】UI 的黑暗面！暗色背景的优势/">
+      ← 【译】UI 的黑暗面！暗色背景的优势
+    </a>
+  
+  
+    <a class="pull-right" href="/2016/06/12/【译】如何编写避免垃圾开销的实时 Javascript 代码/">
+      【译】如何编写避免垃圾开销的实时 JavaScript 代码 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//yangzj1992.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.qcyoung.com/2016/07/04/【译】JSON Web Tokens (JWT) 与 Sessions/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By yangzj1992. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors 
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/yangzj1992/TKL-REVISION">TKL-REVISION</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/yangzj1992" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/yangzj1992" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/yangzj1992" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/yangzj1992" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+  
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async id="dsq-count-scr" src="https://yangzj1992.disqus.com/count.js"></script>
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.e01c6ca7.min.js"></script></div></body>
+</html>
